@@ -1,28 +1,27 @@
 /*
- * string_literal.cpp
+ * std_string.cpp
  *
  *  Created on: May 22, 2019
  *      Author: akadar
  */
 
-// [1]https://embeddedartistry.com/blog/2017/7/24/stdstring-vs-c-strings
+// [1] https://embeddedartistry.com/blog/2017/7/24/stdstring-vs-c-strings
 
 #include <iostream>
 
-/*The cstring header provides functions for dealing with C-style strings i.e.
+/* The cstring header provides functions for dealing with C-style strings i.e.
  * null-terminated arrays of characters. This includes functions like strlen
- * and strcpy. It's the C++ version of the classic string.h header from C. *
+ * and strcpy. It's the C++ version of the classic string.h header from C.
  */
 #include <cstring>
 
 // The string header provides the std::string class and related functions and operators.
 #include <string>
 
-int std_string()
-//int main()
+//int std_string()
+int main()
 {
-	// Fundamentally std::string acts like a container for handling char arrays,
-	// similar to std::vector<char>
+	// Fundamentally std::string is similar to std::vector<char>
 
 	using namespace std::string_literals;
 
@@ -36,18 +35,15 @@ int std_string()
 	std::cout << strlen(string_literal) << "\t" << string_literal << std::endl;
 
 	// An array of characters enclosed in double quotes is a string literal
-	// Assigning a string constant to a const char*
-	const char* also_string_literal = "ali";
+	const char* also_string_literal = "ali"; // Assigning a string constant to a const char*
 	std::cout << strlen(also_string_literal) << "\t" << also_string_literal << std::endl;
 
-	// Since C++14, instead of using "foo", it is recommended to use "foo"s,
-	// as s is a string literal, which converts the const char * "foo" to std::string "foo".
+	// Since C++14, string literal "s", can be used to convert a const char * to std::string
 	std::string std_string = "ali"s;
 	std::cout << std_string.size() << "\t" << std_string << std::endl;
 
 	// The const char* can be retrieved back using the c_str or data method
 	// This allows std::string to interoperate with C-string APIs
-	// const char* std_string_to_char = std_string.data();
 	const char* std_string_to_char = std_string.c_str();
 
 	// std::strings have an overloaded + operator
@@ -63,7 +59,7 @@ int std_string()
 	std::cout << "my_str (post-clear): " << my_str << std::endl;
 	std::cout << "my_str.empty(): " << my_str.empty() << std::endl;
 
-	// Limitations of std::strings are listed on [1]
+	// Limitations of std::strings are listed here [1]
 
 	return 0;
 }

@@ -1,5 +1,5 @@
 /*
- * c_string.cpp
+ * c_style_string.cpp
  *
  *  Created on: May 22, 2019
  *      Author: akadar
@@ -10,7 +10,7 @@
 //int main()
 int c_style_string()
 {
-	// all C-strings are char arrays, but not all char arrays are c-strings
+	// All C-style strings are char arrays, but not all char arrays are C-style strings
 
 	// Example 1
 	char str1 = 'a';
@@ -27,7 +27,7 @@ int c_style_string()
 
 	// Example 3
 	// Note: In ASCII, all upper case letters come before the lower case letters
-	char a = 'a';
+	char a = 'A';
 	std::cout<<static_cast<int>(a)<<"\n";
 	std::cout<<static_cast<char>(97)<<"\n";
 	std::cout<<"--------------------\n";
