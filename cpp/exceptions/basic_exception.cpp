@@ -10,7 +10,9 @@
 #include<stdexcept>
 #include<cmath>
 
-class pixel {
+#include <type_traits> // defines std::is_same
+
+template <typename t> class pixel {
 public:
 	pixel() = default;
 	pixel(double, double, double);
@@ -22,17 +24,26 @@ public:
 	  return std::floor(k) == k;
 	}
 private:
-	const short W = 255, B = 0;
-	short r{W}, g{W}, b{W}; // white color by default
+	const t W = 255, B = 0;
+	t r{W}, g{W}, b{W}; // white color by default
 };
 
-pixel::pixel(double r_, double g_, double b_) {
+template <typename t>  pixel<t>::pixel(double r_, double g_, double b_) {
 	try
 	{
 	try {
-		// Check if r,g,b is not a number Ex pixel('a','b','c') ?
 
-		// Check if r,g,b are integers
+		// normally exceptions occur at run-time, however, if they can be checked
+		// at compile-time it is even better.
+		// check at compile-time if template argument is not int
+		// note the argument to static_assert must evaluate to a constexpr
+		constexpr bool checkInt = std::is_same<t, int>::value;
+		static_assert(checkInt,"template argument is not int");
+
+		// Check at run-time if template argument is not int - not useful
+		if(!std::is_same<t, int>::value) throw std::invalid_argument("template argument is not int");
+
+		// Check if r,g,b are not floats
 		if(!is_integer(r_)) throw std::invalid_argument("r value is not an integer");
 		if(!is_integer(g_)) throw std::invalid_argument("g value is not an integer");
 		if(!is_integer(b_)) throw std::invalid_argument("b value is not an integer");
@@ -52,16 +63,15 @@ pixel::pixel(double r_, double g_, double b_) {
 	}
 	}
 	catch(const std::exception& e){ // Note that a base class handler is used
-		std::cout<<"Wrong [r g b] value entered\n";
 		std::terminate(); // terminate called since this error is non-recoverable
 	}
-	r = static_cast<short>(r_);
-	g = static_cast<short>(g_);
-	b = static_cast<short>(b_);
+	r = r_;
+	g = g_;
+	b = b_;
 }
 
 int main() {
-	pixel(1,6,7.5);
-	pixel(1,2,3);
+	pixel<int>(1,6,500);
+	pixel<int>(1,2,3);
 	return 0;
 }

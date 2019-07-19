@@ -23,7 +23,7 @@ private:
 	const char* message;
 };
 
-int main(){
+int main_custom(){
 
 	try{
 		throw my_exception("dummy exception thrown");

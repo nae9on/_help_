@@ -45,7 +45,7 @@ private:
 
 template <typename t> unsigned scope_guard<t>::counter=0;
 
-int main(){
+int main_scope(){
 
 	vint v0 = {1,2,3}; // initial content of v0
 	vint v1 = {11,12,13};
