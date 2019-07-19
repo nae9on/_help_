@@ -14,7 +14,7 @@
 
 using vint = std::vector<int>;
 
-template <typename t> class scope_guard{
+template <typename T> class scope_guard{
 public:
 	void set(){
 		lock = true;
@@ -23,7 +23,7 @@ public:
 		lock=false;
 		std::cout<<"Lock released on "<<id<<"\n";
 	}
-	scope_guard(std::vector<t>* v_){
+	scope_guard(T* v_){
 		v = v_;
 		set();
 		id = counter;
@@ -40,7 +40,7 @@ private:
 	static unsigned counter;
 	unsigned id{0};
 	bool lock;
-	std::vector<t>* v;
+	T* v;
 };
 
 template <typename t> unsigned scope_guard<t>::counter=0;
@@ -53,21 +53,22 @@ int main(){
 
 	try{
 		v0.push_back(4);
-		scope_guard<int> s0(&v0); // set a guard around v0
+		scope_guard<vint> s0(&v0); // set a guard around v0
 
 		v1.push_back(14);
-		scope_guard<int> s1(&v1); // set a guard around v1
+		scope_guard<vint> s1(&v1); // set a guard around v1
 
-		throw std::bad_alloc(); // to imitate as if v2.push_back(3) has failed
+		throw std::bad_alloc(); // to imitate as if v2.push_back() has failed
 
 		v2.push_back(104);
-		scope_guard<int> s2(&v2); // set a guard around v2
+		scope_guard<vint> s2(&v2); // set a guard around v2
 
 		s0.release();
 		s1.release();
 		s2.release();
 	}
 	catch(std::exception& e){
+		std::cout<<"push_back unsuccessful, unwinding call stack\n";
 		std::cout << e.what() << "\n";
 	}
 
