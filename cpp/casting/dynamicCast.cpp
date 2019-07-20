@@ -26,7 +26,10 @@ public:
 	}
 	virtual int returnSize() const=0; // pure virtual function returning the size of container
 	virtual double& operator[](int i) const=0; // pure virtual function returning the element [i] of container
-	virtual ~Container(){ // virtual makes sure that first derived class destructor is called
+
+	// virtual makes sure that first derived class destructor is called.
+	// for this reason the destructor of an abstract class should always be virtual.
+	virtual ~Container(){
 		std::cout<<"Base class destructor called\n";
 	}
 };
@@ -85,25 +88,23 @@ void printContainerData(Container& c){
 	std::cout<<"\n";
 }
 
-//int dynamicCast()
 int main()
 {
 	/*
-	 * static_cast does no run-time type check, while dynamic_cast does [1]
-	 * Therefore, it is left to the programmer to verify that the results of a static_cast
-	 * conversion are safe. static_cast should only be in performance-critical code.
-	 * Note: The run-time type check done by dynmic_cast is an overhead
-	 * Note: dynamic_cast only works on pointers and references
+	 * dynamic_cast does run-time type check [1].
+	 * The run-time type check done by dynmic_cast is an overhead.
+	 * dynamic_cast only works on pointers and references.
 	 */
 
-	// Container b; // An object of an abstract class cannot be created
+	// Container b; // An object of an abstract class cannot be created.
 
 	if(0)
 	{
-	vecContainer d1(5); // Calls derived class constructor which implicitly calls base class constructor first
+	vecContainer d1(5); // Derived class constructor implicitly calls base class constructor first.
 	printContainerData(d1);
 	Container::printCount();
-	// Calls derived class destructor which implicitly calls base class destructor after
+	// Derived class destructor called automatically as d1 goes out of scope.
+	// Derived class destructor implicitly calls base class destructor after.
 	}
 
 	if(0)
@@ -114,23 +115,24 @@ int main()
 
 	if(0)
 	{
-	vecContainer* d1 = new vecContainer(5); // Calls derived class constructor which implicitly calls base class constructor first
+	vecContainer* d1 = new vecContainer(5);
 	printContainerData(*d1);
-	Container::printCount(); // prints 1
-	delete d1; 	// Calls derived class destructor which implicitly calls base class destructor after
+	Container::printCount();
+	delete d1;
+	// Note derived class destructor is not called automatically, but delete
+	// is needed to free the heap memory. delete calls the derived class destructor.
 	}
 
 	if(1)
 	{
 	Container* b1 = new vecContainer(5);
 	Container* b2 = new arrayContainer(7);
-
-	//b1->printSize(); // Error
-	//b2->printLength(); // Error
-
+	//b1->printSize(); // Error, base class has no printSize() fn
+	//b2->printLength(); // Error, base class has no printLength() fn
 
 	if(0)
 	{
+
 	// Note the different ways
 
 	if(vecContainer* temp = dynamic_cast<vecContainer*>(b1)) // assignment + NULL test
