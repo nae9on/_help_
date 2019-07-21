@@ -9,6 +9,8 @@
 // [1] https://docs.microsoft.com/en-us/cpp/cpp/static-cast-operator?view=vs-2019
 
 #include <iostream>
+#include <typeinfo>
+// Note: when using typeid, the return of type name is implementation defined.
 
 class Container{ // Interface class
 private:
@@ -113,9 +115,10 @@ int main()
 	Container::printCount(); // prints 0
 	}
 
-	if(0)
+	if(1)
 	{
 	vecContainer* d1 = new vecContainer(5);
+	std::cout<<"The type of d1 is "<<typeid(d1).name()<<"\n";
 	printContainerData(*d1);
 	Container::printCount();
 	delete d1;
@@ -123,10 +126,13 @@ int main()
 	// is needed to free the heap memory. delete calls the derived class destructor.
 	}
 
-	if(1)
+	if(0)
 	{
 	Container* b1 = new vecContainer(5);
 	Container* b2 = new arrayContainer(7);
+	std::cout<<"The type of b1 is "<<typeid(b1).name()<<"\n";
+	std::cout<<"The type of b2 is "<<typeid(b2).name()<<"\n";
+
 	//b1->printSize(); // Error, base class has no printSize() fn
 	//b2->printLength(); // Error, base class has no printLength() fn
 
@@ -139,7 +145,7 @@ int main()
 		temp->printSize(); // prints 5
 
 	if(dynamic_cast<arrayContainer*>(b1)!=nullptr) // Evaluates to NULL
-		dynamic_cast<arrayContainer*>(b1)->printLength(); // Does not print
+		dynamic_cast<arrayContainer*>(b1)->printLength(); // Does not print, program terminates and raises no exception ?
 
 	if(dynamic_cast<vecContainer*>(b2)!=nullptr) // Evaluates to NULL
 		dynamic_cast<vecContainer*>(b2)->printSize(); // Does not print
@@ -154,7 +160,7 @@ int main()
 	// In the below statement a static_cast to a wrong pointer returns as if nothing were wrong
 	// static_cast<arrayContainer*>(b1)->printLength();
 
-	if(1)
+	if(0)
 	{
 	static_cast<vecContainer*>(b1)->printSize(); // May not be safe but fortunately is safe now
 	static_cast<arrayContainer*>(b1)->printLength(); // Not safe, prints wrong

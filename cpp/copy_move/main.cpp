@@ -29,8 +29,6 @@ int main() {
 	p5 = p4;
 	std::cout<<std::endl;
 
-	ali::complex_vector p6;
-
 	std::cout<<"\n\n";
 	std::cout<<"p0"<<std::endl; p0.print();
 	std::cout<<"p1"<<std::endl; p1.print();
@@ -38,7 +36,6 @@ int main() {
 	std::cout<<"p3"<<std::endl; p3.print();
 	std::cout<<"p4"<<std::endl; p4.print();
 	std::cout<<"p5"<<std::endl; p5.print();
-	std::cout<<"p6"<<std::endl; p6.print();
 	//p1 = std::move(p2);
 
 	return 0;
