@@ -70,7 +70,7 @@ template <typename t>  pixel<t>::pixel(double r_, double g_, double b_) {
 	b = b_;
 }
 
-int main() {
+int main_basic() {
 	pixel<int>(1,6,500);
 	pixel<int>(1,2,3);
 	return 0;

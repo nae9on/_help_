@@ -9,7 +9,6 @@
 // http://www.parashift.com/c++-faq-lite/operator-overloading.html
 
 #include <iostream>
-#include <ostream>
 
 template<typename t> class complex{
 public:
@@ -44,25 +43,14 @@ public:
 		std::cout<<"This = "<<this->getr()<<"+"<<this->getc()<<"i\n";
 	}
 
-	// Note that the output stream object is directly modified in the function
-	// and not returned.
-	friend void operator<<(std::ostream& os, const complex<t>& e){
-		std::cout<<"Operator << called\n";
-		os << e.getr() << "+" << e.getc() << "i\n";
-	}
 private:
 	t r{0}, c{0};
 };
 
-// Note that the operator can also be overloaded outside the class. Advantages/disadvantages?
-template <typename t> void operator<<(std::ostream& os, const complex<t>& e){
-	os << e.getr() << "+" << e.getc() << "i\n";
-}
-
-int main(){
+int main_arithmetic(){
 	complex<double> c1(1.0,2.0), c2(3.0,4.0), c3(5.0,6.0);
 	complex<double> c4 = c1 + c2 + c3;
 	c4 += complex<double>(100.0,100.0);
-	std::cout << c4;
+	std::cout << c4.getr() << "+" << c4.getc() << "i\n";
 	return 0;
 }
