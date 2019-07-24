@@ -30,7 +30,6 @@ template <typename E, typename S, typename P> S sum(const E& e, S s, P pred) {
 }
 
 int main_lambda()
-//int main()
 {
 	std::cout << "In lambda\n";
 	std::vector<double> e = {1.0,2.0,3.0,4.0001,9.0,625};

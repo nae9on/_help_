@@ -9,52 +9,51 @@
 
 // Note the default arguments in the line below
 // N is a value argument here
-template <typename T=double, unsigned N=10>
-class myVector{
-private:
-	unsigned size;
-	T* data; // array is allocated on the heap
-	char codeNdigit[N]; // array is allocated on the stack
+template <typename T=double, unsigned N=5>
+class buffer{
 public:
-	myVector(unsigned _size, char* name): size{_size}, data{new T[_size]{}} {
-		for (unsigned i=0; i<N; i++) codeNdigit[i] = name[i];
+	buffer(unsigned size_, char* name_): size{size_}, data{new T[size_]{}} {
+		for (unsigned i=0; i<N; i++) name[i] = name_[i];
 		for (unsigned i=0; i<size; i++) data[i] = i+1.5;
 		out();
 	}
-	void out(){
-		std::cout<<"My array of char is ";
-		for (unsigned i=0; i<size; i++)
-			std::cout<<codeNdigit[i]<<" ";
-		std::cout<<std::endl;
-		std::cout<<"My data is ";
-		for (unsigned i=0; i<size; i++)
-			std::cout<<data[i]<<" ";
-		std::cout<<std::endl;
+	void out() const{
+		std::cout<<"\nMy array of char is ";
+		for (unsigned i=0; i<N; i++) std::cout<<name[i]<<" ";
+
+		std::cout<<"\nMy data is ";
+		for (unsigned i=0; i<size; i++)	std::cout<<data[i]<<" ";
 	}
+	~buffer(){
+		delete[] data;
+	}
+private:
+	unsigned size;
+	T* data; // array is allocated on the heap
+	char name[N]; // array is allocated on the stack
 };
 
-int value_arg()
-//int main()
+int main_value_arg()
 {
-	std::cout<<"In value_arg\n";
+	std::cout<<"In main\n";
 	char string[5] {'a','b','c','d','e'};
 
-	// Normal usage
-	myVector<int,5> vec2(10,string);
+	// Note: A template value argument must be a constant expression
+	buffer<int,5> vec2(10,string);
 
 	// Default value argument used
-	myVector<float> vec4(11,string);
+	buffer<float> vec4(11,string);
 
-	// error type/value mismatch, expected a type, got ‘4’
-	//myVector<4> vec5(8,string);
+	// error type/value mismatch, expected a type, got ‘5’
+	//buffer<5> vec5(8,string);
 
 	// default arguments used
-	myVector<> vec6(12,string);
+	buffer<> vec6(12,string);
 	// In the above, the bracket <> must be present but
 	// can be left empty when default arguments are available
 
 	// error missing template arguments.
-	//myVector vec7(8,string);
+	//buffer vec7(8,string);
 
 	return 0;
 }

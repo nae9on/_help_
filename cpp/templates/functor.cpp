@@ -56,7 +56,6 @@ S myAccumulate(T _first, T _last, S _init, Pred _p){
 }
 
 int main_functor()
-//int main()
 {
 	std::cout<<"In functor\n";
 

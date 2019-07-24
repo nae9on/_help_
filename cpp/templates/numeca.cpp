@@ -30,7 +30,6 @@ template <typename T> void test(T*){
 }
 
 int main_numeca()
-//int main()
 {
 	std::cout<<"In numeca\n";
 	static int count = 0;
