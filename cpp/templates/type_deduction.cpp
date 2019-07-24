@@ -23,7 +23,7 @@ template <typename T> T add(T a, T b) {
 	return a+b;
 }
 
-int main(){
+int main_type_deduction(){
 
 	int x1{1}, y1{2};
 	double x2{1.1}, y2{1.2};

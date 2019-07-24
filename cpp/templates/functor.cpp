@@ -60,6 +60,7 @@ int main_functor()
 	std::cout<<"In functor\n";
 
 	// Defining a function object
+	// A function object (sometimes referred to as policy objects) carries data + efficiency
 	testSquares<double> pred(0);
 
 	// Test function object
