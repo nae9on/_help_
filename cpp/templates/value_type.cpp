@@ -9,7 +9,9 @@
 #include <vector>
 
 // simple example without using templates
+// creating an alias
 using container1 = std::vector<double>;
+// using value_type alias provided by STL container std::vector<double>
 container1::value_type agreegate1(const container1& c, container1::value_type init) {
 	container1::value_type sum = init;
 	for(const auto& e:c) sum+=e;
@@ -17,10 +19,12 @@ container1::value_type agreegate1(const container1& c, container1::value_type in
 }
 
 // example using templates
-template<typename t> using container2 = std::vector<t>;
-template<typename z>
-typename z::value_type agreegate2(const z& c, typename z::value_type init) {
-	typename z::value_type sum = init;
+// creating an alias template
+template<typename T1> using container2 = std::vector<T1>;
+// using value_type alias provided by STL templated container std::vector<t>
+template<typename T>
+typename T::value_type agreegate2(const T& c, typename T::value_type init) {
+	typename T::value_type sum = init;
 	for(const auto& e:c) sum+=e;
 	return sum;
 }

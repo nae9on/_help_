@@ -1,14 +1,29 @@
 /*
- * value_arg.cpp
+ * non_type_parameters.cpp
  *
- *  Created on: Apr 22, 2019
+ *  Created on: July 25, 2019
  *      Author: akadar
  */
 
 #include <iostream>
 
+/*
+ * This script explains template non-type parameters.
+ *
+ * template non-type parameters (tntp) are called as value template arguments
+ * in the book "A tour of C++" by Bjarne Stroustrup.
+ *
+ * A non-type template argument provided within a template argument list is
+ * an expressionwhose value can be determined at compile time. Such arguments
+ * must be constant expressions, addresses of functions or objects with external
+ * linkage, or addresses of static class members.
+ *
+ * Permissible values of tntp are integral types (float, double, char etc are not allowed)
+ * pointer to objects or functions, lvalue reference to object or functions, pointer to
+ * class member functions, std::nullptr_t
+ */
+
 // Note the default arguments in the line below
-// N is a value argument here
 template <typename T=double, unsigned N=5>
 class buffer{
 public:
@@ -33,13 +48,19 @@ private:
 	char name[N]; // array is allocated on the stack
 };
 
-int main_value_arg()
+int main_non_type()
 {
 	std::cout<<"In main\n";
 	char string[5] {'a','b','c','d','e'};
 
-	// Note: A template value argument must be a constant expression
+	/*
+	 * Note: A template value argument must be a constant expression, the reason
+	 * being that non-constant expressions could change during run-time and therefore
+	 * would require instantiation of a new template which is not possible durin run-time
+	 * because templates are compile time mechanisms.	 *
+	 */
 	buffer<int,5> vec2(10,string);
+	buffer<int,6> vec3(10,string); // vec2 and vec3 are of different types.
 
 	// Default value argument used
 	buffer<float> vec4(11,string);
