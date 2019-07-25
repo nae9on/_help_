@@ -14,7 +14,7 @@
  * in the book "A tour of C++" by Bjarne Stroustrup.
  *
  * A non-type template argument provided within a template argument list is
- * an expressionwhose value can be determined at compile time. Such arguments
+ * an expression whose value can be determined at compile time. Such arguments
  * must be constant expressions, addresses of functions or objects with external
  * linkage, or addresses of static class members.
  *
@@ -24,6 +24,8 @@
  */
 
 // Note the default arguments in the line below
+// For multiple template arguments, all arguments after the
+// first default argument must have default arguments.
 template <typename T=double, unsigned N=5>
 class buffer{
 public:
