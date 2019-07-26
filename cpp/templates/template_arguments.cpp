@@ -8,9 +8,21 @@
 #include <iostream>
 #include <vector>
 
-// overloaded aggregator
-char aggreegate(char init, const std::vector<char,std::allocator<char>>& c) {
-	return 'a';
+/*
+ * Aggregator for char container, it is a template partial specialization.
+ * Note: Specializations in which all parameters are specialized are complete specializations.
+ * If only some of the parameters are specialized, it is called a partial specialization.
+ */
+template <template<typename> class A, template<typename,typename> class Vec>
+std::string aggreegate(const Vec<char,A<char>>& c, char init = 'x') {
+	std::string sum{init};
+	// typename keyword in the next line provides a hint to the compiler
+	// that Vec<char,A<char>>::const_iterator is a type
+	using iterator = typename Vec<char,A<char>>::const_iterator;
+	for (iterator it=c.cbegin(); it!=c.cend(); ++it) {
+		sum.push_back(*it);
+	}
+	return sum;
 }
 
 /*
@@ -30,7 +42,7 @@ char aggreegate(char init, const std::vector<char,std::allocator<char>>& c) {
  * template<typename,typename> class Vec is for std::vector<char,std::allocator<char>>
  */
 template <typename T, template<typename> class A, template<typename,typename> class Vec>
-T aggreegate(T init, const Vec<T,A<T>>& c) {
+T aggreegate(const Vec<T,A<T>>& c, T init = 0) {
 	T sum = init;
 	using iterator = typename Vec<T,A<T>>::const_iterator;
 	for (iterator it=c.cbegin(); it!=c.cend(); ++it) {
@@ -44,12 +56,12 @@ int main_template_arguments() {
 	// Note normally allocator type defaults to allocator<T>
 	std::vector<int,std::allocator<int>> c3{10,20,30};
 
-	std::cout<<"Sum = "<<aggreegate<int, std::allocator, std::vector>(100,c3)<<"\n";
+	std::cout<<"Sum = "<<aggreegate<int, std::allocator, std::vector>(c3,100)<<"\n";
 
 	// Automatic type deduction of template arguments
-	std::cout<<"Sum = "<<aggreegate(100,c3)<<"\n";
+	std::cout<<"Sum = "<<aggreegate(c3,100)<<"\n";
 
-	std::cout<<"Sum = "<<aggreegate('x',std::vector<char>{'y'})<<"\n";
+	std::cout<<"Sum = "<<aggreegate(std::vector<char>{'A','L','I'})<<"\n";
 
 	return 0;
 }

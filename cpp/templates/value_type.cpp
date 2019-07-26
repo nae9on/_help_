@@ -23,7 +23,9 @@ container1::value_type agreegate1(const container1& c, container1::value_type in
 template<typename T1> using container2 = std::vector<T1>;
 // using value_type alias provided by STL templated container std::vector<t>
 template<typename T>
-typename T::value_type agreegate2(const T& c, typename T::value_type init) {
+typename T::value_type agreegate2(const T& c, typename T::value_type init = 0) {
+	// typename keyword in the next line provides a hint to the compiler
+	// that T::value_type as a type
 	typename T::value_type sum = init;
 	for(const auto& e:c) sum+=e;
 	return sum;
@@ -38,6 +40,6 @@ int main_value_type(){
 
 	// Note the automatic type deduction for function templates
 	container2<int> c3{10,20,30};
-	std::cout<<"Sum = "<<agreegate2(c3,100)<<"\n";
+	std::cout<<"Sum = "<<agreegate2(c3)<<"\n";
 	return 0;
 }

@@ -39,6 +39,7 @@ int main_lambda()
 
 	// Function objects used as predicate arguments to algorithms
 	comparator<float> comp{0.0};
+	// Note automatic type deduction of the template arguments of sum
 	std::cout<<"Sum of +ve numbers using functor (form 1) = "<< sum(e,s,comparator<double>{0.0})<<std::endl;
 	std::cout<<"Sum of +ve numbers using functor (form 2) = "<< sum(e,s,comp)<<std::endl;
 

@@ -28,18 +28,27 @@ public:
 	T getpy() {
 		return py;
 	}
-	void setpx(T px_) {
-		px = px_;
-	}
-	void setpy(T py_) {
-		py = py_;
-	}
+	void setpx(T px_);
+
+	void setpy(T py_);
+
 private:
 	T px;
 	T py;
 	short attr;
 
 };
+
+// class member functions are defined like function templates if
+// they are defined outside the class template
+// Note no default arguments are used here (syntax error with default arguments)
+template<typename T, short attr_> void Point<T,attr_>::setpy(T px_) {
+	px = px_;
+}
+
+template<typename T, short attr_> void Point<T,attr_>::setpx(T py_) {
+	py = py_;
+}
 
 // Parameterized type Point3D (special case Z coordinate can be of another type)
 template<typename T = double, typename T2 = double, short attr_ = 3>

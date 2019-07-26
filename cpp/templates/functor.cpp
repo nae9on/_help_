@@ -69,6 +69,7 @@ int main_functor()
 
 	// Use function object as a parameter to an algorithm
 	std::vector<double> vec {-1,0,1,2,4,8,16,32,100,100.5,100.1};
+	// Note automatic type deduction of the template arguments of both accumulate functions
 	std::cout<<"Sum of all squares in the vector using std::accumulate = "
 			<<std::accumulate(vec.cbegin(),vec.cend(),0.0,pred)<<std::endl;
 	std::cout<<"Sum of all squares in the vector using myAccumulate = "
