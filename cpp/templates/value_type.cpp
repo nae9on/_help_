@@ -3,6 +3,9 @@
  *
  *  Created on: Jul 24, 2019
  *      Author: akadar
+ *
+ *  Demonstrating the use of type alias value_type defined in STL containers.
+ *  value_type is used to determine the type of the values held by the container.
  */
 
 #include <iostream>

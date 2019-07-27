@@ -3,6 +3,9 @@
  *
  *  Created on: May 22, 2019
  *      Author: akadar
+ *
+ *  Example to demonstrate use of function objects as parameters to algorithms.
+ *  A function object (sometimes referred to as policy objects) carries data + efficiency
  */
 
 #include <iostream>
@@ -60,7 +63,6 @@ int main_functor()
 	std::cout<<"In functor\n";
 
 	// Defining a function object
-	// A function object (sometimes referred to as policy objects) carries data + efficiency
 	testSquares<double> pred(0);
 
 	// Test function object

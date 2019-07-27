@@ -3,6 +3,9 @@
  *
  *  Created on: May 22, 2019
  *      Author: akadar
+ *
+ *  Example to demonstrate use of anonymous function objects (or lambdas) as parameters to algorithms.
+ *
  */
 
 #include <iostream>

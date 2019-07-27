@@ -3,11 +3,7 @@
  *
  *  Created on: July 25, 2019
  *      Author: akadar
- */
-
-#include <iostream>
-
-/*
+ *
  * This script explains template non-type parameters.
  *
  * template non-type parameters (tntp) are called as value template arguments
@@ -23,9 +19,14 @@
  * class member functions, std::nullptr_t
  */
 
-// Note the default arguments in the line below
-// For multiple template arguments, all arguments after the
-// first default argument must have default arguments.
+#include <iostream>
+
+
+/*
+ * Note the default arguments in the line below. For multiple template arguments,
+ * all arguments after the first default argument must have default arguments.
+ */
+
 template <typename T=double, unsigned N=5>
 class buffer{
 public:
