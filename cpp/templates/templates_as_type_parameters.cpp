@@ -103,7 +103,7 @@ std::string aggreegate(const std::vector<char, std::allocator<char>>& c, char in
 	return sum;
 }
 
-int main() {
+int main_templates_as_type_parameters() {
 
 	// Note normally allocator type defaults to allocator<T>
 	std::vector<int,std::allocator<int>> x1{10,20,30};

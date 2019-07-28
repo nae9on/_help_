@@ -7,3 +7,5 @@ akadar
 templated
 extern
 int
+fibonacci
+factorials
