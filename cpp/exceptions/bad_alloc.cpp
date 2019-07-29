@@ -1,5 +1,5 @@
 /*
- * badAlloc.cpp
+ * bad_alloc.cpp
  *
  *  Created on: Jul 22, 2019
  *      Author: akadar
@@ -22,7 +22,7 @@ private:
 	std::vector<std::string> message;
 };
 
-int main() {
+int main_bad_alloc() {
 
 	error_log er;
 

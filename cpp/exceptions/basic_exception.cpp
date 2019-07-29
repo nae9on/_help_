@@ -1,5 +1,5 @@
 /*
- * pixel.cpp
+ * basic_exception.cpp
  *
  *  Created on: Jul 11, 2019
  *      Author: akadar
