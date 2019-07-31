@@ -4,7 +4,7 @@
  *  Created on: Jul 27, 2019
  *      Author: akadar
  *
- *  Note that the C++ standard requires the template to be parsed,
+ *  Note that the C++ standard requires a template definition to be parsed,
  *  irrespective of whether the template is used in the code or not.
  *  Failure to parse must be diagnosed regardless of instantiation.
  *

@@ -19,6 +19,7 @@ template<typename T> void increment(T& x){
 	++x;
 }
 
+// assert is evaluated at run-time
 template<> void increment(char& x){
 	assert(false && "Illegal to increment char");
 }
@@ -26,7 +27,7 @@ template<> void increment(char& x){
 template<> void increment(double& x){
 	assert(false && "Illegal to increment double");
 }
-// what if a user-defined type is passed?
+// what if T == float?
 
 // Better version of templated increment function
 template <typename T>
@@ -40,9 +41,10 @@ struct is_incrementable<int> {
 };
 
 template<typename T> void better_increment(T& x){
-	assert(is_incrementable<T>::value && "Illegal to increment");
+	static_assert(is_incrementable<T>::value,"Illegal to increment");
 	++x;
 }
+// only int is allowed, what if T == short?
 
 // Best version of templated increment function
 template <typename T>
@@ -51,11 +53,11 @@ struct is_incrementable2 {
 };
 
 template<typename T> void smart_increment(T& x){
-	assert(is_incrementable2<T>::value && "Illegal to increment");
+	static_assert(is_incrementable2<T>::value,"Illegal to increment");
 	++x;
 }
 
-int main(){
+int main_my_type_traits(){
 
 	std::cout<<"In main\n";
 
