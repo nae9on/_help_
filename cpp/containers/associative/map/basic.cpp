@@ -10,14 +10,17 @@
 #include <string>
 
 class biography{
-private:
-	std::string name;
-	short age;
 public:
 	biography(): name{"notborn"}, age{0}{};
-	short getAge(){return age;}
-	void setName(std::string _name){name=_name;}
-	void setAge(short _age){age=_age;}
+	short getAge(){
+		return age;
+	}
+	void setName(std::string name_){
+		name = name_;
+	}
+	void setAge(short age_){
+		age = age_;
+	}
 	void printInfo(){
 		if(age==0 && name=="notborn") {
 			std::cout<<"I have not been created yet"<<std::endl;
@@ -29,10 +32,12 @@ public:
 		}
 
 	}
+private:
+	std::string name;
+	short age;
 };
 
-int basic ()
-//int main()
+int basic()
 {
 
 	// A map is an associative container and consists of key-value pairs (each key is unique)

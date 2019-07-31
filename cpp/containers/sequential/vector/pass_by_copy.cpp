@@ -11,8 +11,8 @@
 #include <array> // mem allocation on stack, pass by value not allowed
 #include <chrono>
 
-#define MAX 100000000 // 1'000'000'00 not supported in c++11
-#define LOOP 1
+const int MAX = 100000000; // 1'000'000'00 not supported in c++11
+const int LOOP = 1;
 
 using namespace std::chrono;
 
@@ -23,7 +23,6 @@ template<typename T> void initialize(T&);
 template<typename T> double getSumByRef(const T&);
 template<typename T> double getSumByValue(const T);
 
-//int main()
 int pass_by_copy()
 {
 	double sum {0.0};
