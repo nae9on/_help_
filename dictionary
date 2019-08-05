@@ -9,3 +9,6 @@ extern
 int
 fibonacci
 factorials
+valgrind
+aug
+nullptr
