@@ -1,5 +1,5 @@
 /*
- * withTemplates.cpp
+ * with_templates.cpp
  *
  *  Created on: Aug 8, 2019
  *      Author: akadar
@@ -22,7 +22,7 @@ void applyFunc(C<T,A<T>>& c, Fptr p){
 	}
 }
 
-int main(){
+int with_templates(){
 
 	std::vector<my_type> x = {1.5,2.5,3.5};
 

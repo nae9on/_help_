@@ -36,7 +36,7 @@ void print_array(size_t n, double* x){
 	std::cout<<"\n";
 }
 
-int main1(){
+int basic(){
 	double (*ptr1)(double); // declaring a function pointer of type double_ptr1
 	double (*ptr2)(double); // declaring another function pointer of type double_ptr1
 	double (*ptr3)(double); // declaring yet another function pointer of type double_ptr1
