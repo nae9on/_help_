@@ -14,3 +14,5 @@ aug
 nullptr
 polymorphism
 perimeter
+destructor
+typeid

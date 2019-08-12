@@ -94,15 +94,19 @@ int main()
 {
 	/*
 	 * dynamic_cast does run-time type check [1].
-	 * The run-time type check done by dynmic_cast is an overhead.
+	 * The run-time type check done by dynmic_cast is an overhead. It will check the result
+	 * of the type conversion is a valid and complete object of the requested class, this is
+	 * considered a performance issue for some situations as it does this by traversing the
+	 * inheritance tree which for large trees could be time consuming.
 	 * dynamic_cast only works on pointers and references.
 	 */
 
-	// Container b; // An object of an abstract class cannot be created.
+	// Container b; // Error since an object of an abstract class cannot be created.
 
 	if(0)
 	{
-	vecContainer d1(5); // Derived class constructor implicitly calls base class constructor first.
+	// Derived class constructor implicitly calls base class constructor first.
+	vecContainer d1(5);
 	printContainerData(d1);
 	Container::printCount();
 	// Derived class destructor called automatically as d1 goes out of scope.
@@ -115,7 +119,7 @@ int main()
 	Container::printCount(); // prints 0
 	}
 
-	if(1)
+	if(0)
 	{
 	vecContainer* d1 = new vecContainer(5);
 	std::cout<<"The type of d1 is "<<typeid(d1).name()<<"\n";
@@ -145,7 +149,7 @@ int main()
 		temp->printSize(); // prints 5
 
 	if(dynamic_cast<arrayContainer*>(b1)!=nullptr) // Evaluates to NULL
-		dynamic_cast<arrayContainer*>(b1)->printLength(); // Does not print, program terminates and raises no exception ?
+		dynamic_cast<arrayContainer*>(b1)->printLength(); // Does not print, program terminates but raises no exception?
 
 	if(dynamic_cast<vecContainer*>(b2)!=nullptr) // Evaluates to NULL
 		dynamic_cast<vecContainer*>(b2)->printSize(); // Does not print
@@ -155,10 +159,10 @@ int main()
 	}
 
 	// In the below statement a dynamic_cast to a wrong pointer fails
-	// dynamic_cast<arrayContainer*>(b1)->printLength();
+	//dynamic_cast<arrayContainer*>(b1)->printLength();
 
 	// In the below statement a static_cast to a wrong pointer returns as if nothing were wrong
-	// static_cast<arrayContainer*>(b1)->printLength();
+	//static_cast<arrayContainer*>(b1)->printLength();
 
 	if(0)
 	{
@@ -170,6 +174,14 @@ int main()
 
 	delete b1;
 	delete b2;
+	}
+
+	if(1){
+		vecContainer v1(5);
+		if(dynamic_cast<Container*>(&v1)!=nullptr){
+			std::cout<<"dynamic_cast Successful. Vector container v1 contains base class object.\n";
+		}
+
 	}
 
 	return 0;
