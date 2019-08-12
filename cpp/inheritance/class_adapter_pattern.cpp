@@ -3,100 +3,67 @@
  *
  *  Created on: Aug 12, 2019
  *      Author: akadar
+ *
+ *  A class adapter pattern (or adapter design pattern) is a type of structural design pattern
+ *  used to adapt a legacy interface into a desired client interface. How it works?
+ *  1. Adapter class acts as a wrapper or modifier of an existing legacy class. It provides a
+ *  different or translated view of that class required by the client.
+ *  2. Clients call methods on the Adapter object which redirects them into calls to
+ *  the legacy component.
+ *
+ *  Reference: https://sourcemaking.com/design_patterns/adapter
  */
+#define _USE_MATH_DEFINES
 
 #include <iostream>
-#include <vector>
-#include <string>
+#include <cmath>
 
-using my_string = std::vector<std::string>;
-
-class lions{
+// Adaptee: legacy class that needs to adapt. It also provides the main functionality.
+class ellipse{
 public:
-	lions(){}
-	lions(std::string name_){
-		count++;
-		name.push_back(name_);
+	ellipse(double a, double b): major{a}, minor{b} {
+		std::cout<<"Ellipse object constructed\n";
 	}
-	static unsigned getCount(){
-		return count;
+	~ellipse(){
+		std::cout<<"Ellipse object de-constructed\n";
 	}
-	static my_string getName(){
-		return name;
+protected:
+	double getEllipseArea(){
+		return M_PI*major*minor;
 	}
 private:
-	static unsigned count;
-	static my_string name;
+	double major;
+	double minor;
 };
-unsigned lions::count = 0;
-my_string lions::name = {};
 
-class tigers{
+// Interface: class that defines the client interface.
+class circleInterface{
 public:
-	tigers(){}
-	tigers(std::string name_){
-		count++;
-		name.push_back(name_);
+	virtual double getArea() = 0;
+	virtual ~circleInterface(){}
+};
+
+// Adapter: wrapper class that can "impedance match" the client interface to the adaptee interface.
+// Adapter class implements the client interface.
+class circle: public circleInterface, public ellipse{
+public:
+	circle(double r): ellipse(r,r), radius{r} {
+		std::cout<<"Circle object constructed\n";
 	}
-	static unsigned getCount(){
-		return count;
+	// Mapping the client interface to the adaptee interface.
+	double getArea(){
+		return getEllipseArea();
 	}
-	static my_string getName(){
-		return name;
+	~circle(){
+		std::cout<<"Circle object de-constructed\n";
 	}
 private:
-	static unsigned count;
-	static my_string name;
-};
-unsigned tigers::count = 0;
-my_string tigers::name = {};
-
-// Adapter interface class
-class bigCatsInterface{
-public:
-	virtual unsigned getTotalCount() const = 0;
-	virtual my_string getAllNames() const = 0;
-	virtual ~bigCatsInterface(){};
+	double radius;
 };
 
-// Concrete adaptor class is defined called bigCats which implements
-// the bigCatsInterface class defining the pure virtual functions and also inheriting
-// the individual classes which it is supposed to wrap.
-class bigCats: public bigCatsInterface, public lions, public tigers{
-public:
-	bigCats(){
-		count = lions::getCount()+tigers::getCount();
-	}
-	unsigned getTotalCount() const override{
-		return(count);
-	}
-	my_string getAllNames() const override{
-		my_string name;
-		for(const auto& elem : lions::getName()){
-			name.push_back(elem);
-		}
-		for(const auto& elem : tigers::getName()){
-			name.push_back(elem);
-		}
-		return(name);
-	}
-private:
-	unsigned count;
-};
-
-int main(){
-	lions l1("X"), l2("Y"), l3("Z");
-	tigers t1("A"), t2("B"), t3("C"), t4("D");
-
-	std::cout<<"Lions = "<<lions::getCount()<<"\n";
-	std::cout<<"Tigers = "<<tigers::getCount()<<"\n";
-
-	bigCats a1;
-	std::cout<<"Total big cats count = "<<a1.getTotalCount()<<"\n";
-	std::cout<<"All big cats names are \n";
-	for(auto& elem : a1.getAllNames()){
-		std::cout<<elem<<"\n";
-	}
-
+int class_adapter_pattern(){
+	// Creating adaptor object
+	circle c(5);
+	std::cout<<"Area of circle = "<<c.getArea()<<"\n";
 	return 0;
 }
