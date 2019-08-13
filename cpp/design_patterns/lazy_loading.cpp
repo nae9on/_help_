@@ -48,7 +48,7 @@ private:
 	}
 };
 
-int main(){
+int lazy_loading(){
 
 	// A vector with 10 elements created.
 	std::vector<lazy_class<A>> lazy_vector(10);

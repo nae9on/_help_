@@ -13,46 +13,52 @@
 
 #include <iostream>
 
-class monotheism{
+/*
+ * Consider the following scenario, suppose we are talking to a embedded
+ * application that has hardware constraints. To avoid overloading the
+ * hardware we only want to have a single instance of the hardware.
+ */
+
+class embeddedHardware{
 public:
 	// The following member function ensures that the single object
 	// will not be created until someone requests an instance of it.
 	// This is an example of lazy loading.
-	static monotheism* getGod(){
-		if(god==nullptr){
-			std::cout<<"Creating god\n";
-			god = new monotheism;
+	static embeddedHardware* getHardwareAccess(){
+		if(hardware==nullptr){
+			std::cout<<"Mounting hardware\n";
+			hardware = new embeddedHardware;
 		}
-		return god;
+		return hardware;
 	}
-	size_t getFollowers(){
-		return followers;
+	size_t getPorts(){
+		return ports;
 	}
-	static void resetGod(){
-		delete god;
-		god = nullptr;
+	static void resetHardware(){
+		delete hardware;
+		hardware = nullptr;
 	}
 private:
-	monotheism(){
-		followers = 1000000;
+	embeddedHardware(){
+		ports = 10;
 	}
-	monotheism(monotheism&) = default; // private copy constructor so that it cannot be called from outside.
-	monotheism& operator=(monotheism&) = default; // private copy assignment.
-	size_t followers;
-	static monotheism* god;
+	embeddedHardware(embeddedHardware&) = default; // private copy constructor so that it cannot be called from outside.
+	embeddedHardware& operator=(embeddedHardware&) = default; // private copy assignment.
+	size_t ports;
+	static embeddedHardware* hardware;
 };
 
 // Allocating and initializing class's static data member.
 // The pointer is being allocated - not the object itself.
-monotheism* monotheism::god = nullptr;
+embeddedHardware* embeddedHardware::hardware = nullptr;
 
 int singleton(){
 
-	monotheism* God = monotheism::getGod();
+	embeddedHardware* Resource = embeddedHardware::getHardwareAccess();
 
-	std::cout<<"Followers of only God are = "<<God->getFollowers()<<"\n";
+	std::cout<<"Ports of embedded hardware are = "<<Resource->getPorts()<<"\n";
 
-    God->resetGod();
+    Resource->resetHardware();
 
 	return 0;
 }
