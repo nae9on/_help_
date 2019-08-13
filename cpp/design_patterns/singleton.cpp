@@ -31,8 +31,8 @@ public:
 		}
 		return hardware;
 	}
-	size_t getPorts(){
-		return ports;
+	short getNumThreads(){
+		return numThreads;
 	}
 	static void resetHardware(){
 		delete hardware;
@@ -40,11 +40,11 @@ public:
 	}
 private:
 	embeddedHardware(){
-		ports = 10;
+		numThreads = 1;
 	}
 	embeddedHardware(embeddedHardware&) = default; // private copy constructor so that it cannot be called from outside.
 	embeddedHardware& operator=(embeddedHardware&) = default; // private copy assignment.
-	size_t ports;
+	short numThreads;
 	static embeddedHardware* hardware;
 };
 
@@ -56,7 +56,7 @@ int singleton(){
 
 	embeddedHardware* Resource = embeddedHardware::getHardwareAccess();
 
-	std::cout<<"Ports of embedded hardware are = "<<Resource->getPorts()<<"\n";
+	std::cout<<"numThreads of embedded hardware are = "<<Resource->getNumThreads()<<"\n";
 
     Resource->resetHardware();
 
