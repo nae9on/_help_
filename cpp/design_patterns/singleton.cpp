@@ -15,6 +15,9 @@
 
 class monotheism{
 public:
+	// The following member function ensures that the single object
+	// will not be created until someone requests an instance of it.
+	// This is an example of lazy loading.
 	static monotheism* getGod(){
 		if(god==nullptr){
 			std::cout<<"Creating god\n";
