@@ -4,12 +4,19 @@
  *  Created on: Aug 13, 2019
  *      Author: akadar
  *
- *  The proxy design pattern is used to communicate with another object that
+ *  A proxy design pattern is a type of structural design pattern.
+ *
+ *  The proxy design pattern is used to communicate with a real object that
  *  for some reason cannot be communicated with directly. These reasons could
- *  be due to hardware limitations or maybe the proxy needs to perform some
- *  logic before interacting with the other object. For whatever reason the
- *  proxy is placed in between the client and the final destination for the
- *  communication.
+ *  be due to hardware limitations or to protect the real component from undue
+ *  complexity. For this reason a proxy object is placed in between the
+ *  client and the real object. The proxy object instantiates the real object
+ *  the first time the client makes a request to the proxy. The proxy remembers
+ *  the identity of this real object, and simply forwards directly to the
+ *  encapsulated real object for all future calls.
+ *
+ *  Reference: https://sourcemaking.com/design_patterns/proxy
+ *
  */
 
 #include <iostream>
@@ -27,7 +34,7 @@ public:
  * application that has hardware constraints. To avoid overloading the
  * hardware we only want to have a single instance of the hardware.
  */
-// implementation of the singleton hardware class.
+// implementation of the singleton hardware class (refer singleton.cpp)
 class embeddedHardware: public hardwareInterface{
 public:
 	static embeddedHardware* getHardwareAccess(){
@@ -51,16 +58,16 @@ private:
 	embeddedHardware(){
 		numThreads = 1;
 	}
-	embeddedHardware(embeddedHardware&) = default; // private copy constructor so that it cannot be called from outside.
-	embeddedHardware& operator=(embeddedHardware&) = default; // private copy assignment.
+	embeddedHardware(embeddedHardware&) = default;
+	embeddedHardware& operator=(embeddedHardware&) = default;
 	short numThreads;
 	static embeddedHardware* hardware;
 };
 
-// already defined in another .cpp
+// already defined in singleton.cpp
 //embeddedHardware* embeddedHardware::hardware = nullptr;
 
-// proxy class which provides access to the singleton instance of the embeddedHardware class.
+// proxy class which provides access to the singleton instance of the real class.
 class embeddedProxy: public hardwareInterface{
 public:
 	embeddedProxy(): hardware{nullptr} {}
@@ -91,6 +98,7 @@ private:
 };
 
 int proxy(){
+
 	// embeddedHardware eh; // Error
 
 	embeddedProxy ep1;
