@@ -20,7 +20,9 @@ int template_argument_test(){
 	std::cout << (odd_or_even(x) ? "Is odd" : "Is even");
 
 	float y = 10;
-	//std::cout << (odd_or_even(y) ? "Is odd" : "Is even"); // Error
+	//std::cout << (odd_or_even(y) ? "Is odd" : "Is even"); // Error static assertion failed
+
+	std::cout<<y;
 
 	return 0;
 }
