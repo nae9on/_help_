@@ -5,15 +5,16 @@
  *      Author: akadar
  */
 
-/*
- * The header file gets included into source files. Whatever is  written in a header file gets,
- * copied into each including source file.
- */
+#include <iostream>
 #include "complex.h"
 
-cx::cx(double r, double i){
+#define abs(r,i) (std::sqrt(r*r+i*i))
+
+cx::cx(my_double r, my_double i){
 	real = r;
 	imag = i;
 }
 
-
+void cx::print_abs(){
+	std::cout << "Absolute value is "<<abs(real,imag)<<"\n";
+}
