@@ -18,3 +18,4 @@ destructor
 typeid
 creational
 polymorphic
+constexpr

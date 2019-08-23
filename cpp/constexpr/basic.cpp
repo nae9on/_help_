@@ -20,16 +20,16 @@ constexpr double mysqr2(double x){
 int basic(){
 
 	const int x = 10;
-	constexpr int xx = x; // OK, indicates x is a constexpr
+	constexpr int xx = x; // OK, indicates x is a constexpr.
 
 	const int xsqr = mysqr(x);
-	//constexpr int xxsqr = xsqr;  // Error, xxsqr is not a constexpr
+	//constexpr int xxsqr = xsqr;  // Error, indicates xsqr is not a constexpr.
 
 	int y = 10;
-	//constexpr int ysqr = mysqr2(y); // Error, ysqr is not a constexpr
+	//constexpr int ysqr = mysqr2(y); // Error, indicates mysqr2(y) is not a constexpr.
 
 	const int z = 10;
-	constexpr int zsqr = mysqr2(z); // OK, zsqr is a constexpr
+	constexpr int zsqr = mysqr2(z); // OK, zsqr becomes a constexpr.
 
 	std::cout<<"End of main\n";
 	std::cout<<xx<<xsqr<<y<<zsqr;
