@@ -5,7 +5,9 @@
  *      Author: akadar
  *
  * References:
- * [1] http://www.cplusplus.com/reference/type_traits/is_literal_type/
+ * [1] https://docs.microsoft.com/en-us/cpp/cpp/constexpr-cpp?view=vs-2019
+ * [2] http://www.cplusplus.com/reference/type_traits/is_literal_type/
+ *
  */
 
 #include <iostream>
@@ -13,8 +15,10 @@
 
 using my_int = unsigned long long int;
 
+// Unlike const, constexpr can also be applied to functions and class constructors. [1]
+
 // Note: only a literal type can qualify as constexpr.
-// A class is a literal-type under some conditions [1].
+// A class is a literal-type under some conditions [2].
 
 // X is not a literal-type since its constructor is not a constexpr.
 class X{
@@ -60,8 +64,10 @@ int class_example(){
 	std::cout<<"Z is a literal-type is "<<std::is_literal_type<Z>::value<<"\n";
     constexpr Z g = f; // OK f is constexpr
 
-	constexpr int n = f.get();
-	f.print();
+	constexpr int n = g.get();
+	g.print();
+
+	std::cout<<"\nn = "<<n<<"\n";
 
 	return 0;
 }
