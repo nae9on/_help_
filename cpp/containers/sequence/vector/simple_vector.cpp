@@ -1,5 +1,5 @@
 /*
- * basic.cpp
+ * simple_vector.cpp
  *
  *  Created on: Jul 31, 2019
  *      Author: akadar
@@ -36,7 +36,7 @@ std::vector<unsigned> all_occurence(C t, T a){
 	return index;
 }
 
-int basic(){
+int simple_vector(){
 
 	std::initializer_list<int> l0 {7,8,9,4,3,2,1,3};
 	std::vector<int> x{l0};

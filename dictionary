@@ -19,3 +19,5 @@ typeid
 creational
 polymorphic
 constexpr
+performant
+valarray
