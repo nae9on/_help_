@@ -3,6 +3,9 @@
  *
  *  Created on: Jul 31, 2019
  *      Author: akadar
+ *
+ * References
+ * [1] http://www.cplusplus.com/reference/vector/vector/
  */
 
 #include <iostream>

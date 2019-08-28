@@ -5,10 +5,12 @@
  *      Author: akadar
  *
  * A std::map is a sorted associative container that contains key-value pairs with unique keys.
- * Keys are sorted by using the comparison function Compare.
+ * It is an ordered container with keys sorted by using a comparison function.
  *
- * Maps are usually implemented as red-black trees (self-balancing binary search tree).
- * Quick Reference to red-black trees: https://www.youtube.com/watch?v=qvZGUFHWChY
+ * Maps are usually implemented as red-black trees (self-balancing binary search trees).
+ * References
+ * [1] http://www.cplusplus.com/reference/map/map/
+ * [2] https://www.youtube.com/watch?v=qvZGUFHWChY
  */
 
 #include <iostream>

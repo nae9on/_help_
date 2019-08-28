@@ -5,7 +5,8 @@
  *      Author: akadar
  *
  * A std::unordered_map is an associative container that contains key-value pairs with unique keys.
- * Reference: http://www.cplusplus.com/reference/unordered_map/unordered_map/
+ * Reference
+ * [1] http://www.cplusplus.com/reference/unordered_map/unordered_map/
  *
  * Internally, the elements in the unordered_map are not sorted in any particular order with
  * respect to either their key or mapped values, but organized into buckets depending on their

@@ -4,26 +4,31 @@
  *  Created on: Aug 27, 2019
  *      Author: akadar
  *
- * std::array vs plain C-style array
+ * std::array
  * std::array is the simplest and was introduced in C++11. std::array container has some
  * advantages over a C-style array (int a[]). Its interface makes it more convenient to
- * find the size, and use with STL-style iterator-based algorithms. At the same time it
+ * find its size, and use with STL-style iterator-based algorithms. At the same time it
  * is equally fast. Note that std::array container allocates memory on the stack.
- * Reference: https://stackoverflow.com/questions/30263303/stdarray-vs-array-performance
+ * References
+ * [1] http://www.cplusplus.com/reference/array/array/
+ * [2] https://stackoverflow.com/questions/30263303/stdarray-vs-array-performance
  *
- * std::valarray vs std::array
+ * std::valarray
  * std::valarray is the next simplest and was introduced in C++03. It is variable size
- * unlike array and has mathematical functions defined for numeric computation such as
+ * unlike std::array and has mathematical functions defined for numeric computation such as
  * +, -, cosine, sine etc. It also allows data slicing. std::valarray container allocates
- * memory on the heap like std::vector. *
- * Reference:
- * https://stackoverflow.com/questions/8965562/what-is-the-difference-between-stdvalarray-and-stdarray
+ * memory on the heap like std::vector.
+ * References
+ * [3] http://www.cplusplus.com/reference/valarray/valarray/
+ * [4] https://stackoverflow.com/questions/8965562/what-is-the-difference-between-stdvalarray-and-stdarray
  *
- * std::vector vs std::valarray
+ * std::vector
  * std::vector is even more convenient than std::valarray. std::vector is thought to be less
  * performant than std::valarray and std::array. However, the exact performance difference is
- * not clear.
- * Reference: https://stackoverflow.com/questions/1602451/c-valarray-vs-vector
+ * debatable.
+ * References
+ * [5] http://www.cplusplus.com/reference/vector/vector/
+ * [6] https://stackoverflow.com/questions/1602451/c-valarray-vs-vector
  *
  */
 
