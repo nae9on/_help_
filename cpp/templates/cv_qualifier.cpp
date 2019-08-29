@@ -27,25 +27,25 @@ template<typename T> void deduce_ref(T& x){
 	std::cout<<"In deduce_ref, type is "<<typeid(T).name()<<" count = "<<count<<"\n";
 }
 
-int main_cv_qualifier(){
+int cv_qualifier(){
 
 	int i = 1;
 	const int j = 1;
 	int* ip = &i;
-	const int* jp = &j;
+	int* const jp = &i;
 
 	// “i” means “int”, “Pi” means “int*” and “PKi” means “int const*”  for GNU and Clang compilers
 
 	deduce(i); // calls deduce<int>
-	deduce(j); // calls deduce<int>, const is dropped
+	deduce(j); // calls deduce<int>, const is dropped with pass by copy
 	deduce_ref(i); // calls deduce_ref<int>
-	deduce_ref(j); // calls deduce_ref<const int> // const is kept
+	deduce_ref(j); // calls deduce_ref<const int> // const is kept with pass by ref
 
 
 	deduce(ip); // calls deduce<int*>
-	deduce(jp); // calls deduce<int const*>, const is not dropped, why?
+	deduce(jp); // calls deduce<int const*>, const is dropped with pass by copy
 	deduce_ref(ip); // calls deduce_ref<int*>
-	deduce_ref(jp); // calls deduce_ref<int const*> // const is kept
+	deduce_ref(jp); // calls deduce_ref<int const*> // const is kept with pass by ref
 
 	return 0;
 }
