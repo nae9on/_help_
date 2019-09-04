@@ -16,34 +16,8 @@
 #include <iostream>
 #include <map>
 #include <string>
-
-class biography{
-public:
-	biography(): name{"notborn"}, age{0}{};
-	short getAge(){
-		return age;
-	}
-	void setName(std::string name_){
-		name = name_;
-	}
-	void setAge(short age_){
-		age = age_;
-	}
-	void printInfo(){
-		if(age==0 && name=="notborn") {
-			std::cout<<"I have not been created yet."<<std::endl;
-			std::cout<<std::endl;
-		} else {
-			std::cout<<"My full name is "<<name<<"."<<std::endl;
-			std::cout<<"My age is "<<age<<"."<<std::endl;
-			std::cout<<std::endl;
-		}
-
-	}
-private:
-	std::string name;
-	short age;
-};
+#include <utility> // for std::make_pair
+#include "biography.h"
 
 int simple_map()
 {
