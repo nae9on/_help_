@@ -1,3 +1,10 @@
+/*
+ * blocking_send.cpp
+ *
+ *  Created on: Sep 4, 2019
+ *      Author: akadar
+ */
+
 #include <iostream>
 #include <mpi.h>
 #include <vector>
@@ -38,7 +45,7 @@ double waste_time(size_t n){
 
 // A test program where rank 0 sends x to all other participating ranks and
 // receive's x^rank from them.
-int main(int argc, char* argv[]){
+int blocking_send(int argc, char* argv[]){
 
 	int size, rank, source, dest, count = 1, tag1 = 7, tag2 = 11;
 	double inmsg, outmsg;

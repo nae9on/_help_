@@ -1,3 +1,10 @@
+/*
+ * hello_world.cpp
+ *
+ *  Created on: Sep 4, 2019
+ *      Author: akadar
+ */
+
 // References:
 // [1] https://computing.llnl.gov/tutorials/mpi/#Exercise1
 // [2] https://computing.llnl.gov/tutorials/mpi/errorHandlers.pdf
@@ -5,7 +12,7 @@
 #include <iostream>
 #include <mpi.h> // To include the signatures of MPI library function calls.
 
-int main(int argc, char* argv[]){
+int hello_world(int argc, char* argv[]){
 
 	int size, rank, flag;
 
@@ -14,7 +21,7 @@ int main(int argc, char* argv[]){
 	if(flag==0) std::cout<<"MPI_Init not called yet.\n";
 
 	// MPI_Init initializes the MPI execution environment.
-	// It function must be called in every MPI program (and only once),
+	// This function must be called in every MPI program (and only once),
 	// It must be called by the main thread only.
 	// No MPI calls can be made before call to MPI_Init.
 	MPI_Init(&argc, &argv);
@@ -25,7 +32,7 @@ int main(int argc, char* argv[]){
 	// Get the process rank in the communicator.
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	std::cout<<"My rank is "<<rank<<" in communicator of size "<<size<<"\n";
+	std::cout<<"Hello World!, my rank is "<<rank<<" in communicator of size "<<size<<"\n";
 
 	// MPI_Finalize	terminates MPI execution environment.
 	// It must be called by the same thread which called MPI_Init.
@@ -39,10 +46,11 @@ int main(int argc, char* argv[]){
 	 * MPI job.
 	 *
 	 * However, the error handler can be changed to "MPI_ERRORS_RETURN". When
-	 * this is done, the program will not longer abort on having detected an MPI
-	 * error, instead the error will be returned and you will have to handle it [2].	 *
+	 * this is done, the program will no longer abort on having detected an MPI
+	 * error, instead the error will be returned and could be handled by the
+	 * user program [2].	 *
 	 *
-	 * Note that MPI does not guarentee that an MPI program  can continue past
+	 * Note that MPI does not guarentee that an MPI program can continue past
 	 * an error; however, MPI implementations will attempt to continue whenever
 	 * possible.
 	 */
