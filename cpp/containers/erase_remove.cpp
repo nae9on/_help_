@@ -4,6 +4,9 @@
  *  Created on: Sep 5, 2019
  *      Author: akadar
  *
+ * Simple program which provides templated erase_remove for the following containers:
+ * valarray, vector, deque, forward_list, list, map, set
+ *
  * References:
  * Meyers, Scott (2001). Effective STL: 50 Specific Ways to Improve ...
  * https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom
@@ -18,6 +21,9 @@
 #include <deque>
 #include <forward_list>
 #include <list>
+
+#include <map>
+#include <set>
 
 // Applicable for vector, deque, list
 template<typename T, template<typename> class A, template<typename,typename> class C>
@@ -50,15 +56,16 @@ void erase_remove(C<T,A<T>>& ct){
 	IT begin_it = ct.begin();
 	IT end_it = ct.end();
 	IT it = std::remove_if(begin_it,end_it,[](const int& x)->bool{return x%2;});
-	ct.erase(it, ct.cend());
+	ct.erase(it, ct.end());
 }
 
 // partial template specialization for valarray
 template<typename T>
 void erase_remove(std::valarray<T>& ct){
-	T* begin_it = std::begin(ct);
-	T* end_it = std::end(ct);
-	T* it = std::remove_if(begin_it,end_it,[](const int& x)->bool{return x%2;});
+	using IT = T*;
+	IT begin_it = std::begin(ct);
+	IT end_it = std::end(ct);
+	IT it = std::remove_if(begin_it,end_it,[](const int& x)->bool{return x%2;});
 
 	// Perhaps this can be improved?
 	std::valarray<T> ct2;
@@ -78,14 +85,52 @@ void erase_remove(std::forward_list<T,A<T>>& ct){
 	ct.erase_after(it, ct.cend());
 }
 
+// partial template specialization for map
+template<typename K, typename V>
+void erase_remove(std::map<K,V>& ct){
+	using IT = typename std::map<K,V>::iterator;
+	IT begin_it = ct.begin();
+	IT end_it = ct.end();
+	for(IT it = begin_it; it!=end_it; ++it){
+		if(it->first%2){
+			// References and iterators to the erased elements are invalidated.
+			// Other references and iterators are not affected.
+			ct.erase(it);
+		}
+	}
+}
+
+// partial template specialization for set
+template<typename K>
+void erase_remove(std::set<K>& ct){
+	using IT = typename std::set<K>::iterator;
+	IT begin_it = ct.begin();
+	IT end_it = ct.end();
+	for(IT it = begin_it; it!=end_it; ++it){
+		if(*it%2){
+			// References and iterators to the erased elements are invalidated.
+			// Other references and iterators are not affected.
+			ct.erase(it);
+		}
+	}
+}
+
 template<typename T>
-void print_container(std::string s, T& Ct){
+void print_container(const std::string& s, T& ct){
 	std::cout<<s<<" ";
-	for(const auto& v : Ct) {std::cout<<v<<" ";}
+	for(const auto& v : ct) {std::cout<<v<<" ";}
 	std::cout<<std::endl;
 }
 
-int main(){
+// partial template specialization for map
+template<typename K, typename V>
+void print_container(const std::string& s, std::map<K,V>& ct){
+	std::cout<<s<<" ";
+	for(const auto& v : ct) {std::cout<<v.first<<" ";}
+	std::cout<<std::endl;
+}
+
+int erase_remove(){
 
 	std::valarray<int> varr({3,1,2,6,4,8,9,10});
 	print_container("Before erase remove, varr = ",varr);
@@ -111,6 +156,25 @@ int main(){
 	print_container("Before erase remove, llist = ",llist);
 	erase_remove(llist);
 	print_container("After erase remove, llist = ",llist);
+
+	std::map<int,std::string> mp({
+				std::make_pair(3,"C"),
+				std::make_pair(1,"A"),
+				std::make_pair(2,"B"),
+				std::make_pair(6,"F"),
+				std::make_pair(4,"D"),
+				std::make_pair(8,"H"),
+				std::make_pair(9,"I"),
+				std::make_pair(10,"J")
+	});
+	print_container("Before erase remove, mp = ",mp);
+	erase_remove(mp);
+	print_container("After erase remove, mp = ",mp);
+
+	std::set<int> st({3,1,2,6,4,8,9,10});
+	print_container("Before erase remove, st = ",st);
+	erase_remove(st);
+	print_container("After erase remove, st = ",st);
 
 	return 0;
 }

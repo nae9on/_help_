@@ -90,7 +90,7 @@ int vector_operations(){
 	// Note vec3.insert can achieve the same with slightly better performance.
 	std::cout<<"\nvec3 copied to empty vec1 using insert";
 	vec1.clear();
-	vec1.insert(vec1.cend(),vec3.cbegin(),vec3.cend());
+	vec1.insert(vec1.end(),vec3.cbegin(),vec3.cend());
 	std::cout<<"\nvec1 = ";
 	print_vec(vec1);
 
