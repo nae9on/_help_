@@ -18,10 +18,12 @@
 #include <string>
 #include <utility> // for std::make_pair
 #include "biography.h"
+#include <functional> // for std::greater
 
 int simple_map()
 {
-	std::map<std::string,biography> myMap;
+	// Note the comparator. Default comparator is std::less
+	std::map<std::string,biography,std::greater<std::string>> myMap;
 
 	// Insert new key-value pairs.
 	myMap.insert(std::make_pair("Ali",biography()));
@@ -70,7 +72,7 @@ int simple_map()
 	std::cout<<"\n";
 
 	// Note that output is sorted by keys.
-	for (auto& t : myMap)
+	for (const auto& t : myMap)
 	{
 		std::cout<<t.first<<"\n";
 		t.second.printInfo();

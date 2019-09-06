@@ -26,7 +26,7 @@ public:
 	void setAge(short age_){
 		age = age_;
 	}
-	void printInfo(){
+	void printInfo() const{
 		if(age==0 && name=="notborn") {
 			std::cout<<"I have not been created yet."<<std::endl;
 			std::cout<<std::endl;

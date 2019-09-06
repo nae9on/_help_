@@ -11,6 +11,8 @@
  * 2. The value of the elements in a set cannot be modified once in the container
  *    (the elements are always const), but they can be inserted or removed from the
  *    container.
+ * 3. Unlike map, set does not support operator[] access. In fact map and unordered_map
+ *    are the only associative containers which supports operator[].
  *
  * Reference
  * [1] http://www.cplusplus.com/reference/set/set/
@@ -18,10 +20,15 @@
  */
 
 #include <iostream>
+#include <set>
 
 int simple_set(){
 
 	std::cout<<"In main simple_set.cpp\n";
+
+	std::set<double> setd({5,3,7,9,2});
+
+	for(const auto& elem : setd) std::cout<<elem<<" ";
 
 	return 0;
 }
