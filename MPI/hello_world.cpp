@@ -6,7 +6,7 @@
  */
 
 // References:
-// [1] https://computing.llnl.gov/tutorials/mpi/#Exercise1
+// [1] https://computing.llnl.gov/tutorials/mpi
 // [2] https://computing.llnl.gov/tutorials/mpi/errorHandlers.pdf
 
 #include <iostream>
@@ -16,7 +16,7 @@ int hello_world(int argc, char* argv[]){
 
 	int size, rank, flag;
 
-	MPI_Initialized (&flag);
+	MPI_Initialized(&flag);
 
 	if(flag==0) std::cout<<"MPI_Init not called yet.\n";
 
@@ -26,6 +26,9 @@ int hello_world(int argc, char* argv[]){
 	// No MPI calls can be made before call to MPI_Init.
 	MPI_Init(&argc, &argv);
 
+	// Measure wall clock time
+	double start_time = MPI_Wtime();
+
 	// Get the size of the default communicator (group of participating processes).
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 
@@ -33,6 +36,9 @@ int hello_world(int argc, char* argv[]){
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	std::cout<<"Hello World!, my rank is "<<rank<<" in communicator of size "<<size<<"\n";
+
+	double stop_time = MPI_Wtime();
+	std::cout<<"Total elapsed time = "<<stop_time-start_time<<" sec\n";
 
 	// MPI_Finalize	terminates MPI execution environment.
 	// It must be called by the same thread which called MPI_Init.
@@ -50,12 +56,12 @@ int hello_world(int argc, char* argv[]){
 	 * error, instead the error will be returned and could be handled by the
 	 * user program [2].	 *
 	 *
-	 * Note that MPI does not guarentee that an MPI program can continue past
+	 * Note that MPI does not guarantee that an MPI program can continue past
 	 * an error; however, MPI implementations will attempt to continue whenever
 	 * possible.
 	 */
 
-	// MPI_SUCCESS = 0
+	// Note MPI_SUCCESS = 0
 	if(errorCode!=MPI_SUCCESS) std::cout<<"MPI routine failed.\n";
 	std::cout<<"After calling MPI_Finalize.\n";
 	return 0;

@@ -3,6 +3,10 @@
  *
  *  Created on: Sep 4, 2019
  *      Author: akadar
+ *
+ * References:
+ * [1] https://www.mcs.anl.gov/research/projects/mpi/sendmode.html
+ * [2] https://computing.llnl.gov/tutorials/mpi_performance/
  */
 
 #include <iostream>
@@ -12,13 +16,14 @@
 
 /*
  * MPI_Send performs a standard-mode, blocking send. MPI_Send will only "return" after it is
- * safe to modify sender's application buffer (also called send buffer) for reuse. *
+ * safe to modify sender's application buffer (also called send buffer) for reuse.
  *
  * Blocking imply that send will wait for the actual message transfer to take place before
- * the send buffer can be reused.
+ * the application buffer can be reused.
+ *
  * Note that a blocking send can be synchronous or asynchronous. A synchronous send means
  * handshaking occurring with the receive task to confirm a safe send. The data is not
- * buffered (either at the sender or receiver end) in this case. A asynchronous send means
+ * buffered (either at the sender or receiver end) in this case. An asynchronous send means
  * a system buffer (either at sender or receiver end) is used to hold the data.
  * 
  * Note: MPI_Send depending on the implementation can operate in both synchronous and asynchronous
@@ -27,27 +32,22 @@
  *
  * Another type of blocking send is MPI_Bsend. MPI_Bsend returns immediately regardless of the
  * state of the receiver. It is dependent on the availability of a system buffer at the sender's
- * end and therefore should only be used when absolutely necessary [2].
+ * end and therefore is called "Buffered Send". It should only be used when absolutely
+ * necessary [1].
  *
- * To learn more other types of blocking send refer [1,2].
- *
- * References:
- * [1] https://computing.llnl.gov/tutorials/mpi/#Point_to_Point_Routines
- * [2] https://www.mcs.anl.gov/research/projects/mpi/sendmode.html
+ * To learn more about other types of blocking send refer [1,2].
  */
 
-double waste_time(size_t n){
+void waste_time(size_t n){
 	double sum{0.0};
 	for (size_t i=1; i<=n; i++) sum+=std::pow(i,1/3);
-	return sum;
-
 }
 
 // A test program where rank 0 sends x to all other participating ranks and
 // receive's x^rank from them.
 int blocking_send(int argc, char* argv[]){
 
-	int size, rank, source, dest, count = 1, tag1 = 7, tag2 = 11;
+	int size, rank, dest, count = 1, tag1 = 7, tag2 = 11, errorCode;
 	double inmsg, outmsg;
 	MPI_Status status;
 	std::vector<double> input = {0,1,2,3,4,5,6,7};
@@ -67,13 +67,23 @@ int blocking_send(int argc, char* argv[]){
 		for(dest=1; dest<size; dest++){
 			outmsg = input[dest];
 			// MPI_Send(buffer,count,type,dest,tag,comm)
-			MPI_Send(&outmsg,count,MPI_DOUBLE,dest,tag1,MPI_COMM_WORLD);
+			errorCode = MPI_Send(&outmsg,count,MPI_DOUBLE,dest,tag1,MPI_COMM_WORLD);
+			if (errorCode!=MPI_SUCCESS) {
+				std::cout<<"MPI_Send failed\n";
+				MPI_Abort(MPI_COMM_WORLD, errorCode);
+				std::terminate();
+				}
 		}
 
 		// Receiving work from workers
 		for(int itr=1; itr<size; itr++){
 			// MPI_Recv(buffer,count,type,source,tag,comm,status)
-			MPI_Recv(&inmsg,count,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+			errorCode = MPI_Recv(&inmsg,count,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+			if (errorCode!=MPI_SUCCESS) {
+				std::cout<<"MPI_Recv failed\n";
+				MPI_Abort(MPI_COMM_WORLD, errorCode);
+				std::terminate();
+				}
 			result[status.MPI_SOURCE] = inmsg;
 			printf("Received %f from worker %d\n",inmsg,status.MPI_SOURCE);
 			sumSquares = sumSquares + inmsg;
@@ -93,7 +103,12 @@ int blocking_send(int argc, char* argv[]){
 
 		// Receiving work from master
 		int expectedCount = 100;
-		MPI_Recv(&inmsg,expectedCount,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+		errorCode = MPI_Recv(&inmsg,expectedCount,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+		if (errorCode!=MPI_SUCCESS) {
+			std::cout<<"MPI_Recv failed\n";
+			MPI_Abort(MPI_COMM_WORLD, errorCode);
+			std::terminate();
+			}
 
 		/*
 		 * 	Points to be noted about MPI_Recv:
@@ -115,11 +130,16 @@ int blocking_send(int argc, char* argv[]){
 
 		// rank 3 wasting time;
 		if(rank==3) {
-			double sum = waste_time(1000000);
+			waste_time(1000000);
 			std::cout<<"Rank "<<rank<<" wastine time\n";
 		}
 
-		MPI_Send(&outmsg,count,MPI_DOUBLE,dest,tag2,MPI_COMM_WORLD);
+		errorCode = MPI_Send(&outmsg,count,MPI_DOUBLE,dest,tag2,MPI_COMM_WORLD);
+		if (errorCode!=MPI_SUCCESS) {
+			std::cout<<"MPI_Send failed\n";
+			MPI_Abort(MPI_COMM_WORLD, errorCode);
+			std::terminate();
+			}
 	}
 	
 	MPI_Finalize();
