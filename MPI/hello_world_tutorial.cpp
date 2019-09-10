@@ -1,5 +1,5 @@
 /*
- * hello_world.cpp
+ * hello_world_tutorial.cpp
  *
  *  Created on: Sep 4, 2019
  *      Author: akadar
@@ -12,7 +12,7 @@
 #include <iostream>
 #include <mpi.h> // To include the signatures of MPI library function calls.
 
-int hello_world(int argc, char* argv[]){
+int hello_world_tutorial(int argc, char* argv[]){
 
 	int size, rank, flag;
 

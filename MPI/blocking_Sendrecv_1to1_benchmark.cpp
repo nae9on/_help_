@@ -1,13 +1,22 @@
 /*
- * blocking_send_1to1_benchmark.cpp
+ * blocking_Sendrecv_1to1_benchmark.cpp
  *
- *  Created on: Sep 9, 2019
+ *  Created on: Sep 10, 2019
  *      Author: akadar
  *
  * In this example, round trip timing test is performed.
- * rank 0 sends a message to rank 1 following which rank 1 sends the same message back to rank 0.
+ * rank 0 communicates with rank 1 using Sendrecv communication routine.
  * The experiment is repeated "REPS" number of times to calculate an ensemble average.
  * The experiment is also repeated for several message lengths.
+ *
+ * The send-receive operations combine in one call the sending of a message to one
+ * destination and the receiving of another message, from another process. The two
+ * (source and destination) are possibly the same. A message sent by a send-receive
+ * operation can be received by a regular receive operation; a send-receive operation
+ * can receive a message sent by a regular send operation.
+ *
+ * Reference:
+ * https://www.mpi-forum.org/docs/mpi-1.1/mpi-11-html/node52.html
  *
  */
 
@@ -27,7 +36,7 @@ struct timeS{
 	double time2; // time taken
 };
 
-int blocking_send_1to1_benchmark(int argc, char* argv[]){
+int blocking_Sendrecv_1to1_benchmark(int argc, char* argv[]){
 
 	printf("Rank 0 is sending %d:%d:%d doubles to Rank 1\n",0,INCREMENT,MAX_SIZE);
 
@@ -45,7 +54,7 @@ int blocking_send_1to1_benchmark(int argc, char* argv[]){
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-	int dest, tag;
+	int dest, source, sendtag, recvtag;
 	int itr, count;
 
 	double t1{0.0}, t2{0.0}, t3{0.0}, sumT1{0.0}, sumT2{0.0};
@@ -54,37 +63,41 @@ int blocking_send_1to1_benchmark(int argc, char* argv[]){
 	if(rank==0){
 
 		dest = 1;
-		tag = 100;
+		source = 1;
+		sendtag = 100;
+		recvtag = 200;
 
 		for(count=0; count<=MAX_SIZE; count+=INCREMENT){
-			sumT1 = 0; sumT2 = 0;
+			sumT1 = 0;
 			for(itr=1; itr<=REPS; itr++){
 				t1 = MPI_Wtime();
-				MPI_Send(outmsg,count,MPI_DOUBLE,dest,tag,MPI_COMM_WORLD);
+				MPI_Sendrecv(outmsg,count,MPI_DOUBLE,dest,sendtag,
+						      inmsg,count,MPI_DOUBLE,
+						      source, recvtag,
+						      MPI_COMM_WORLD, &status);
 				t2 = MPI_Wtime();
-				MPI_Recv(inmsg,count,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
-				t3 = MPI_Wtime();
 				sumT1 += t2 - t1;
-				sumT2 += t3 - t2;
 			}
-			avgT.push_back(timeS(count,sumT1/REPS, sumT2/REPS));
+			avgT.push_back(timeS(count,sumT1/REPS, 0.0));
 		}
 
 	}
 
 	if(rank==1){
 
+		source = 0;
 		dest = 0;
-		tag = 200;
+		sendtag = 200;
+		recvtag = 100;
 
 		for(count=0; count<=MAX_SIZE; count+=INCREMENT){
 			sumT1 = 0; sumT2 = 0;
 			for(itr=1; itr<=REPS; itr++){
 				t1 = MPI_Wtime();
-				MPI_Recv(inmsg,count,MPI_DOUBLE,MPI_ANY_SOURCE,MPI_ANY_TAG,MPI_COMM_WORLD,&status);
+				MPI_Recv(inmsg,count,MPI_DOUBLE,source,recvtag,MPI_COMM_WORLD,&status);
 				t2 = MPI_Wtime();
 				// calculate outmsg = f(inmsg)
-				MPI_Send(outmsg,count,MPI_DOUBLE,dest,tag,MPI_COMM_WORLD);
+				MPI_Send(outmsg,count,MPI_DOUBLE,dest,sendtag,MPI_COMM_WORLD);
 				t3 = MPI_Wtime();
 				sumT1 += t2 - t1;
 				sumT2 += t3 - t2;
@@ -102,3 +115,5 @@ int blocking_send_1to1_benchmark(int argc, char* argv[]){
 	MPI_Finalize();
 	return 0;
 }
+
+
