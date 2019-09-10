@@ -10,13 +10,11 @@
 #include <iostream>
 #include <typeinfo>
 
-int main(){
+int basic(){
 
 	/*
 	 * Does auto retrieve cv-qualifier?
 	 * auto deduction works the same as template deduction for most cases.
-	 *
-	 *
 	 */
 
 	std::cout<<"Begin main\n";
@@ -46,6 +44,7 @@ int main(){
 	auto& jp2 = jp;
 	//(*jp2)++; // NOT OK, jp2 retrieves the type, keeps the cv-qualifier and is a ref to jp.
 
+	std::cout<<j2<<jp1<<jp2<<"\n";
 	std::cout<<"End main\n";
 
 	return 0;
