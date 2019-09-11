@@ -35,21 +35,20 @@ int blocking_send_1to1_benchmark(int argc, char* argv[]){
 
 	std::vector<double> outData(MAX_SIZE,0.0);
 	std::vector<double> inData(MAX_SIZE,0.0);
-
 	double* outmsg = outData.data();
 	double* inmsg = inData.data();
 
 	MPI_Status status;
-
-	MPI_Init(&argc, &argv);
-	MPI_Comm_size(MPI_COMM_WORLD, &size);
-	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	int dest, tag;
 	int itr, count;
 
 	double t1{0.0}, t2{0.0}, t3{0.0}, sumT1{0.0}, sumT2{0.0};
 	std::vector<timeS> avgT;
+
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	if(rank==0){
 
@@ -95,9 +94,7 @@ int blocking_send_1to1_benchmark(int argc, char* argv[]){
 	}
 
 	for(const auto& elem : avgT)
-		std::cout<<std::left<<std::setw(15)<<elem.count
-		         <<std::left<<std::setw(15)<<elem.time1
-	             <<std::left<<std::setw(15)<<elem.time2<<"\n";
+		std::cout<<elem.count<<","<<elem.time1<<","<<elem.time2<<"\n";
 
 	MPI_Finalize();
 	return 0;
