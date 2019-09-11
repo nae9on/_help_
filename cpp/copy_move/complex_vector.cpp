@@ -20,30 +20,27 @@ complex_vector::complex_vector() {
 // constructor with 1 argument
 complex_vector::complex_vector(size_t n_) {
 	n = n_;
-	data = new complex[n];
+	data = new int[n];
 	for (size_t i=0; i<n; i++) {
-		data[i].real = 0.0;
-		data[i].imag = 0.0;
+		data[i] = 0.0;
 	}
 	std::cout<<"Ordinary constructor with size argument\n";
 }
 
 // constructor with 2 arguments
-complex_vector::complex_vector(size_t n_, complex c_) {
+complex_vector::complex_vector(size_t n_, int c_) {
 	n = n_;
-	data = new complex[n];
+	data = new int[n];
 	for (size_t i=0; i<n; i++) {
-		data[i].real = c_.real;
-		data[i].imag = c_.imag;
+		data[i] = c_;
 	}
 	std::cout<<"Ordinary constructor with size and data argument\n";
 }
 
 // copy constructor
-complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new complex[n]} {
+complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new int[n]} {
 	for (size_t i=0; i<n; i++) {
-		data[i].real = v.data[i].real;
-		data[i].imag = v.data[i].imag;
+		data[i] = v.data[i];
 	}
 	std::cout<<"My copy constructor which overrides the default\n";
 }
@@ -54,15 +51,21 @@ complex_vector& complex_vector::operator=(const complex_vector& v) {
 		n = v.n; // overwrites n
 		delete[] data; // deletes the content of data
         // allocate a new block of memory and assign it to data
-		complex* p = new complex[n];
+		int* p = new int[n];
 		for (size_t i=0; i<n; i++) {
-			p[i].real = v.data[i].real;
-			p[i].imag = v.data[i].imag;
+			p[i] = v.data[i];
 		}
 		data = p;
 		std::cout<<"My copy assignment which overrides the default\n";
 	}
 	return *this;
+}
+
+// move constructor
+complex_vector::complex_vector(complex_vector&& v) : n{v.n}, data{new int[n]} {
+	v.n = 0;
+	v.data = nullptr;
+	std::cout<<"My move constructor which overrides the default\n";
 }
 
 complex_vector::~complex_vector() {
@@ -71,10 +74,10 @@ complex_vector::~complex_vector() {
 }
 
 void complex_vector::print() {
-	std::cout<<"Size "<<n<<std::endl ;
+	std::cout<<"Size "<<n<<", ";
 	for (size_t i=0; i<n; i++)
-		std::cout<<"data["<<i<<"] = "<<data[i].real<<"+"<<data[i].imag<<"i"<<std::endl ;
-	std::cout<<"\n\n";
+		std::cout<<data[i]<<" ";
+	std::cout<<"\n";
 }
 
 }
