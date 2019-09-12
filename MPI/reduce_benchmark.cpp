@@ -11,9 +11,14 @@
 #include <iomanip>
 #include <cmath>
 
-#define MAX_SIZE 100000
+// uncomment to disable assert()
+// #define NDEBUG
+#include <cassert>
+
+#define MAX_SIZE 1000000
 #define INCREMENT 10000
 #define REPS 1000
+#define epsilon 1e-6
 
 struct timeS{
 	timeS(int c_, double t1_, double t2_) : count{c_}, time1{t1_}, time2{t2_}{}
@@ -22,16 +27,19 @@ struct timeS{
 	double time2; // time taken
 };
 
+void init_arr(double* arr){
+	for(int i = 0; i<MAX_SIZE; ++i) arr[i] = static_cast<double>(i+1)/MAX_SIZE;
+}
+
 int reduce_benchmark(int argc, char* argv[]){
 
-	printf("Rank 0 is sending %d:%d:%d doubles to Rank 1\n",0,INCREMENT,MAX_SIZE);
+	printf("Array length is %d:%d:%d\n",0,INCREMENT,MAX_SIZE);
 
 	int size, rank;
 
 	double arr[MAX_SIZE], sum{0.0};
-	std::vector<double> sum_arr;
-	std::vector<int> count_arr;
-	for(int i = 0; i<MAX_SIZE; ++i) arr[i] = i+1;
+
+	init_arr(arr);
 
 	int root{0};
 
@@ -49,29 +57,41 @@ int reduce_benchmark(int argc, char* argv[]){
 
 		for(count=0; count<=MAX_SIZE; count+=INCREMENT){
 
-			count_arr.push_back(count);
-
 			share_others = std::floor(count/size);
 			share_rank0 = count-share_others*(size-1);
 			begin_index = 0;
 
-			// set the array back to original
-			for(int i = 0; i<count; ++i) arr[i] = i+1;
-
 			sumT1 = 0;
 			for(itr=1; itr<=REPS; itr++){
+
+				// set the array back to original
+				init_arr(arr);
+
+				// communication bottleneck -----------------------------------
+				MPI_Barrier(MPI_COMM_WORLD);
 				t1 = MPI_Wtime();
 				MPI_Reduce(MPI_IN_PLACE, arr+begin_index, share_others,
 				               MPI_DOUBLE, MPI_SUM, root,
 							   MPI_COMM_WORLD);
 				t2 = MPI_Wtime();
 				sumT1 += t2 - t1;
+				// communication bottleneck -----------------------------------
+
+				// Check if results are computed correctly
+				sum = 0;
+				for (int i=0; i<share_rank0; i++) sum+=arr[i];
+
+				double result =  static_cast<double>(count)*(count+1)/2/MAX_SIZE;
+
+				if(std::fabs(sum-result)>epsilon){
+					std::cout<<result<<"\t"<<sum<<"\n";
+					std::cout<<"error = "<<std::fabs(sum-result)<<"\n";
+					// Note assert is a function-like macro, use braces generously!
+					assert(0);
+				}
 			}
 			avgT.push_back(timeS(count,sumT1/REPS,0.0));
 
-			sum = 0;
-			for (int i=0; i<share_rank0; i++) sum+=arr[i];
-			sum_arr.push_back(sum);
 			}
 		}
 
@@ -79,31 +99,25 @@ int reduce_benchmark(int argc, char* argv[]){
 
 		for(count=0; count<=MAX_SIZE; count+=INCREMENT){
 
-			count_arr.push_back(count);
-
 			share_others = std::floor(count/size);
 			share_rank0 = count-share_others*(size-1);
 			begin_index = share_rank0 + (rank-1)*share_others;
 
 			sumT1 = 0;
 			for(itr=1; itr<=REPS; itr++){
+				// communication bottleneck -----------------------------------
+				MPI_Barrier(MPI_COMM_WORLD);
 				t1 = MPI_Wtime();
 				MPI_Reduce(arr+begin_index, nullptr, share_others,
 						   MPI_DOUBLE, MPI_SUM, root,
 						   MPI_COMM_WORLD);
 				t2 = MPI_Wtime();
 				sumT1 += t2 - t1;
+				// communication bottleneck -----------------------------------
 			}
 			avgT.push_back(timeS(count,sumT1/REPS,0.0));
 			}
 		}
-
-	if(rank==0){
-		int i = 0;
-		for(const auto& elem : sum_arr) {
-			std::cout<<"Total sum n(n+1)/2, for elements "<<count_arr[i++]<<" = "<<elem<<"\n";
-		}
-	}
 
 	for(const auto& elem : avgT)
 		std::cout<<elem.count<<","<<elem.time1<<","<<elem.time2<<"\n";

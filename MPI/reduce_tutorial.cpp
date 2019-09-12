@@ -3,6 +3,12 @@
  *
  *  Created on: Sep 11, 2019
  *      Author: akadar
+ *
+ * In this tutorial, rank 0 owns an array [0:MAX_SIZE-1] which must be summed up.
+ * rank i fills the ith chunk of size MAX_SIZE/SIZE elements. Using reduction,
+ * rank 0 sums up all the chunks onto itself. Finally, the remaining chunk is summed
+ * up at rank 0 to obtain the final result.
+ *
  */
 
 #include <iostream>
@@ -33,9 +39,10 @@ int reduce_tutorial(int argc, char* argv[]){
 
 	if(rank==0){
 		begin_index = 0;
-		// send buffer is not relevant for the root process.
+		// When using MPI_IN_PLACE, send buffer is not relevant for the root process.
 		// MPI_Reduce requires separate send and receive buffer on the root.
 		// With MPI_IN_PLACE, receive buffer is used as the send buffer, reducing copy overhead.
+		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Reduce(MPI_IN_PLACE, arr+begin_index, share_others,
 		               MPI_DOUBLE, MPI_SUM, root,
 					   MPI_COMM_WORLD);
@@ -44,6 +51,7 @@ int reduce_tutorial(int argc, char* argv[]){
 	if(rank!=0){
 		begin_index = share_rank0 + (rank-1)*share_others;
 		// receive buffer is not relevant for non-root processes.
+		MPI_Barrier(MPI_COMM_WORLD);
 		MPI_Reduce(arr+begin_index, nullptr, share_others,
 		               MPI_DOUBLE, MPI_SUM, root,
 					   MPI_COMM_WORLD);
