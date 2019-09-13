@@ -10,8 +10,8 @@
  * all the chunks to fill the complete array.
  *
  * Note that all ranks should get equal chunk size = MAX_SIZE/SIZE elements.
- * In a special case, root process can have a different chunk size than the rest (having
- * the same chunk size).
+ * Check MPI_Gatherv which gathers varying amounts of data from all processes to the
+ * root process.
  *
  * Reference:
  * https://www.open-mpi.org/doc/v3.0/man3/MPI_Gather.3.php
