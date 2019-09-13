@@ -47,7 +47,7 @@ complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new int[v
 
 // copy assignment
 complex_vector& complex_vector::operator=(const complex_vector& v) {
-	if (this != &v) {
+	if (this!=&v) {
 		delete[] data; // deletes the content of data
 		n = v.n; // overwrites n
         // allocate a new block of memory and assign it to data
@@ -61,10 +61,8 @@ complex_vector& complex_vector::operator=(const complex_vector& v) {
 }
 
 // move constructor
-complex_vector::complex_vector(complex_vector&& v) : data{nullptr}, n{0}{
-	data = v.data;
-	n = v.n;
-	// Following prevents the destructor from freeing resources (such as memory) multiple times:
+complex_vector::complex_vector(complex_vector&& v) : data{v.data}, n{v.n}{
+	// Following prevents the destructor from freeing resources (such as memory) multiple times.
 	v.data = nullptr;
 	v.n = 0;
 	std::cout<<"My move constructor which overrides the default\n";
@@ -72,14 +70,14 @@ complex_vector::complex_vector(complex_vector&& v) : data{nullptr}, n{0}{
 
 // move assignment
 complex_vector& complex_vector::operator=(complex_vector&& v) {
-	if (this!= &v){
+	if (this!=&v){
 		delete[] data;
 		data = v.data;
 		n = v.n;
 		v.data = nullptr;
 		v.n = 0;
+		std::cout<<"My move assignment which overrides the default\n";
 	}
-	std::cout<<"My move assignment which overrides the default\n";
 	return *this;
 }
 

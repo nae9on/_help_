@@ -23,6 +23,14 @@ complex_vector operator+(const complex_vector& v1, const complex_vector& v2){
 	return temp;
 }
 
+complex_vector square(const complex_vector& v1){
+	std::cout<<"In square\n";
+	complex_vector temp(v1.n);
+	for (size_t i=0; i<v1.n; ++i) temp.data[i] = v1.data[i]*v1.data[i];
+	std::cout<<"Summed up in temporary\n";
+	return temp;
+}
+
 int main() {
 
 	complex_vector p1(5);
@@ -58,7 +66,19 @@ int main() {
 	complex_vector p7(p3+p4); // Why move constructor called twice?
 	p7.print();
 
-	std::cout<<"-----------------END MOVE CONSTRUCTOR--------------\n";
+	std::cout<<"-----------------MOVE ASSIGNMENT------ -----------\n";
+
+	complex_vector p8;
+	p8 = complex_vector(8,5);
+	p8.print();
+
+	std::cout<<"--------------------------------------------------\n";
+
+	complex_vector p8sq(8,5);
+	p8sq = square(p8sq); // Why move constructor called here?
+	p8sq.print();
+
+	std::cout<<"-----------------END MOVE SEMANTICS------- -------\n";
 
 	return 0;
 }
