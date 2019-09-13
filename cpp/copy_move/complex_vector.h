@@ -48,7 +48,7 @@ public:
 	complex_vector(complex_vector&&);
 
 	// Move assignment
-	//complex_vector& operator=(complex_vector&&) = default;
+	complex_vector& operator=(complex_vector&&);
 
 	void print();
 

@@ -14,7 +14,7 @@ namespace ali {
 complex_vector::complex_vector() {
 	n = 0;
 	data = nullptr;
-	std::cout<<"My constructor\n";
+	std::cout<<"My default constructor which overrides the default\n";
 }
 
 // constructor with 1 argument
@@ -24,7 +24,7 @@ complex_vector::complex_vector(size_t n_) {
 	for (size_t i=0; i<n; i++) {
 		data[i] = 0.0;
 	}
-	std::cout<<"Ordinary constructor with size argument\n";
+	std::cout<<"My ordinary constructor with size argument\n";
 }
 
 // constructor with 2 arguments
@@ -34,11 +34,11 @@ complex_vector::complex_vector(size_t n_, int c_) {
 	for (size_t i=0; i<n; i++) {
 		data[i] = c_;
 	}
-	std::cout<<"Ordinary constructor with size and data argument\n";
+	std::cout<<"My ordinary constructor with size and data argument\n";
 }
 
 // copy constructor
-complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new int[n]} {
+complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new int[v.n]} {
 	for (size_t i=0; i<n; i++) {
 		data[i] = v.data[i];
 	}
@@ -48,29 +48,46 @@ complex_vector::complex_vector(const complex_vector& v) : n{v.n}, data{new int[n
 // copy assignment
 complex_vector& complex_vector::operator=(const complex_vector& v) {
 	if (this != &v) {
-		n = v.n; // overwrites n
 		delete[] data; // deletes the content of data
+		n = v.n; // overwrites n
         // allocate a new block of memory and assign it to data
-		int* p = new int[n];
+		data = new int[n];
 		for (size_t i=0; i<n; i++) {
-			p[i] = v.data[i];
+			data[i] = v.data[i];
 		}
-		data = p;
 		std::cout<<"My copy assignment which overrides the default\n";
 	}
 	return *this;
 }
 
 // move constructor
-complex_vector::complex_vector(complex_vector&& v) : n{v.n}, data{new int[n]} {
-	v.n = 0;
+complex_vector::complex_vector(complex_vector&& v) : data{nullptr}, n{0}{
+	data = v.data;
+	n = v.n;
+	// Following prevents the destructor from freeing resources (such as memory) multiple times:
 	v.data = nullptr;
+	v.n = 0;
 	std::cout<<"My move constructor which overrides the default\n";
 }
 
+// move assignment
+complex_vector& complex_vector::operator=(complex_vector&& v) {
+	if (this!= &v){
+		delete[] data;
+		data = v.data;
+		n = v.n;
+		v.data = nullptr;
+		v.n = 0;
+	}
+	std::cout<<"My move assignment which overrides the default\n";
+	return *this;
+}
+
 complex_vector::~complex_vector() {
-	delete[] data;
-	std::cout<<"Destructor\n";
+	if(data!=nullptr){
+		delete[] data;
+		std::cout << "In destructor, deleting resource\n";
+	}
 }
 
 void complex_vector::print() {
