@@ -88,7 +88,7 @@ int main(int argc, char* argv[]){
 		neighbours.push_back(dest_rank);
 	}
 
-	cart_grid<dim> grid(nodes);
+	cart_grid<dim,1> grid(nodes);
 	grid.set_neighbours(neighbours);
 	grid.fill(rank);
 

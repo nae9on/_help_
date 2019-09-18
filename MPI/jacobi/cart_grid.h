@@ -13,28 +13,33 @@
 #include <algorithm>
 #include <numeric> // std::accumulate
 #include <functional> // std::multiplies
+#include <cassert>
 #include "io.h"
 
-#define DUMMY_BUFFER_VAL -7
+#define DUMMY_VAL -7
+#define DUMMY_DATA_VAL -9
+#define DUMMY_BUFFER_VAL -11
 
-template<unsigned short dim = 3> class cart_grid{
+template<unsigned short dim = 3, unsigned short halo_width = 1> class cart_grid{
 public:
 	cart_grid() = delete;
 
 	cart_grid(const std::vector<size_t>& nodes_){
 
+		assert(nodes_.size()==dim);
+
 		size_t count{1};
 
 		for(const auto& elem : nodes_){
 			in_nodes.push_back(elem);
-			nodes.push_back(elem+2);
-			count*=(elem+2);
+			nodes.push_back(elem+2*halo_width);
+			count*=(elem+2*halo_width);
 		}
 
-		neighbours.resize(2*dim,0);
+		neighbours.resize(2*dim,DUMMY_VAL);
 
-		// allocate interior grid data
-		data.resize(count,0);
+		// allocate grid data (including halo region)
+		data.resize(count,DUMMY_DATA_VAL);
 		data.shrink_to_fit();
 
 		// allocate buffer data
@@ -53,6 +58,8 @@ public:
 			break;
 		default: std::cout<<"Unknown dimension \n"; std::terminate();
 		}
+
+		buf_size *= halo_width;
 		inbuffer.resize(buf_size,DUMMY_BUFFER_VAL);
 		inbuffer.shrink_to_fit();
 		outbuffer.resize(buf_size,DUMMY_BUFFER_VAL);
@@ -65,43 +72,54 @@ public:
 		std::fill(data.begin(),data.end(),x);
 	}
 
-	void set_neighbours(const std::vector<int>& x){
-		neighbours = x;
+	void set_neighbours(const std::vector<int>& neighbours_){
+		assert(neighbours_.size()==2*dim);
+		neighbours = neighbours_;
 	}
 
 	int get_neighbour_rank(int dir, std::string left_right) const{
+
+		assert(assert_dir(dir));
+
 		int add;
 		if(left_right.compare("left")!=0 && left_right.compare("right")!=0){
 			std::cout<<"Wrong neighbor information queried\n";
 			std::terminate();
 		}
+
 		if(left_right.compare("left")==0)
 			add = 0;
+
 		if(left_right.compare("right")==0)
 			add = 1;
-		return neighbours[dir*2+add];
+
+		return neighbours[2*dir+add];
 	}
 
 	int get_bsize(int dir) const{
+
+		assert(assert_dir(dir));
+
 		size_t bsize;
+
 		switch(dim){
 		case 1:
-			if(dir!=0) {std::cout<<"Unexpected direction\n"; std::terminate();}
 			bsize = 1;
 			break;
 		case 2:
-			if(dir!=0 && dir!=1) {std::cout<<"Unexpected direction\n"; std::terminate();}
 			bsize = (dir==0 ? in_nodes[1] : in_nodes[0]);
 			break;
 		case 3:
-			if(dir!=0 && dir!=1 && dir!=2) {std::cout<<"Unexpected direction\n"; std::terminate();}
-			bsize = (dir==0 ? in_nodes[1]*in_nodes[2] :
-					(dir==1 ? in_nodes[2]*in_nodes[0] : in_nodes[0]*in_nodes[1]));
+			bsize = (dir==0 ? (in_nodes[1]*in_nodes[2]) :
+					(dir==1 ? (in_nodes[2]*in_nodes[0]) : (in_nodes[0]*in_nodes[1])));
+			break;
+		default: std::cout<<"Unknown dimension \n"; std::terminate();
 		}
-		return bsize;
+
+		return halo_width*bsize;
 	}
 
-	double* get_inbuffer(){
+	double* get_inbuffer() {
 		return inbuffer.data();
 	}
 
@@ -348,6 +366,20 @@ public:
 			break;
 		}
 		std::cout<<"\n";
+	}
+
+	bool assert_dir(int dir) const{
+
+		bool flag{true};
+
+		switch(dim){
+		case 1: if(dir!=0) flag = false; break;
+		case 2: if(dir!=0 && dir!=1) flag = false; break;
+		case 3: if(dir!=0 && dir!=1 && dir!=2) flag = false; break;
+		default: std::cout<<"Unknown dimension \n"; std::terminate();
+		}
+
+		return flag;
 	}
 
 private:

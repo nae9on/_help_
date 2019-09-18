@@ -2,7 +2,7 @@
 
 echo "Input arguments are " "$@"
 
-mpic++ -I/cart_grid.h -I/io.h main.cpp
+mpic++ -std=c++11 -I/cart_grid.h -I/io.h main.cpp
 
 mpirun -np "$1" --output-filename log ./a.out
 
