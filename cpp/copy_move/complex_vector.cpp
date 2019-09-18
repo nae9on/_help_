@@ -11,16 +11,12 @@
 namespace ali {
 
 // constructor with 0 argument
-complex_vector::complex_vector() {
-	n = 0;
-	data = nullptr;
+complex_vector::complex_vector():n{0}, data{nullptr} {
 	std::cout<<"My default constructor which overrides the default\n";
 }
 
 // constructor with 1 argument
-complex_vector::complex_vector(size_t n_) {
-	n = n_;
-	data = new int[n];
+complex_vector::complex_vector(size_t n_): n{n_}, data{new int[n_]} {
 	for (size_t i=0; i<n; i++) {
 		data[i] = 0.0;
 	}
@@ -61,7 +57,7 @@ complex_vector& complex_vector::operator=(const complex_vector& v) {
 }
 
 // move constructor
-complex_vector::complex_vector(complex_vector&& v) : data{v.data}, n{v.n}{
+complex_vector::complex_vector(complex_vector&& v): n{v.n}, data{v.data}{
 	// Following prevents the destructor from freeing resources (such as memory) multiple times.
 	v.data = nullptr;
 	v.n = 0;

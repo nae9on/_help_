@@ -22,3 +22,4 @@ constexpr
 performant
 valarray
 idiom
+elision
