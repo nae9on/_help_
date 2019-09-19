@@ -7,34 +7,37 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <mpi.h>
 #include "cart_grid.h"
 #include "io.h"
 
-#define BEGIN 11
-#define INCREMENT 10
-#define MAX_GLOBAL_NODE_PER_DIM 6
-#define REPS 1000
-#define epsilon 1e-6
+#define DIMENSION 3
+#define NODES_PER_PROCESS_PER_DIM 121 // Useful when WEAK Scaling is tested
+#define MAX_GLOBAL_NODES_PER_DIM 121 // Useful when STRONG Scaling is tested
+#define WEAK_OR_STRONG_SCALING 0 // 0 for WEAK, 1 for STRONG
+
+double parabola(double x, double y, double z){
+	double val{4*(0.25-(x-0.5)*(x-0.5))};
+	return val;
+}
 
 int main(int argc, char* argv[]){
-
-	const int dim{3};
 
 	int size, rank;
 	MPI_Comm comm;
 
 	// Domain decomposition
 	bool autoCartesianTopology{true};
-	std::vector<int> domains(dim,0); // # of sub-domains
-	std::vector<size_t> nodes(dim,0); // # of nodes in the sub-domain
+	std::vector<int> domains(DIMENSION,0); // # of sub-domains
+	std::vector<size_t> nodes(DIMENSION,0); // # of nodes in the sub-domain
 
 	MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 	if (autoCartesianTopology) {
-		MPI_Dims_create(size, dim, domains.data());
+		MPI_Dims_create(size, DIMENSION, domains.data());
 	} else {
 		std::fill(domains.begin(),domains.end(),1);
 		domains[0] = size;
@@ -43,57 +46,96 @@ int main(int argc, char* argv[]){
 	print_vec("Cartesian topology: ",domains);
 
 	// Periodicity of the MPI processors. 0 - non periodic. 1 - periodic
-	std::vector<int> periods(dim,0);
+	std::vector<int> periods(DIMENSION,0);
 
 	// Makes a new communicator to which Cartesian topology information is attached
-	MPI_Cart_create(MPI_COMM_WORLD, dim, domains.data(), periods.data(), 1, &comm);
+	MPI_Cart_create(MPI_COMM_WORLD, DIMENSION, domains.data(), periods.data(), 1, &comm);
 
 	// Determines new rank in the new communicator
 	MPI_Comm_rank(comm, &rank);
 
 	// Determine process coordinates in the newly created Cartesian topology given its rank
-	std::vector<int> coords(dim,0);
-	MPI_Cart_coords(comm , rank, dim, coords.data());
+	std::vector<int> coords(DIMENSION,0);
+	MPI_Cart_coords(comm , rank, DIMENSION, coords.data());
 
 	printf("My rank is %d\n", rank);
 	print_vec("My coords are: ",coords);
 
+	std::vector<double> offset(DIMENSION,0);
+
 	// Assign # of nodes, cells and offset for each sub-domain.
-	for (int dir = 0; dir < dim; dir++) {
+	for (int dir = 0; dir < DIMENSION; dir++) {
 
-		/*unsigned totatCells = (MAX_GLOBAL_NODE_PER_DIM - 1);
-		int max_cells = totatCells / domains[dir];
-		if (coords[dir] + 1 < domains[dir])
-			cells[dir] = max_cells;
-		else
-			cells[dir] = totatCells - max_cells * (domains[dir] - 1);
-		offset[dir] = max_cells * coords[dir];
-		nodes[dir] = cells[dir] + 1;*/
+		if(WEAK_OR_STRONG_SCALING==1){
+			int min_nodes = MAX_GLOBAL_NODES_PER_DIM / domains[dir];
+			if (coords[dir] == 0){
+				nodes[dir] = MAX_GLOBAL_NODES_PER_DIM - min_nodes * (domains[dir] - 1);
+				offset[dir] = 0;
+			}
+			else{
+				nodes[dir] = min_nodes;
+				offset[dir] = MAX_GLOBAL_NODES_PER_DIM - min_nodes * (domains[dir] - 1);
+				offset[dir] += (coords[dir]-1)*min_nodes;
+			}
+		}
 
-		int min_nodes = MAX_GLOBAL_NODE_PER_DIM / domains[dir];
-		if (coords[dir] == 0)
-			nodes[dir] = MAX_GLOBAL_NODE_PER_DIM - min_nodes * (domains[dir] - 1);
-		else
-			nodes[dir] = min_nodes;
+		if(WEAK_OR_STRONG_SCALING==0){
+			nodes[dir] = NODES_PER_PROCESS_PER_DIM;
+			offset[dir] = coords[dir]*NODES_PER_PROCESS_PER_DIM;
+		}
 	}
 
 	print_vec("Physical nodes: ",nodes);
 
 	// Fill information about neighboring processors
 	std::vector<int> neighbours;
-	for (int dir = 0; dir < dim; dir++) {
+	for (int dir = 0; dir < DIMENSION; dir++) {
 		int source_rank; int dest_rank;
 		MPI_Cart_shift(comm, dir, 1, &source_rank, &dest_rank);
 		neighbours.push_back(source_rank);
 		neighbours.push_back(dest_rank);
 	}
 
-	cart_grid<dim,1> grid(nodes);
-	grid.set_neighbours(neighbours);
-	grid.fill(rank);
+
+	/*********************************************************************************************/
+
+
+	// Physics in [0 1] X [0 1] X [0 1]
+
+	std::vector<double> delta(DIMENSION,0);
+
+	if(WEAK_OR_STRONG_SCALING==1){
+		std::fill(delta.begin(),delta.end(),static_cast<double>(1)/(MAX_GLOBAL_NODES_PER_DIM-1));
+	}
+	else if(WEAK_OR_STRONG_SCALING==0)
+	{
+		for(int dir=0; dir<DIMENSION; ++dir){
+			delta[dir] = static_cast<double>(1)/(domains[dir]*NODES_PER_PROCESS_PER_DIM-1);
+		}
+	}
+
+	auto it = std::min_element(std::begin(delta), std::end(delta));
+	double dt{0.1*(*it)*(*it)}; // CFL condition dt = 0.5*dx*dx
+	size_t totalIter{100};
+
+	// Prepare the grid in [0 1]
+
+	std::vector<double> global_origin(DIMENSION,0.0);
+	cart_grid<DIMENSION> grid(nodes,neighbours,offset,delta,global_origin,dt);
+
+	// fill the grid (default is zero for all grid points including boundaries)
+
+	//grid.fill(rank); // fill by rank
+
+	//grid.debug_fill(rank); // fill by a sequence of numbers for debugging
+
+	grid.fill_interior(&parabola); // fill by a parabolic profile
+
+	for(size_t titr=1; titr<=totalIter; ++titr)
+	{
 
 	// perform a linear shift of data along all positive direction
-	for(int dir=0; dir<dim; ++dir){
+	for(int dir=0; dir<DIMENSION; ++dir){
 
 		int send_tag{7};
 		MPI_Request request;
@@ -109,7 +151,7 @@ int main(int argc, char* argv[]){
 					source_rank, MPI_ANY_TAG, comm, &request);
 		}
 
-		// send to dest
+		// send to destination
 		if(dest_rank!=MPI_PROC_NULL){
 			grid.copy_sendrecv_buf(dir,"send","pos");
 			MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
@@ -123,10 +165,10 @@ int main(int argc, char* argv[]){
 			grid.copy_sendrecv_buf(dir,"receive","pos");
 		}
 
-	}
+	} // end of for
 
 	// perform a linear shift of data along all negative direction
-	for(int dir=0; dir<dim; ++dir){
+	for(int dir=0; dir<DIMENSION; ++dir){
 
 		int send_tag{7};
 		MPI_Request request;
@@ -142,7 +184,7 @@ int main(int argc, char* argv[]){
 					source_rank, MPI_ANY_TAG, comm, &request);
 		}
 
-		// send to dest
+		// send to destination
 		if(dest_rank!=MPI_PROC_NULL){
 			grid.copy_sendrecv_buf(dir,"send","neg");
 			MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
@@ -156,10 +198,14 @@ int main(int argc, char* argv[]){
 			grid.copy_sendrecv_buf(dir,"receive","neg");
 		}
 
-	}
+	} // end of for
+
+	grid.exec_jacobi_kernel();
+
+	} // end of time loop
 
 	grid.print_info();
-	grid.print_grid_data();
+	//grid.print_grid_data();
 
 	MPI_Finalize();
 	return 0;
