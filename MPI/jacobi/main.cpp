@@ -6,16 +6,19 @@
  */
 
 #include <iostream>
+#include <fstream> // ofstream class
+#include <string> // std::to_string
 #include <vector>
 #include <algorithm>
 #include <mpi.h>
+
 #include "cart_grid.h"
 #include "io.h"
 
 #define DIMENSION 3
-#define NODES_PER_PROCESS_PER_DIM 121 // Useful when WEAK Scaling is tested
-#define MAX_GLOBAL_NODES_PER_DIM 121 // Useful when STRONG Scaling is tested
-#define WEAK_OR_STRONG_SCALING 0 // 0 for WEAK, 1 for STRONG
+#define NODES_PER_PROCESS_PER_DIM 120 // Useful when WEAK Scaling is tested
+#define MAX_GLOBAL_NODES_PER_DIM 120 // Useful when STRONG Scaling is tested
+#define STRONG_OR_WEAK_SCALING 1 // 0 for STRONG, 1 for WEAK (as alpha in the HPC book)
 
 double parabola(double x, double y, double z){
 	double val{4*(0.25-(x-0.5)*(x-0.5))};
@@ -26,6 +29,7 @@ int main(int argc, char* argv[]){
 
 	int size, rank;
 	MPI_Comm comm;
+	double begin_time{0.0}, init_time{0.0}, loop_time{0.0};
 
 	// Domain decomposition
 	bool autoCartesianTopology{true};
@@ -35,6 +39,8 @@ int main(int argc, char* argv[]){
 	MPI_Init(&argc,&argv);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+	begin_time = MPI_Wtime();
 
 	if (autoCartesianTopology) {
 		MPI_Dims_create(size, DIMENSION, domains.data());
@@ -63,10 +69,10 @@ int main(int argc, char* argv[]){
 
 	std::vector<double> offset(DIMENSION,0);
 
-	// Assign # of nodes, cells and offset for each sub-domain.
+	// Assign # of nodes and offset for each sub-domain.
 	for (int dir = 0; dir < DIMENSION; dir++) {
 
-		if(WEAK_OR_STRONG_SCALING==1){
+		if(STRONG_OR_WEAK_SCALING==0){
 			int min_nodes = MAX_GLOBAL_NODES_PER_DIM / domains[dir];
 			if (coords[dir] == 0){
 				nodes[dir] = MAX_GLOBAL_NODES_PER_DIM - min_nodes * (domains[dir] - 1);
@@ -79,7 +85,7 @@ int main(int argc, char* argv[]){
 			}
 		}
 
-		if(WEAK_OR_STRONG_SCALING==0){
+		if(STRONG_OR_WEAK_SCALING==1){
 			nodes[dir] = NODES_PER_PROCESS_PER_DIM;
 			offset[dir] = coords[dir]*NODES_PER_PROCESS_PER_DIM;
 		}
@@ -97,112 +103,133 @@ int main(int argc, char* argv[]){
 	}
 
 
-	/*********************************************************************************************/
+	/*PHYSICS*************************************************************************************/
 
-
-	// Physics in [0 1] X [0 1] X [0 1]
-
+	// Grid spacing
 	std::vector<double> delta(DIMENSION,0);
-
-	if(WEAK_OR_STRONG_SCALING==1){
+	if(STRONG_OR_WEAK_SCALING==0){
 		std::fill(delta.begin(),delta.end(),static_cast<double>(1)/(MAX_GLOBAL_NODES_PER_DIM-1));
 	}
-	else if(WEAK_OR_STRONG_SCALING==0)
+	else if(STRONG_OR_WEAK_SCALING==1)
 	{
 		for(int dir=0; dir<DIMENSION; ++dir){
 			delta[dir] = static_cast<double>(1)/(domains[dir]*NODES_PER_PROCESS_PER_DIM-1);
 		}
 	}
 
+	// Time iteration
 	auto it = std::min_element(std::begin(delta), std::end(delta));
-	double dt{0.1*(*it)*(*it)}; // CFL condition dt = 0.5*dx*dx
+	double dt{0.1*(*it)*(*it)}; // CFL condition dt = 0.1*dx*dx
 	size_t totalIter{100};
 
-	// Prepare the grid in [0 1]
-
+	// Physical grid
 	std::vector<double> global_origin(DIMENSION,0.0);
 	cart_grid<DIMENSION> grid(nodes,neighbours,offset,delta,global_origin,dt);
 
-	// fill the grid (default is zero for all grid points including boundaries)
-
+	// Initial condition (default is zero for all grid points including boundaries)
 	//grid.fill(rank); // fill by rank
-
 	//grid.debug_fill(rank); // fill by a sequence of numbers for debugging
-
 	grid.fill_interior(&parabola); // fill by a parabolic profile
+
+
+	init_time = MPI_Wtime() - begin_time;
+	std::cout<<"Time spent before beginning time loop = "<<init_time<<"\n";
+
+	/*TIME LOOP***********************************************************************************/
+
+	double start_time_in_loop{0.0}, comm_time{0.0}, jacobi_time{0.0};
+
+	std::ofstream ofs("timing"+std::to_string(rank)+".csv");
+	if(!ofs) {
+		std::cout<<"Could not open target for writing";
+		std::terminate();
+	}
 
 	for(size_t titr=1; titr<=totalIter; ++titr)
 	{
+		MPI_Barrier(MPI_COMM_WORLD);
 
-	// perform a linear shift of data along all positive direction
-	for(int dir=0; dir<DIMENSION; ++dir){
+		start_time_in_loop = MPI_Wtime();
 
-		int send_tag{7};
-		MPI_Request request;
-		MPI_Status status;
-		int source_rank{grid.get_neighbour_rank(dir,"left")};
-		int dest_rank{grid.get_neighbour_rank(dir,"right")};
+		// perform a linear shift of data along all positive direction
+		for(int dir=0; dir<DIMENSION; ++dir){
 
-		// initiate non-blocking receive from source
-		if(source_rank!=MPI_PROC_NULL){
-			//The request can be used later to query the status of the communication
-			// or wait for its completion.
-			MPI_Irecv(grid.get_inbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
-					source_rank, MPI_ANY_TAG, comm, &request);
-		}
+			int send_tag{7};
+			MPI_Request request;
+			MPI_Status status;
+			int source_rank{grid.get_neighbour_rank(dir,"left")};
+			int dest_rank{grid.get_neighbour_rank(dir,"right")};
 
-		// send to destination
-		if(dest_rank!=MPI_PROC_NULL){
-			grid.copy_sendrecv_buf(dir,"send","pos");
-			MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
-					dest_rank, send_tag, comm);
-		}
+			// initiate non-blocking receive from source
+			if(source_rank!=MPI_PROC_NULL){
+				//The request can be used later to query the status of the communication
+				// or wait for its completion.
+				MPI_Irecv(grid.get_inbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
+						source_rank, MPI_ANY_TAG, comm, &request);
+			}
 
-		// fill receive buffer
-		if(source_rank!=MPI_PROC_NULL){
-			// A call to MPI_Wait returns when the operation identified by request is complete.
-			MPI_Wait(&request,&status);
-			grid.copy_sendrecv_buf(dir,"receive","pos");
-		}
+			// send to destination
+			if(dest_rank!=MPI_PROC_NULL){
+				grid.copy_sendrecv_buf(dir,"send","pos");
+				MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
+						dest_rank, send_tag, comm);
+			}
 
-	} // end of for
+			// fill receive buffer
+			if(source_rank!=MPI_PROC_NULL){
+				// A call to MPI_Wait returns when the operation identified by request is complete.
+				MPI_Wait(&request,&status);
+				grid.copy_sendrecv_buf(dir,"receive","pos");
+			}
 
-	// perform a linear shift of data along all negative direction
-	for(int dir=0; dir<DIMENSION; ++dir){
+		} // end of for
 
-		int send_tag{7};
-		MPI_Request request;
-		MPI_Status status;
-		int source_rank{grid.get_neighbour_rank(dir,"right")};
-		int dest_rank{grid.get_neighbour_rank(dir,"left")};
+		// perform a linear shift of data along all negative direction
+		for(int dir=0; dir<DIMENSION; ++dir){
 
-		// initiate non-blocking receive from source
-		if(source_rank!=MPI_PROC_NULL){
-			//The request can be used later to query the status of the communication
-			// or wait for its completion.
-			MPI_Irecv(grid.get_inbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
-					source_rank, MPI_ANY_TAG, comm, &request);
-		}
+			int send_tag{7};
+			MPI_Request request;
+			MPI_Status status;
+			int source_rank{grid.get_neighbour_rank(dir,"right")};
+			int dest_rank{grid.get_neighbour_rank(dir,"left")};
 
-		// send to destination
-		if(dest_rank!=MPI_PROC_NULL){
-			grid.copy_sendrecv_buf(dir,"send","neg");
-			MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
-					dest_rank, send_tag, comm);
-		}
+			// initiate non-blocking receive from source
+			if(source_rank!=MPI_PROC_NULL){
+				//The request can be used later to query the status of the communication
+				// or wait for its completion.
+				MPI_Irecv(grid.get_inbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
+						source_rank, MPI_ANY_TAG, comm, &request);
+			}
 
-		// fill receive buffer
-		if(source_rank!=MPI_PROC_NULL){
-			// A call to MPI_Wait returns when the operation identified by request is complete.
-			MPI_Wait(&request,&status);
-			grid.copy_sendrecv_buf(dir,"receive","neg");
-		}
+			// send to destination
+			if(dest_rank!=MPI_PROC_NULL){
+				grid.copy_sendrecv_buf(dir,"send","neg");
+				MPI_Send(grid.get_outbuffer(), grid.get_bsize(dir), MPI_DOUBLE,
+						dest_rank, send_tag, comm);
+			}
 
-	} // end of for
+			// fill receive buffer
+			if(source_rank!=MPI_PROC_NULL){
+				// A call to MPI_Wait returns when the operation identified by request is complete.
+				MPI_Wait(&request,&status);
+				grid.copy_sendrecv_buf(dir,"receive","neg");
+			}
 
-	grid.exec_jacobi_kernel();
+		} // end of for
+
+		comm_time = MPI_Wtime() - start_time_in_loop;
+
+		grid.exec_jacobi_kernel();
+
+		jacobi_time = MPI_Wtime() - start_time_in_loop - comm_time;
+
+		ofs<<comm_time<<","<<jacobi_time<<"\n";
 
 	} // end of time loop
+
+
+	loop_time = MPI_Wtime() - begin_time - init_time;
+	std::cout<<"Time spent in the time loop = "<<loop_time<<"\n";
 
 	grid.print_info();
 	//grid.print_grid_data();
