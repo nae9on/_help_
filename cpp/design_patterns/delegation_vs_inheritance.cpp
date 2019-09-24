@@ -10,6 +10,16 @@
 /*
  * What is delegation?
  *
+ * The delegation pattern allows composition of two objects to achieve similar
+ * code reuse capabilities as inheritance. The two objects are referred to as
+ * receiving object and delegate object respectively.
+ *
+ * The receiving object receives the original request which it delegates to the
+ * delegate object (also called handler) and in doing so is reusing the handlers
+ * code. This is similar to a derived class referring to it's base class in
+ * inheritance except in delegation there is no polymorphic relationship between
+ * the classes.
+ *
  * From the Introduction to Gamma et al. 1994
  * Delegation is a way to make composition as powerful for reuse as inheritance.
  * In delegation, two objects are involved in handling a request: a receiving object
@@ -18,12 +28,6 @@
  * refer to the receiving object through the this member variable in C++. To achieve
  * the same effect with delegation, the receiver passes itself to the delegate to let
  * the delegated operation refer to the receiver.
- *
- * The delegation pattern allows composition to achieve similar code reuse capabilities
- * as inheritance, an object will delegate a request to another object or handler
- * and in doing so is reusing the handlers code, this is similar to a derived class
- * referring to it's base class in inheritance except in delegation there is no
- * polymorphic relationship between the classes.
  *
  * Advantages over inheritance:
  * 1. It does not force the receiver to except all the methods of the base class
@@ -95,7 +99,6 @@ int delegation_vs_inheritance(){
 	 * Note that in this example, receiving class object (y) does not control
 	 * life cycle of delegate class object (p). The two objects can stay independent
 	 * of each other.
-	 *
 	 */
 
 	return 0;

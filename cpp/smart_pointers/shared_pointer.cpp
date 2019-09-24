@@ -104,7 +104,7 @@ public:
 		}
 	}
 
-	// Other member functions must be overloaded.
+	// How about move constructor and move assignment?
 
 private:
 	counter* ctr;
@@ -121,7 +121,7 @@ A2* func2(){
 	return ptr;
 }
 
-int main(){
+int shared_pointer(){
 	std::cout<<"In main\n";
 
 	// My basic solution.

@@ -33,11 +33,21 @@ public:
 		raw = t;
 	}
 
+	/*
+	 * Copy constructor and copy assignment are disabled because for unique pointers
+	 * ownership cannot be shared. However default move constructors and move assignment
+	 * are fine because wnership can be transferred.
+	 */
+
 	// copy constructor disabled (same as for std::unique_ptr)
 	explicit my_unique_ptr(const my_unique_ptr<T>& raw_) = delete;
 
 	// copy assignment disabled (same as for std::unique_ptr)
 	my_unique_ptr<T>& operator=(const my_unique_ptr<T>& raw_) = delete;
+
+	my_unique_ptr(my_unique_ptr<T>&& raw_) = default;
+
+	my_unique_ptr<T>& operator=(my_unique_ptr<T>&& raw_) = default;
 
 	T* operator->(){
 		return raw;
@@ -77,8 +87,12 @@ int unique_pointer(){
 	my_unique_ptr<A1> ptr2(func1());
 	std::cout<<"In A, x = "<<ptr2->x<<"\n";
 
-	my_unique_ptr<A1> ptr3;
-	// ptr3 = ptr2; // not allowed
+
+	// my_unique_ptr<A1> ptr3(ptr2); // Error, copy constructor disabled
+	// my_unique_ptr<A1> ptr4; ptr4 = ptr2; // Error, copy assignment disabled
+
+	my_unique_ptr<A1> ptr5 = std::move(ptr2); // OK, move constructor called
+	my_unique_ptr<A1> ptr6; ptr6 = std::move(ptr2); // OK, move assignment called
 
 	std::cout<<"End main\n";
 	return 0;

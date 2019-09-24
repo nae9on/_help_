@@ -6,7 +6,7 @@
  *
  *  A class adapter pattern is a type of structural design pattern. These design
  *  patterns are all about class and object composition. Within this category, there
- *  are two sub-categories a) structural class-creation patterns which use inheritance
+ *  are two sub-categories a) structural class-creation pattern which use inheritance
  *  to compose interfaces and b) structural object-creation pattern which compose objects
  *  to obtain new functionality.
  *
@@ -15,8 +15,12 @@
  *  It can be used to adapt a legacy interface into a desired client interface. How it works?
  *  1. Adapter class acts as a wrapper or modifier of an existing legacy class. It provides a
  *  different or translated view of that class required by the client.
- *  2. Clients call methods on the Adapter object which redirects them into calls to
+ *  2. Client calls methods on the Adapter object which redirects them into calls to
  *  the legacy component.
+ *
+ *  Similar to a class adapter pattern is object adapter pattern. Instead of the adapter class
+ *  inheriting the adaptee, in this pattern the adapter contains an explicit instance of the
+ *  adaptee class.
  *
  *  Reference: https://sourcemaking.com/design_patterns/adapter
  */

@@ -5,6 +5,10 @@
  *      Author: akadar
  *
  *  The idea of lazy loading is to defer object creation until demand.
+ *  Note that lazy loading is also used in Singleton classes. Since, they permit lazy allocation
+ *  and initialization Singleton classes consume less resources and thus preferred over global
+ *  variables in many languages.
+ *
  */
 
 #include <iostream>
@@ -19,10 +23,10 @@ public:
 		std::cout<<"Object of A de-constructed\n";
 	}
 	void printX() {
-		std::cout<<"X = "<<X<<"\n";
+		std::cout<<"Array X of size 100 created "<<"\n";
 	}
 private:
-	double X = 100;
+	double X[100];
 };
 
 template<typename T> class lazy_class{
@@ -35,9 +39,10 @@ public:
 		return *getData();
 	}
 	~lazy_class(){
-		if(data!=nullptr)
+		if(data!=nullptr){
 			delete data;
-		data = nullptr;
+			data = nullptr;
+		}
 	}
 private:
 	T* data;

@@ -15,6 +15,8 @@
  *  the identity of this real object, and simply forwards directly to the
  *  encapsulated real object for all future calls.
  *
+ *  A shared_pointer class is an example of proxy pattern.
+ *
  *  Reference: https://sourcemaking.com/design_patterns/proxy
  *
  */
@@ -51,8 +53,11 @@ public:
 		numThreads = numThreads_;
 	}
 	static void resetHardware(){
-		delete hardware;
-		hardware = nullptr;
+		if(hardware!=nullptr){
+			std::cout<<"Freeing resources.\n";
+			delete hardware;
+			hardware = nullptr;
+		}
 	}
 private:
 	embeddedHardware(){
@@ -67,21 +72,36 @@ private:
 // already defined in singleton.cpp
 //embeddedHardware* embeddedHardware::hardware = nullptr;
 
-// proxy class which provides access to the singleton instance of the real class.
+// proxy or surrogate class which provides access to the singleton instance of the real class.
+
 class embeddedProxy: public hardwareInterface{
 public:
 	embeddedProxy(): hardware{nullptr} {}
+
 	embeddedHardware* getHardwareAccess(){
+
+		// Receiver embeddedProxy delegates the call to the real class.
+		// Also an example of Lazy loading.
+		// Often the "surrogate" object checks that the caller has the access permissions
+		// required prior to forwarding the request to the real object.
 		if(hardware==nullptr){
 			hardware = embeddedHardware::getHardwareAccess();
 		}
+
 		return hardware;
+
 	}
+
 	short getNumThreads(){
 		return hardware->getNumThreads();
 	}
+
 	void setNumThreads(short numThreads_){
-		// implement some logic to limit max no of threads to 4.
+		/*
+		 * Implement some logic to limit max no of threads to 4. In this way proxy
+		 * design pattern allows distributed, controlled, or intelligent access
+		 * to the actual resource.
+		 */
 		if(numThreads_>4){
 			std::cout<<"Requested threads exceed 4\n";
 			std::cout<<"Setting number of threads to 4\n";
@@ -90,9 +110,11 @@ public:
 		else
 			hardware->setNumThreads(numThreads_);
 	}
+
 	~embeddedProxy(){
 		hardware->resetHardware();
 	}
+
 private:
 	embeddedHardware* hardware;
 };

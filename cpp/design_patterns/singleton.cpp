@@ -5,10 +5,13 @@
  *      Author: akadar
  *
  *  A singleton design pattern is a type of creational design pattern used when
- *  an application needs one, and only one, instance of an object. Additionally,
+ *  an application needs one, and only one, instance of a class. Additionally,
  *  lazy initialization and global access are necessary.
  *
- *  Reference: https://sourcemaking.com/design_patterns/singleton
+ *
+ *  References:
+ *  https://sourcemaking.com/design_patterns/singleton
+ *  https://en.wikipedia.org/wiki/Singleton_pattern
  */
 
 #include <iostream>
@@ -21,9 +24,15 @@
 
 class embeddedHardware{
 public:
-	// The following member function ensures that the single object
-	// will not be created until someone requests an instance of it.
-	// This is an example of lazy loading.
+
+
+	/*
+	 * The following member function ensures that the single object will not be created
+	 * until someone requests an instance of it. This is called lazy initialization.
+	 *
+	 * It also provides only one point of entry to access/manipulate the Singleton resource.
+	 */
+
 	static embeddedHardware* getHardwareAccess(){
 		if(hardware==nullptr){
 			std::cout<<"Mounting hardware\n";
@@ -31,20 +40,37 @@ public:
 		}
 		return hardware;
 	}
+
 	short getNumThreads(){
 		return numThreads;
 	}
+
 	static void resetHardware(){
-		delete hardware;
-		hardware = nullptr;
+		if(hardware!=nullptr){
+			std::cout<<"Freeing resources.\n";
+			delete hardware;
+			hardware = nullptr;
+		}
 	}
+
+	~embeddedHardware(){
+		// Note that the destructor cannot call resetHardware to avoid recursive loop.
+	}
+
 private:
-	embeddedHardware(){
+
+	embeddedHardware(){ // private default constructor
 		numThreads = 1;
 	}
-	embeddedHardware(embeddedHardware&) = default; // private copy constructor so that it cannot be called from outside.
-	embeddedHardware& operator=(embeddedHardware&) = default; // private copy assignment.
+
+	// private copy constructor so that it cannot be called from outside.
+	embeddedHardware(embeddedHardware&) = default;
+
+	// private copy assignment so that ownership of the single instance cannot be assigned.
+	embeddedHardware& operator=(embeddedHardware&) = default;
+
 	short numThreads;
+
 	static embeddedHardware* hardware;
 };
 
@@ -58,7 +84,7 @@ int singleton(){
 
 	std::cout<<"numThreads of embedded hardware are = "<<Resource->getNumThreads()<<"\n";
 
-    Resource->resetHardware();
+	embeddedHardware::resetHardware(); // This is required to free hardware.
 
 	return 0;
 }
