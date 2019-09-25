@@ -78,6 +78,7 @@ template<size_t dim_, typename T> std::ostream& operator<<(std::ostream& os, mul
 			os << elem[i];
 	}
 	os << "\n";
+	return os;
 }
 
 int multi_dim_container(){

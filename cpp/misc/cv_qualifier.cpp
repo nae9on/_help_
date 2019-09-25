@@ -1,5 +1,5 @@
 /*
- * basic.cpp
+ * cv_qualifier.cpp
  *
  *  Created on: Jul 31, 2019
  *      Author: akadar
@@ -10,7 +10,7 @@
 #include <iostream>
 #include <typeinfo>
 
-int basic(){
+int cv_qualifier(){
 
 	/*
 	 * Does auto retrieve cv-qualifier?
