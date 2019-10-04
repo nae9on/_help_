@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <ostream>
+#include <memory>
 
 enum class RGB: char{
 	red, blue, green, white
@@ -21,12 +22,19 @@ std::ostream& operator<<(std::ostream& os, const RGB& rbg_value){
 	}
 }
 
+/*
+ *  1. A class with at least one pure virtual function is an abstract class.
+ *  2. A pure virtual function is also sometimes called an abstract method.
+ *  3. A pure virtual function must be overridden in a derived concrete class.
+ *  4. A class with all abstract methods is a pure abstract or interface class.
+ *  5. An abstract class should have a virtual destructor.
+ */
 class shape{
 public:
 	shape(){}
-	virtual double area() const = 0; // pure virtual function must be overridden
-	virtual double perimeter() const = 0; // pure virtual function must be overridden
-	virtual ~shape(){} // virtual destructor
+	virtual double area() const = 0;
+	virtual double perimeter() const = 0;
+	virtual ~shape(){}
 private:
 };
 
@@ -67,19 +75,19 @@ void printShapeInfo(shape* s){
 
 int abstract_classes()
 {
-	// Manipulation not using pointers
-	//shape s; // Not allowed since shape is an abstract/interface class
+	// Only manipulation using pointers is allowed since shape is an interface class.
+	//shape s; // Error
+
 	square s1(RGB::red,3);
 	std::cout<<"Area = "<<s1.area()<<"\n";
 	std::cout<<"Perimeter = "<<s1.perimeter()<<"\n";
 	std::cout<<"Color = "<<s1.getColor()<<"\n";
 
-	std::cout<<"\n\n";
+	std::cout<<"\n";
 
-	// Manipulation using pointers
-	shape* s; // Allowed
-	s = new square(RGB::blue,4);
-	printShapeInfo(s);
-	delete s;
+	std::unique_ptr<shape> s(new square(RGB::blue,4));
+
+	printShapeInfo(s.get());
+
 	return 0;
 }
