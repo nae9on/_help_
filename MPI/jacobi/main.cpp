@@ -25,7 +25,7 @@ double parabola(double x, double y, double z){
 	return val;
 }
 
-int main(int argc, char* argv[]){
+int jacobi(int argc, char* argv[]){
 
 	int size, rank;
 	MPI_Comm comm;
