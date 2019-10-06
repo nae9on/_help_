@@ -4,12 +4,17 @@
  *  Created on: Oct 4, 2019
  *      Author: akadar
  *
+ * A factory design pattern is a creational design pattern that provides an interface for
+ * creating objects in a superclass, but allows subclasses to alter the type of objects that
+ * will be created.
+ *
  * Example illustrating how a Factory Method can be used for creating UI elements
  * without coupling the client code to concrete UI classes.
  *
  */
 
 #include "button.h"
+#include <memory>
 
 // Client/Creator class
 class Dialog{
@@ -19,6 +24,7 @@ public:
 		Button* okButton = createButton();
 		okButton->render();
 		okButton->onClick();
+		std::cout<<"\n";
 	}
 
 	/*
@@ -71,10 +77,11 @@ private:
 
 int factory(){
 
-	Dialog* d1 = new WindowsDialog();
+	std::unique_ptr<Dialog> d1(new WindowsDialog());
 	d1->render();
-	d1->render();
-	delete d1;
+
+	std::unique_ptr<Dialog> d2(new WebDialog());
+	d2->render();
 
 	return 0;
 }

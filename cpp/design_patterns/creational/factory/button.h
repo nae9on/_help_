@@ -10,13 +10,11 @@
 
 #include <iostream>
 
-
 class Button{ // Product interface class
 public:
-	// Interface classes do not have constructors.
 	virtual void render() const =0;
 	virtual void onClick()const =0;
-	virtual ~Button(){} // virtual destructor is a must
+	virtual ~Button(){}
 private:
 	// No data members!
 };
