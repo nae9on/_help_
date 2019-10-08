@@ -29,7 +29,7 @@
 template<typename T, template<typename> class A, template<typename,typename> class C>
 void erase_remove(C<T,A<T>>& ct){
 	/*
-	 * STL: how containers, iterators and algorithms collaborate ?
+	 * STL: how containers, iterators and algorithms collaborate?
 	 * A container knows how the elements are organized in memory.
 	 * An algorithm knows how to access elements of a container using an iterator.
 	 * An algorithm can modify the value of elements of a container but cannot
@@ -49,6 +49,8 @@ void erase_remove(C<T,A<T>>& ct){
 	 * its new logical size.
 	 *
 	 * Note: similar to remove, unique is also usually followed by a call to erase.
+	 * Note: erase invalidates iterators and references at and after the point of the erase,
+	 * including the end() iterator.
 	 *
 	 */
 
@@ -86,6 +88,7 @@ void erase_remove(std::forward_list<T,A<T>>& ct){
 }
 
 // partial template specialization for map
+// map is a node based container and therefore erasing an element is straight forward
 template<typename K, typename V>
 void erase_remove(std::map<K,V>& ct){
 	using IT = typename std::map<K,V>::iterator;
@@ -101,6 +104,7 @@ void erase_remove(std::map<K,V>& ct){
 }
 
 // partial template specialization for set
+// set is a node based container and therefore erasing an element is straight forward
 template<typename K>
 void erase_remove(std::set<K>& ct){
 	using IT = typename std::set<K>::iterator;

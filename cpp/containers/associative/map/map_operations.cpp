@@ -44,7 +44,7 @@ int map_operations(){
 	std::cout<<"map2 = ";
 	print_map(map2);
 	std::cout<<"\nmap2 = ";
-	for(const std::pair<std::string,biography>& v : map2){
+	for(const auto& v : map2){
 		std::cout<<v.first<<" "<<v.second.getName()<<" ";
 	}
 

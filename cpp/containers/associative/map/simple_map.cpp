@@ -22,7 +22,8 @@
 
 int simple_map()
 {
-	// Note the comparator. Default comparator is std::less
+	// Note that the default comparator is std::less (a function object).
+	// Note that the template argument (std::string) can be auto-deduced from C++14 onwards.
 	std::map<std::string,biography,std::greater<std::string>> myMap;
 
 	// Insert new key-value pairs.
@@ -78,6 +79,5 @@ int simple_map()
 		t.second.printInfo();
 
 	}
-
 	return 0;
 }

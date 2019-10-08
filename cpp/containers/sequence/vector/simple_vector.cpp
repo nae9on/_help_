@@ -13,7 +13,7 @@
 
 template<typename T> void print(T t){
 	std::cout<<"forward traversal using const_iterator\n";
-	for(typename T::const_iterator it = t.cbegin(); it != t.cend(); it++){
+	for(typename T::const_iterator it = t.cbegin(); it != t.cend(); ++it){
 		std::cout<<*it<<" ";
 	}
 	std::cout<<"\n\n";
@@ -21,7 +21,8 @@ template<typename T> void print(T t){
 
 template<typename T> void print_backward(T t){
 	std::cout<<"backward traversal using const_iterator\n";
-	for(typename T::const_reverse_iterator it = t.crbegin(); it != t.crend(); it++){
+	//for(typename T::const_iterator it = t.cend()-1; it >= t.cbegin(); --it){
+	for(typename T::const_reverse_iterator it = t.crbegin(); it != t.crend(); ++it){
 		std::cout<<*it<<" ";
 	}
 	std::cout<<"\n\n";
@@ -31,9 +32,8 @@ template<typename T> void print_backward(T t){
 template<typename C, typename IT = typename C::const_iterator, typename T = typename C::value_type>
 std::vector<unsigned> all_occurence(C t, T a){
 	std::vector<unsigned> index;
-	IT it = t.cbegin();
-	unsigned itr = 0;
-	for(;it != t.cend(); it++, itr++){
+	unsigned itr{0};
+	for(IT it = t.cbegin(); it != t.cend(); ++it, ++itr){
 		if(*it==a) index.push_back(itr);
 	}
 	return index;

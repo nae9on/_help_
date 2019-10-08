@@ -15,7 +15,7 @@
  * [1] http://www.cplusplus.com/reference/array/array/
  * [2] https://stackoverflow.com/questions/30263303/stdarray-vs-array-performance
  *
- * std::valarray
+ * std::valarray is a standard non-STL container (called "almost container" by Bjarne)
  * std::valarray is the next simplest and was introduced in C++03. It is variable size
  * unlike std::array and has mathematical functions defined for numeric computation such as
  * +, -, cosine, sine etc. It also allows data slicing. std::valarray container allocates
@@ -57,7 +57,7 @@ private:
 	int y;
 };
 
-int main(){
+int simple_array(){
 
 	std::array<double,10> arr1;
 	for (size_t i = 0; i<10; i++) arr1[i] = i;

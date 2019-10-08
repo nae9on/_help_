@@ -12,8 +12,9 @@
 #include <iostream>
 #include <cstdio>
 #include <vector>
-#include <algorithm> // std::copy
-#include <iterator> // for std::back_inserter, std::reverse, std::sort
+#include <iterator> // for std::back_inserter
+#include <algorithm> // std::copy, std::sort, std::reverse
+#include <functional> //std::greater
 
 template<typename T>
 void print_vec(T vec_){
@@ -71,7 +72,7 @@ int vector_operations(){
 	std::cout<<"\nvec3 = ";
 	print_vec(vec3);
 	std::cout<<"\nvec3 copied to vec2";
-	std::copy(vec3.cbegin(),vec3.cend(),vec2.begin());
+	std::copy(vec3.cbegin(),vec3.cend(),vec2.begin()); // vec2 gets overwritten
 	std::cout<<"\nvec2 = ";
 	print_vec(vec2);
 
@@ -84,6 +85,8 @@ int vector_operations(){
 	 */
 	std::cout<<"\nvec3 copied to empty vec1 using back_inserter";
 	std::copy(vec3.cbegin(),vec3.cend(),std::back_inserter(vec1));
+	// same as above
+	//std::copy(vec3.cbegin(),vec3.cend(),std::back_insert_iterator<std::vector<int>>(vec1));
 	std::cout<<"\nvec1 = ";
 	print_vec(vec1);
 
@@ -106,8 +109,13 @@ int vector_operations(){
 	std::cout<<"\nReversed vec3 = ";
 	print_vec(vec3);
 
-	// Sorting a vector
-	std::sort(vec3.begin(),vec3.end());
+	// Sorting a vector (using a function object)
+	// teplate argument int can be type-deduced in C++14 and later
+	std::sort(vec3.begin(),vec3.end(),std::greater<int>());
+
+	// same as above but using a lambda expression
+	// int can be replaced by auto in C++14 and later
+	// std::sort(vec3.begin(),vec3.end(),[](const int& lhs, const int& rhs)->bool{return lhs>rhs;}); // int can
 	std::cout<<"\nSorted vec3 = ";
 	print_vec(vec3);
 

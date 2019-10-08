@@ -15,9 +15,9 @@
  *
  * The main differences between vector and deque are:
  * 1. Unlike vector, deque provides efficient insertion and deletion of elements also
- *    the beginning of the sequence, and not only at its end.
+ *    at the beginning of the sequence, and not only at its end.
  * 2. Unlike vectors, deques are not guaranteed to store all its elements in contiguous
- *    storage locations:
+ *    storage locations.
  *
  * References
  * [1] http://www.cplusplus.com/reference/deque/deque/
