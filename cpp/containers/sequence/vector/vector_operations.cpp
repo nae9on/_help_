@@ -72,7 +72,8 @@ int vector_operations(){
 	std::cout<<"\nvec3 = ";
 	print_vec(vec3);
 	std::cout<<"\nvec3 copied to vec2";
-	std::copy(vec3.cbegin(),vec3.cend(),vec2.begin()); // vec2 gets overwritten
+	vec2.assign(vec3.cbegin(),vec3.cend());
+	//std::copy(vec3.cbegin(),vec3.cend(),vec2.begin()); // bad-idea if vec3.size() > vec2.size()
 	std::cout<<"\nvec2 = ";
 	print_vec(vec2);
 
@@ -83,23 +84,17 @@ int vector_operations(){
 	 * algorithms that usually overwrite elements (such as copy) to instead insert new
 	 * elements automatically at the end of the container.
 	 */
-	std::cout<<"\nvec3 copied to empty vec1 using back_inserter";
-	std::copy(vec3.cbegin(),vec3.cend(),std::back_inserter(vec1));
+	std::cout<<"\nvec3 copied to empty vec1";
+	//std::copy(vec3.cbegin(),vec3.cend(),std::back_inserter(vec1)); // bad-idea Scott#5
 	// same as above
 	//std::copy(vec3.cbegin(),vec3.cend(),std::back_insert_iterator<std::vector<int>>(vec1));
-	std::cout<<"\nvec1 = ";
-	print_vec(vec1);
-
-	// Note vec3.insert can achieve the same with slightly better performance.
-	std::cout<<"\nvec3 copied to empty vec1 using insert";
-	vec1.clear();
-	vec1.insert(vec1.end(),vec3.cbegin(),vec3.cend());
+	vec1.insert(vec1.begin(),vec3.cbegin(),vec3.cend());
 	std::cout<<"\nvec1 = ";
 	print_vec(vec1);
 
 	// Concatenating two vectors using std::back_inserter
 	std::vector<int> vecof10(5,10);
-	std::copy(vec3.cbegin(),vec3.cend(),std::back_inserter(vecof10));
+	vecof10.insert(vecof10.end(),vec3.cbegin(),vec3.cend());
 	std::cout<<"\nvecof10 = vecof10 + vec1 = ";
 	print_vec(vecof10);
 
