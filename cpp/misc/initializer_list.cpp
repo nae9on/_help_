@@ -57,7 +57,7 @@ struct Z{
 	Y y;
 };
 
-int main(){
+int initializer_list(){
 
 	/*
 	 * An object of type std::initializer_list<T> is a lightweight proxy object that

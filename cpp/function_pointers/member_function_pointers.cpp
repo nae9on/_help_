@@ -87,7 +87,7 @@ private:
 };
 unsigned Leopard::count = 0;
 
-int main(){
+int member_function_pointers(){
 	Cheetah c9("T1"), c10("T2");
 	Leopard L9("X1"), L10("X2"), L11("X3");
 

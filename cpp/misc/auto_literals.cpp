@@ -11,7 +11,7 @@
 #include <cstring>
 #include <string>
 
-int main_auto_literals()
+int auto_literals()
 {
 	std::cout<<"In auto\n\n";
 

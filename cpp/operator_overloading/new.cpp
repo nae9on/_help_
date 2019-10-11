@@ -3,17 +3,19 @@
  *
  *  Created on: Jul 22, 2019
  *      Author: akadar
+ *
+ *      // References
+ * [1] https://en.cppreference.com/w/cpp/memory/new/operator_new
+ * [2] https://en.cppreference.com/w/cpp/memory/new/operator_delete
+ * [3] https://www.geeksforgeeks.org/overloading-new-delete-operator-c/
+ * [4] http://www.cplusplus.com/reference/new/operator%20new/
+ *
+ * For some good reasons for overloading new and delete refer[3]
+ *
  */
 
 #include <iostream>
 #include <vector>
-
-// Reference
-// [1]https://en.cppreference.com/w/cpp/memory/new/operator_new
-// [2]https://en.cppreference.com/w/cpp/memory/new/operator_delete
-// [3]https://www.geeksforgeeks.org/overloading-new-delete-operator-c/
-
-// For some good reasons for overloading new and delete, refer[3]
 
 class basic{
 public:
@@ -29,9 +31,9 @@ public:
 	 */
 
 	//static void* operator new(size_t) = delete;
-	//static void operator delete(void*, size_t) = delete;
+	//static void  operator delete(void*, size_t) = delete;
 	//static void* operator new[](size_t) = delete;
-	//static void operator delete[](void*, size_t) = delete;
+	//static void  operator delete[](void*, size_t) = delete;
 
 private:
 	int x{0};
@@ -83,7 +85,10 @@ private:
 };
 
 /*
- * Note that new and delete operators are implicitly declared in each
+ * Note that operator new is declared in the global namespace and not
+ * within the std namespace.
+ *
+ * Also note that new and delete operators are implicitly declared in each
  * translation unit even if the <new> header is not included. They can
  * be globally overloaded if needed. Refer [1], [2] for details.
  */
@@ -115,7 +120,7 @@ void operator delete[](void* p) noexcept
     std::free(p);
 }
 
-int main(){
+int main_new(){
 
 	basic* b1 = new basic;
 	delete b1;
