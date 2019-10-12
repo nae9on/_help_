@@ -14,7 +14,7 @@
 #include <string>
 
 //int std_string()
-int main()
+int std_string()
 {
 	/*
 	 * Fundamentally std::string is similar to std::vector<char>
@@ -32,6 +32,7 @@ int main()
 	// The const char* can be retrieved using the c_str or data method
 	// This allows std::string to interoperate with C-string APIs
 	const char* std_string_to_char = std_string.c_str();
+	std::cout<<std_string_to_char<<"\n";
 
 	// 3.
 	// std::strings have an overloaded + operator
