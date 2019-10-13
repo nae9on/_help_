@@ -27,3 +27,5 @@ parabolic
 accessor
 pre
 namespace
+destructors
+noexcept

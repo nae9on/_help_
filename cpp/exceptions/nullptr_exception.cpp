@@ -36,11 +36,11 @@ public:
 		else
 			std::cout<<"I am A and my rank is = "<<rank;
 
-		// Note that it is undefined behaviour to access "rank"
-		// in print_A when pointer object is nullptr. However, the following statement
-		// std::cout<<"I am A and my rank is";
-		// would be OK, since no class data member is being accessed using
-		// this(=nullptr) pointer.
+		/*
+		 * Note that it is undefined behavior to access "rank" in print_A when pointer
+		 * object is nullptr. However, the following statement std::cout<<"I am A and my rank is";
+		 * would be OK, since no class data member is being accessed using this(=nullptr) pointer.
+		 */
 	}
 private:
 	unsigned rank = 0;

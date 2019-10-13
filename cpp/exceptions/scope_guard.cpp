@@ -3,9 +3,8 @@
  *
  *  Created on: Jul 18, 2019
  *      Author: akadar
- */
-
-/* This example demonstrates the use of exceptions for setting a scope guard.
+ *
+ * This example demonstrates the use of exceptions for setting a scope guard.
  * How to ensure vectors v0, v1, v2, .... vn etc are either all updated or none.
  */
 
@@ -14,7 +13,7 @@
 
 using vint = std::vector<int>;
 
-template <typename T> class scope_guard{
+template<typename T> class scope_guard{
 public:
 	void set(){
 		lock = true;
@@ -33,7 +32,7 @@ public:
 	~scope_guard(){
 		if(lock) {
 			v->pop_back();
-			std::cout<<"push_back called on "<<id<<"\n";
+			std::cout<<"pop_back called on "<<id<<"\n";
 		}
 	}
 private:
@@ -43,9 +42,9 @@ private:
 	T* v;
 };
 
-template <typename t> unsigned scope_guard<t>::counter=0;
+template<typename t> unsigned scope_guard<t>::counter=0;
 
-int main_scope(){
+int scope_guard(){
 
 	vint v0 = {1,2,3}; // initial content of v0
 	vint v1 = {11,12,13};
@@ -67,8 +66,7 @@ int main_scope(){
 		s1.release();
 		s2.release();
 	}
-	catch(std::exception& e){
-		std::cout<<"push_back unsuccessful, unwinding call stack\n";
+	catch(const std::exception& e){
 		std::cout << e.what() << "\n";
 	}
 

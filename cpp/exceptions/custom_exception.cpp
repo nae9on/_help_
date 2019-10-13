@@ -6,20 +6,29 @@
  */
 
 #include <iostream>
-#include <exception>
+#include <exception> // std::exception
 
 class my_exception: public std::exception
 {
 public:
 	my_exception(){
-		message = "Default exception from my_exception";
+		message = "Default message from my_exception";
 	}
 	my_exception(const char* str): message{str}{
 
 	}
-	// what() is a virtual function in the base exception class
-	// note the const noexcept qualifiers
-	const char*	what() const noexcept{
+	/*
+	 *  what() is a virtual function in the base exception class.
+	 *
+	 *  Note the noexcept qualifier. It is a promise made by the user that the function will
+	 *  never throw an exception. The compiler enforces this promise. However, if all good intent
+	 *  and planning fails and the function still throws an exception then std::terminate()
+	 *  will be called to immediately terminate the program. Therefore, make a function noexcept
+	 *  only if all the functions that it calls, either directly or indirectly are also noexcept
+	 *  or const.
+	 *
+	 */
+	const char* what() const noexcept(true) override {
 		std::cout<<"Exception thrown from my_exception class\n";
 		return message;
 	}
@@ -30,12 +39,12 @@ private:
 class derived_exception: public my_exception {
 public:
 	derived_exception(){
-		message = "Default exception from derived_exception";
+		message = "Default message from derived_exception";
 	}
 	derived_exception(const char* str): message{str}{
 
 	}
-	const char*	what() const noexcept{
+	const char* what() const noexcept(true) override {
 		std::cout<<"Exception thrown from derived_exception class\n";
 		return message;
 	}
@@ -44,7 +53,7 @@ private:
 
 };
 
-int main(){
+int custom_exception(){
 
 	try{
 		throw my_exception("dummy exception thrown from my_exception");

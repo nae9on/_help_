@@ -6,7 +6,7 @@
  */
 
 #include <iostream>
-#include <exception>
+#include <exception> // std::exception
 #include <vector>
 
 class error_log{
@@ -22,7 +22,7 @@ private:
 	std::vector<std::string> message;
 };
 
-int main_bad_alloc() {
+int bad_alloc() {
 
 	error_log er;
 
@@ -36,6 +36,7 @@ int main_bad_alloc() {
 
 	try{
 		double* d = new double[1000000000000]();
+		delete[] d;
 		/*while(1){
 			int* intarray = new int[99999ul];
 		}*/
