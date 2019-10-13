@@ -3,10 +3,10 @@
  *
  *  Created on: May 26, 2019
  *      Author: akadar
+ *
+ * References:
+ * [1] https://docs.microsoft.com/en-us/cpp/cpp/static-cast-operator?view=vs-2019
  */
-
-// References
-// [1] https://docs.microsoft.com/en-us/cpp/cpp/static-cast-operator?view=vs-2019
 
 #include <iostream>
 

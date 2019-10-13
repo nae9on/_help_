@@ -3,10 +3,10 @@
  *
  *  Created on: Jul 20, 2019
  *      Author: akadar
+ *
+ * References:
+ * https://docs.microsoft.com/en-us/cpp/cpp/const-cast-operator?view=vs-2019
  */
-
-// References
-// https://docs.microsoft.com/en-us/cpp/cpp/const-cast-operator?view=vs-2019
 
 #include <iostream>
 #include <string>
