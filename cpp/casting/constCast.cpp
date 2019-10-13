@@ -19,7 +19,7 @@ public:
 
 		// Note that in a const member function this = const person* const this
 		// const_cast makes it person* const
-		(const_cast<person*>(this))->name = "fool";
+		(const_cast<person* const>(this))->name = "fool";
 	}
 	void print() {
 		std::cout<<"\nI am "<<name;
@@ -32,13 +32,13 @@ void print(int* x) {
 	std::cout<<"\nx = "<<*x;
 }
 
-int main_const() {
+int constCast() {
 
 	// 4 examples of usage of const_cast (only applicable for pointers)
 
 	// Example 1
 	int x = 1;
-	//const int x = 0; // Note: It is undefined behavior to modify a value which is initially declared as const.
+	//const int x = 0; // Note: It is undefined behavior to modify a const value.
 	int const* y = &x;
 	//(*y)++; // error
 	int* p = const_cast<int*>(y);  // const_cast removes the const qualifier
@@ -69,5 +69,3 @@ int main_const() {
 
 	return 0;
 }
-
-

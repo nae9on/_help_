@@ -17,14 +17,14 @@
 class Container{ // Abstract class
 public:
 	Container(){
-		std::cout<<"Base class constructor called\n";
+		std::cout<<"Base class constructor called"<<std::endl;
 		incremetCount();
 	}
 	void incremetCount(){
 		count++;
 	}
 	static void printCount(){
-		std::cout<<"Total containers derived from base = "<<count<<"\n";
+		std::cout<<"Total containers derived from base = "<<count<<std::endl;
 	}
 	virtual int returnSize() const=0; // pure virtual function returning the size of container
 
@@ -33,7 +33,7 @@ public:
 	// virtual makes sure that first derived class destructor is called.
 	// for this reason the destructor of an abstract class should always be virtual.
 	virtual ~Container(){
-		std::cout<<"Base class destructor called\n";
+		std::cout<<"Base class destructor called"<<std::endl;
 	}
 private:
 	static unsigned count;
@@ -43,10 +43,10 @@ unsigned Container::count = 0;
 class vecContainer : public Container { // Implementation class
 public:
 	vecContainer(unsigned _size): size{_size}, data{new double[size]{}} {
-		std::cout<<"Derived class vecContainer's constructor called\n";
+		std::cout<<"Derived class vecContainer's constructor called"<<std::endl;
 	}
 	void printSize(){
-		std::cout<<"Size of vecContainer = "<<size<<"\n";
+		std::cout<<"Size of vecContainer = "<<size<<std::endl;
 	}
 	int returnSize() const{
 		return size;
@@ -56,7 +56,7 @@ public:
 	}
 	~vecContainer(){
 		delete[] data;
-		std::cout<<"Derived class vecContainer's destructor called\n";
+		std::cout<<"Derived class vecContainer's destructor called"<<std::endl;
 	}
 private:
 	unsigned size;
@@ -66,10 +66,10 @@ private:
 class arrayContainer : public Container { // Implementation class
 public:
 	arrayContainer(unsigned _size): size{_size}, data{new double[size]{}} {
-		std::cout<<"Derived class arrayContainer's constructor called\n";
+		std::cout<<"Derived class arrayContainer's constructor called"<<std::endl;
 	}
 	void printLength(){
-		std::cout<<"Length of arrayContainer = "<<size<<"\n";
+		std::cout<<"Length of arrayContainer = "<<size<<std::endl;
 	}
 	int returnSize() const{
 		return size;
@@ -79,7 +79,7 @@ public:
 	}
 	~arrayContainer(){
 		delete[] data;
-		std::cout<<"Derived class arrayContainer's destructor called\n";
+		std::cout<<"Derived class arrayContainer's destructor called"<<std::endl;
 	}
 private:
 	unsigned size;
@@ -90,23 +90,23 @@ private:
 void printContainerData(Container& c){
 	for (int i=0; i<c.returnSize(); i++)
 		std::cout<<c[i]<<"\t";
-	std::cout<<"\n";
+	std::cout<<std::endl;
 }
 
-int main()
+int dynamicCast()
 {
 	/*
 	 * dynamic_cast does run-time type check [1].
-	 * The run-time type check done by dynmic_cast is an overhead. It will check the result
+	 * The run-time type check done by dynmic_cast is an overhead. It check's if the result
 	 * of the type conversion is a valid and complete object of the requested class. This is
 	 * considered a performance issue for some situations as it does this by traversing the
-	 * inheritance tree which for large trees could be time consuming.
-	 * dynamic_cast only works on pointers and references. Unlike static_cast they do not
+	 * inheritance tree which for large trees could be computationally expensive.
+	 * dynamic_cast only works on pointers and references, unlike static_cast which can also
 	 * work on variables.
 	 */
 
-	// Container b; // Error since an object of an abstract class cannot be created.
-	// vecContainer* d1; // Allocates memory for a pointer but does not create an object
+	//Container b; // Error cannot declare variable of an abstract class
+	//vecContainer* d1; // Allocates memory for a pointer on stack but does not create an object
 
 	if(0)
 	{
@@ -121,7 +121,7 @@ int main()
 	if(0)
 	{
 	vecContainer* d1 = new vecContainer(5);
-	std::cout<<"The type of d1 is "<<typeid(d1).name()<<"\n";
+	std::cout<<"The type of d1 is "<<typeid(d1).name()<<std::endl;
 	printContainerData(*d1);
 	Container::printCount();
 	delete d1;
@@ -133,8 +133,8 @@ int main()
 	{
 	Container* b1 = new vecContainer(5);
 	Container* b2 = new arrayContainer(7);
-	std::cout<<"The type of b1 is "<<typeid(b1).name()<<"\n";
-	std::cout<<"The type of b2 is "<<typeid(b2).name()<<"\n";
+	std::cout<<"The type of b1 is "<<typeid(b1).name()<<std::endl;
+	std::cout<<"The type of b2 is "<<typeid(b2).name()<<std::endl;
 
 	//b1->printSize(); // Error, base class has no printSize() function
 	//b2->printLength(); // Error, base class has no printLength() function
@@ -147,14 +147,14 @@ int main()
 	if(vecContainer* temp = dynamic_cast<vecContainer*>(b1)) // assignment + nullptr test
 		temp->printSize(); // prints 5
 
-	if(dynamic_cast<arrayContainer*>(b1)!=nullptr) // Evaluates to nullptr
-		dynamic_cast<arrayContainer*>(b1)->printLength();
+	if(arrayContainer* temp = dynamic_cast<arrayContainer*>(b1)) // Evaluates to nullptr
+		temp->printLength();
 
-	if(dynamic_cast<vecContainer*>(b2)!=nullptr) // Evaluates to nullptr
-		dynamic_cast<vecContainer*>(b2)->printSize();
+	if(vecContainer* temp = dynamic_cast<vecContainer*>(b2)) // Evaluates to nullptr
+		temp->printSize();
 
-	if(dynamic_cast<arrayContainer*>(b2)!=nullptr)
-		dynamic_cast<arrayContainer*>(b2)->printLength(); // prints 7
+	if(arrayContainer* temp = dynamic_cast<arrayContainer*>(b2))
+		temp->printLength(); // prints 7
 
 	}
 
@@ -176,17 +176,21 @@ int main()
 	delete b2;
 	}
 
-	// dynamic_cast for references
+	// dynamic_cast raises std::bad_cast exception when the run-time check performed on references
+	// to polymorphic class types fails.
 	if(1){
 		vecContainer v1(5); // 5 elements
-		Container& c = dynamic_cast<Container&> (v1); // OK v1 contains a complete Container object
-		std::cout<<"Size = "<<c.returnSize()<<"\n";
+		Container& c1 = dynamic_cast<Container&> (v1); // OK v1 contains a complete Container object
+		std::cout<<"Size = "<<c1.returnSize()<<std::endl;
 
 		try{
-			arrayContainer& ac = dynamic_cast<arrayContainer&> (v1); // std::bad_cast
-			ac.printLength();
+			arrayContainer v2(2);
+			Container& c2 = dynamic_cast<Container&> (v2);
+			vecContainer& ac = dynamic_cast<vecContainer&> (c2);
+			// std::bad_cast raised since arrayContainer is an incomplete object of vecContainer
+			ac.printSize();
 		}catch(const std::exception& e){
-			std::cerr<<"Dynamic cast failed "<<e.what()<<std::endl;
+			std::cout<<"Dynamic cast failed "<<e.what()<<std::endl;
 		}
 	}
 
