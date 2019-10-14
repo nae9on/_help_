@@ -24,7 +24,7 @@
 class char_icompare{
 public:
 	char_icompare() = default;
-	bool operator()(const char& c1, const char&c2){
+	bool operator()(const char& c1, const char&c2) const{
 		if(std::toupper(c1)!=std::toupper(c2))
 			return c1<c2;
 		else
@@ -35,7 +35,8 @@ public:
 class str_icompare{
 public:
 	str_icompare() = default;
-	bool operator()(const std::string& str1, const std::string& str2){
+	template<typename T>
+	bool operator()(T& str1, T& str2)const {
 		bool less_than = false;
 
 		auto it1 = str1.cbegin();
@@ -52,7 +53,7 @@ public:
 	}
 };
 
-int main(){
+int equality_vs_equivalence(){
 
 	std::string s1{"xyZ"}, s2{"XYZ"}, s3{"xYz"}, s4{"xyZpo"};
 	std::cout<<"String compare = "<<s1.compare(s2)<<"\n"; // s1>s2 as 'x'=97 and 'X'=65 in ASCII
