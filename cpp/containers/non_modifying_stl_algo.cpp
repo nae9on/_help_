@@ -157,6 +157,9 @@ int non_modifying_stl_algo(){
 	 * Compares the elements in the range [first1,last1) with those in the range beginning at
 	 * first2, and returns the first element of both sequences that does not match.
 	 *
+	 * The elements are compared using operator== (or pred). The function returns a pair of
+	 * iterators to the first element in each range that does not match.
+	 *
 	 * clearly input iterators will suffice.
 	 */
 	std::vector<int> subseq4{10,1,13,5,11};
@@ -175,6 +178,8 @@ int non_modifying_stl_algo(){
 	 * Compares the elements in the range [first1,last1) with those in the range beginning at
 	 * first2, and returns true if all of the elements in both ranges match.
 	 *
+	 * The elements are compared using operator== (or pred)
+	 *
 	 * clearly input iterators will suffice.
 	 */
 	std::vector<int> mycopy(myvec.cbegin(),myvec.cend());
@@ -187,5 +192,3 @@ int non_modifying_stl_algo(){
 
 	return 0;
 }
-
-
