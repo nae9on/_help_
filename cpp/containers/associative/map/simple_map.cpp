@@ -32,9 +32,10 @@ int simple_map()
 	myMap.insert(std::make_pair("Mom",biography()));
 
 	// Change value associated to a particular key.
-	if(myMap.find("Ali")!=myMap.end()) {
-		myMap["Ali"].setName("Ali Hussain Kadar");
-		myMap["Ali"].setAge(29);
+	auto it = myMap.find("Ali");
+	if(it!=myMap.end()) {
+		it->second.setName("Ali Hussain Kadar");
+		it->second.setAge(29);
 	}
 
 	/*
@@ -46,8 +47,7 @@ int simple_map()
 	 */
 
 	// Example: try to insert an already existing key.
-	biography x = biography(); x.setName("x"); x.setAge(100);
-	if(!myMap.insert(std::make_pair("Ali",x)).second){
+	if(!myMap.insert(std::make_pair("Ali",biography("x",100))).second){
 		std::cout<<"Key Ali already exists.\n";
 	}
 
@@ -57,16 +57,17 @@ int simple_map()
 	}
 
 	// Be careful of accidently creating a key value pair as
+	// Never use operator[] to insert a new pair (refer Scott#24)
 	myMap["Accidental name"].setAge(100);
 
 	// In order to check if a key exists in the map use find member function.
 	// Accessing key AliK which does not exist would do nothing.
-	if(myMap.find("AliK") == myMap.end()) {
+	if(myMap.find("AliK")==myMap.cend()) {
 		std::cout << "AliK key does not exist.\n";
 	}
 
 	// Accessing key Dad.
-	if(myMap.find("Dad") != myMap.end()) {
+	if(myMap.find("Dad")!=myMap.end()) {
 		std::cout << "Dad key exists.\n";
 	}
 

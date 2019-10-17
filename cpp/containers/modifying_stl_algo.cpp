@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <numeric> //std::iota
 
 #include <algorithm>
 
@@ -105,7 +106,8 @@ int modifying_stl_algo(){
 	 * respective elements in the range beginning at first2.
 	 */
 	std::vector<int> vec1{10,1,4,5,9,9,11,4,5,9,9};
-	std::vector<int> vec2(vec1.size()); std::iota(vec2.begin(),vec2.end(),1);
+	std::vector<int> vec2(vec1.size());
+	std::iota(vec2.begin(),vec2.end(),1);
 	std::swap_ranges(vec1.begin(),vec1.end(),vec2.begin());
 	for(const auto& elem : vec1) std::cout<<elem<<" ";
 	std::cout<<"\n";
