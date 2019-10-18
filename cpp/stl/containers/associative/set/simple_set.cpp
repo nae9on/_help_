@@ -26,7 +26,7 @@ int simple_set(){
 
 	std::cout<<"In main simple_set.cpp\n";
 
-	std::set<double> setd({5,3,7,9,2});
+	std::set<double> setd({5,3,7,9,2,5,7});
 
 	for(const auto& elem : setd) std::cout<<elem<<" ";
 

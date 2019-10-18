@@ -30,9 +30,9 @@ template<typename T> void print_backward(T t){
 
 // find all occurrence
 template<typename C, typename IT = typename C::const_iterator, typename T = typename C::value_type>
-std::vector<unsigned> all_occurence(C t, T a){
-	std::vector<unsigned> index;
-	unsigned itr{0};
+std::vector<size_t> all_occurence(C t, T a){
+	std::vector<size_t> index;
+	size_t itr{0};
 	for(IT it = t.cbegin(); it != t.cend(); ++it, ++itr){
 		if(*it==a) index.push_back(itr);
 	}

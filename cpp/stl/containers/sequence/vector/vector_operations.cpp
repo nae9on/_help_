@@ -73,7 +73,7 @@ int vector_operations(){
 	print_vec(vec3);
 	std::cout<<"\nvec3 copied to vec2";
 	vec2.assign(vec3.cbegin(),vec3.cend());
-	//std::copy(vec3.cbegin(),vec3.cend(),vec2.begin()); // bad-idea if vec3.size() > vec2.size()
+	//std::copy(vec3.cbegin(),vec3.cend(),vec2.begin()); // bad-idea if vec3.size() != vec2.size()
 	std::cout<<"\nvec2 = ";
 	print_vec(vec2);
 
@@ -92,9 +92,9 @@ int vector_operations(){
 	std::cout<<"\nvec1 = ";
 	print_vec(vec1);
 
-	// Concatenating two vectors using std::back_inserter
+	// Concatenating two vectors
 	std::vector<int> vecof10(5,10);
-	vecof10.insert(vecof10.end(),vec3.cbegin(),vec3.cend());
+	vecof10.insert(vecof10.end(),vec1.cbegin(),vec1.cend());
 	std::cout<<"\nvecof10 = vecof10 + vec1 = ";
 	print_vec(vecof10);
 
