@@ -16,7 +16,7 @@ template<typename T>
 class square{
 	public:
 	square() = default;
-	T operator()(T x){
+	T operator()(const T& x) const{
 		return x*x;
 	}
 };
@@ -25,7 +25,7 @@ template<typename T>
 class sum{
 	public:
 	sum() = default;
-	T operator()(T x, T y){
+	T operator()(const T& x, const T& y) const{
 		return x+y;
 	}
 };
@@ -36,7 +36,7 @@ int modifying_stl_algo(){
 	std::set<int> myset(myvec.cbegin(),myvec.cend());
 
 	for(const auto& elem : myvec) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************1\n";
 
 	/*
 	 * std::transform
@@ -54,13 +54,13 @@ int modifying_stl_algo(){
 	it = std::transform(myvec.cbegin(),myvec.cend(),veccopy1.cbegin(),veccopy1.begin(), //usage 2
 																  (sum<int>()));
 	for(const auto& elem : veccopy1) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************2\n";
 
 
 
 
 	/*
-	 * std::copy
+	 * std::copy (std::copy_if uses a predicate)
 	 * Copies the elements in the range [first,last) into the range beginning at result.
 	 *
 	 * std::reverse_copy
@@ -83,7 +83,7 @@ int modifying_stl_algo(){
 	std::vector<int> veccopy2(myvec.size());
 	it = std::reverse_copy(myvec.cbegin(),myvec.cend(),veccopy2.begin());
 	for(const auto& elem : veccopy2) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************3\n";
 
 
 
@@ -106,13 +106,13 @@ int modifying_stl_algo(){
 	 * respective elements in the range beginning at first2.
 	 */
 	std::vector<int> vec1{10,1,4,5,9,9,11,4,5,9,9};
-	std::vector<int> vec2(vec1.size());
+	std::vector<int> vec2(vec1.size()+10);
 	std::iota(vec2.begin(),vec2.end(),1);
 	std::swap_ranges(vec1.begin(),vec1.end(),vec2.begin());
 	for(const auto& elem : vec1) std::cout<<elem<<" ";
 	std::cout<<"\n";
 	for(const auto& elem : vec2) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************4\n";
 
 
 
@@ -125,7 +125,7 @@ int modifying_stl_algo(){
 	 */
 	std::rotate(vec1.begin(),vec1.begin()+1,vec1.end());
 	for(const auto& elem : vec1) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************5\n";
 
 
 
@@ -140,7 +140,7 @@ int modifying_stl_algo(){
 	//std::partition(myvec.begin(),myvec.end(),[](int x){return x%2;});
 	std::stable_partition(myvec.begin(),myvec.end(),[](int x){return x%2;});
 	for(const auto& elem : myvec) std::cout<<elem<<" ";
-	std::cout<<"\n**************************************\n";
+	std::cout<<"\n**************************************6\n";
 
 	return 0;
 }
