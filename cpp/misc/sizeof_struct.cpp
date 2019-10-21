@@ -1,5 +1,5 @@
 /*
- * sizeof.cpp
+ * sizeof_struct.cpp
  *
  *  Created on: Oct 11, 2019
  *      Author: akadar
@@ -44,7 +44,7 @@ struct Empty {};
 struct Base { int a; };
 struct Derived : Base { int b; };
 
-int main_sizeof()
+int sizeof_struct()
 {
 	int x{1};
 	int* itr = &x;

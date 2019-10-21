@@ -1,5 +1,5 @@
 /*
- * uniform1d.cpp
+ * random_numbers_ex.cpp
  *
  *  Created on: Oct 17, 2019
  *      Author: akadar

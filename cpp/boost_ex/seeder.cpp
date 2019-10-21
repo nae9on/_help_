@@ -98,7 +98,7 @@ public:
 
 }
 
-int main() {
+int seeder() {
 
 	myRandom::surfaceSeeder surfSeed(7);
 	myRandom::volumeSeeder volSeed(15);
