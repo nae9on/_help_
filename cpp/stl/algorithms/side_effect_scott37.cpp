@@ -30,7 +30,7 @@ struct point{
 };
 
 /*
- * According to Scott#36, std::accumulate forbids side effects in the function object
+ * According to Scott#37, std::accumulate forbids side effects in the function object
  * passed  (i.e modification of the member variables of the passed functor is not allowed).
  * However, it seems to work pretty well here! Why?
  */
@@ -41,7 +41,7 @@ public:
 		sum = 0;
 		n = 0;
 	}
-	void operator()(const value_type& y){ // required only for for_each
+	void operator()(const value_type& y){ // A unary function object required by for_each
 		++n;
 		sum = sum + y; // adapt here for a different functionality
 	}
@@ -121,7 +121,7 @@ int side_effect_scott37(){
 	std::cout<<"Average point = ("<<average_point.x<<", "<<average_point.y<<")\n";
 
 	// Alternative using for_each
-	point average_point2 = std::for_each(pp.cbegin(),pp.cend(),avg_obj<point,point>()).result();
+	point average_point2{std::for_each(pp.cbegin(),pp.cend(),avg_obj<point,point>()).result()};
 	std::cout<<"Average point using for_each = ("<<average_point2.x<<", "<<average_point2.y<<")\n";
 
 	return 0;

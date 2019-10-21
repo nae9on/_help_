@@ -12,7 +12,7 @@
 #include <fstream>
 
 template<typename C, typename F, typename T = typename C::value_type>
-void write(C& c, F& ofs){
+void write_data(C& c, F& ofs){
 
 	ofs<<std::scientific; // this manipulator will stick
 
@@ -37,12 +37,8 @@ int basic_out(){
 
 	std::vector<std::string> s{"I","am", "cpp"};
 
-	write(x,ofs);
-	write(s,ofs);
+	write_data(x,std::cout); // passing the default output stream object std:cout
+	write_data(s,ofs); // passing the ofs stream object attached to "data.txt"
 
 	return 0;
 }
-
-
-
-

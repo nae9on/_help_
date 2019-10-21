@@ -32,6 +32,8 @@ int non_modifying_stl_algo(){
 	 * Applies predicate function to each of the elements in the range [first,last).
 	 *
 	 * clearly input iterators will suffice.
+	 *
+	 * Note std::for_each returns a function object.
 	 */
 	std::for_each(myvec.cbegin(),myvec.cend(),(myprint()));
 	std::cout<<"\n";

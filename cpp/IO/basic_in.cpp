@@ -35,7 +35,3 @@ int basic_in(){
 
 	return 0;
 }
-
-
-
-
