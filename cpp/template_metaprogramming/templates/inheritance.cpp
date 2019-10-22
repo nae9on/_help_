@@ -10,16 +10,15 @@
 
 #include <iostream>
 #include <string>
-#include <typeinfo>
 
 // Parameterized type Point2D
 template<typename T = double, short attr_ = 2>
 class Point2D {
 public:
-	Point2D(): px(0), py(0), attr(attr_) {
+	Point2D(): px{0}, py{0}, attr{attr_} {
 		std::cout << "Default Point2D object constructor called" << "\n";
 	}
-	Point2D(T x, T y) : px(x), py(y), attr(attr_) {
+	Point2D(T x, T y) : px{x}, py{y}, attr{attr_} {
 		std::cout << "Point2D object constructor called" << "\n";
 	}
 	void printPoint() {
@@ -57,18 +56,14 @@ template<typename T, short attr_> void Point2D<T,attr_>::setpy(T py_) {
 template<typename T = double, typename T2 = double, short attr_ = 3>
 class Point3D : public Point2D<T,2> {
 public:
-	Point3D(T x, T y, T2 z) : pz(z), attr(attr_) {
-		Point2D<T,2>::setpx(x);
-		Point2D<T,2>::setpy(y);
+	Point3D(T x, T y, T2 z): Point2D<T,2>(x,y), pz{z}, attr{attr_} {
 		std::cout << "Point3D object constructor called" << "\n";
 	}
 	void printPoint() {
 		Point2D<T,2>::printPoint();
 		std::cout << " Z " << pz << "\n";
 	}
-	T getpz() {
-		return pz;
-	}
+	T2 getpz();
 	void setpz(T pz_) {
 		pz = pz_;
 	}
@@ -77,7 +72,12 @@ private:
 	short attr;
 };
 
-int main_inheritance() {
+template<typename T, typename T2, short attr_>
+T2 Point3D<T,T2,attr_>::getpz() {
+	return pz;
+}
+
+int inheritance() {
 
 	Point2D<int> P2D(5,5);
 	Point3D<double, unsigned, 3> P3D(99.9,99.9,10);

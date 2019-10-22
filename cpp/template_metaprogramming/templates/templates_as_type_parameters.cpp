@@ -17,16 +17,6 @@
 #include <list>
 #include <typeinfo>
 
-
-/*
- * Example: passing templates as type parameters
- * In the example agreegate2 in value_type.cpp, the ::value_type of STL
- * containers is used to obtain the return type in the aggregator. Furthermore,
- * auto makes life easy.
- * However, it is possible to define the same aggregator (without using modern C++
- * features) by passing templates as type parameters.
- */
-
 /*
  * Explanation
  * Here a container type needs to be passed which itself is a template dependent on
@@ -103,7 +93,7 @@ std::string aggreegate(const std::vector<char, std::allocator<char>>& c, char in
 	return sum;
 }
 
-int main_templates_as_type_parameters() {
+int templates_as_type_parameters() {
 
 	// Note normally allocator type defaults to allocator<T>
 	std::vector<int,std::allocator<int>> x1{10,20,30};

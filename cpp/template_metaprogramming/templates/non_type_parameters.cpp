@@ -4,27 +4,29 @@
  *  Created on: July 25, 2019
  *      Author: akadar
  *
- * This script explains template non-type parameters.
+ * This example demonstrates template non-type parameters.
  *
  * template non-type parameters (tntp) are called as value template arguments
  * in the book "A tour of C++" by Bjarne Stroustrup.
  *
- * A non-type template argument provided within a template argument list is
- * an expression whose value can be determined at compile time. Such arguments
- * must be constant expressions, addresses of functions or objects with external
- * linkage, or addresses of static class members.
- *
- * Permissible values of tntp are integral types (float, double, char etc are not allowed)
- * pointer to objects or functions, lvalue reference to object or functions, pointer to
- * class member functions, std::nullptr_t
+ * Permissible values of tntp are integral types (i.e. float, double etc are not allowed),
+ * pointer types, enum types etc. Extensive list is available here
+ * https://en.cppreference.com/w/cpp/language/template_parameters
  */
 
 #include <iostream>
 
+enum class X{};
+
+template<typename T, int N> void f(){}
+template<typename T, char N> void f(){}
+// template<typename T, float N> void f(){} // Not allowed
+template<typename T, float* fptr> void f(){}
+template<typename T, X x> void f(){}
 
 /*
- * Note the default arguments in the line below. For multiple template arguments,
- * all arguments after the first default argument must have default arguments.
+ * Note the default's in the line below. For multiple template arguments,
+ * all arguments after the first default must have default's.
  */
 
 template <typename T=double, unsigned N=5>
@@ -47,11 +49,11 @@ public:
 	}
 private:
 	unsigned size;
-	T* data; // array is allocated on the heap
-	char name[N]; // array is allocated on the stack
+	T* data; // dynamic array is allocated on the heap
+	char name[N]; // static array is allocated on the stack
 };
 
-int main_non_type()
+int non_type_parameters()
 {
 	std::cout<<"In main\n";
 	char string[5] {'a','b','c','d','e'};
@@ -59,13 +61,13 @@ int main_non_type()
 	/*
 	 * Note: A template value argument must be a constant expression, the reason
 	 * being that non-constant expressions could change during run-time and therefore
-	 * would require instantiation of a new template which is not possible durin run-time
+	 * would require instantiation of a new template which is not possible during run-time
 	 * because templates are compile time mechanisms.	 *
 	 */
 	buffer<int,5> vec2(10,string);
 	buffer<int,6> vec3(10,string); // vec2 and vec3 are of different types.
 
-	// Default value argument used
+	// Default used for value argument
 	buffer<float> vec4(11,string);
 
 	// error type/value mismatch, expected a type, got ‘5’
@@ -74,7 +76,7 @@ int main_non_type()
 	// default arguments used
 	buffer<> vec6(12,string);
 	// In the above, the bracket <> must be present but
-	// can be left empty when default arguments are available
+	// can be left empty when default's are available
 
 	// error missing template arguments.
 	//buffer vec7(8,string);

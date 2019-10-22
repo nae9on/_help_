@@ -63,7 +63,7 @@ private:
 	P pressure;
 };
 
-int main_reuse_template_parameters(){
+int reuse_template_parameters(){
 
 	// explicit type parameters provided
 	coordinates<double> c1;

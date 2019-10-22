@@ -5,7 +5,7 @@
  *      Author: akadar
  *
  *  Template recursion is a useful optimization technique that can be used to compute
- *  factorials, fibonacci numbers etc . The recursion is evaluated at compile time thus
+ *  factorials, fibonacci numbers etc. The recursion is evaluated at compile time thus
  *  resulting in no run time overhead.
  */
 
@@ -14,8 +14,8 @@
 
 using my_int = unsigned long long int;
 
-#define gettime std::chrono::system_clock::now // is there a better way ?
-#define dt std::chrono::duration<double> // is there a better way ?
+using clk = std::chrono::system_clock;
+using dt = std::chrono::duration<double>;
 
 // Fibonacci version 1 using function template
 template<my_int itr> my_int fib1(){
@@ -30,43 +30,34 @@ template<> my_int fib1<0>(){
 		return 0;
 }
 
-// Fibonacci version 2 using class template
+// Fibonacci version 2 using struct template and enum
 template<my_int N> struct fib2{
-    enum : my_int
-    {
-        value = fib2<N-1>::value + fib2<N-2>::value
-    };
+    enum: my_int { value = fib2<N-1>::value + fib2<N-2>::value };
 };
 
 template<> struct fib2<1>{
-    enum : my_int
-    {
-        value = 1
-    };
+    enum: my_int { value = 1 };
 };
 
 template<> struct fib2<0>{
-    enum : my_int
-    {
-        value = 0
-    };
+    enum: my_int { value = 0 };
 };
 
-// Fibonacci version 3 using class template
+// Fibonacci version 3 using struct template and static const
 template<my_int N> struct fib3{
-	const static my_int value = fib3<N-1>::value + fib3<N-2>::value;
+	static const my_int value = fib3<N-1>::value + fib3<N-2>::value;
 };
 
 template<> struct fib3<1>{
-	const static my_int value = 1;
+	static const my_int value = 1;
 };
 
 template<> struct fib3<0>{
-	const static my_int value = 0;
+	static const my_int value = 0;
 };
 
 // Fibonacci version 4 without using templates
-my_int fib_noTemp(my_int N){
+my_int fib_noTemp(const my_int& N){
 	if (N==0)
 		return 0;
 	else if(N==1)
@@ -85,19 +76,19 @@ int main_fibonacci(){
 	 * is extremely slow due to pass-by-copy of the return value.
 	 */
 
-	auto t1 = gettime();
+	auto t1 = clk::now();
 	std::cout<<"\nfib1 = "<<fib1<40>()<<"\n";
 
-	auto t2 = gettime();
+	auto t2 = clk::now();
 	std::cout<<"\nfib2 = "<<fib2<40>::value<<"\n";
 
-	auto t3 = gettime();
+	auto t3 = clk::now();
 	std::cout<<"\nfib3 = "<<fib3<40>::value<<"\n";
 
-	auto t4 = gettime();
+	auto t4 = clk::now();
 	std::cout<<"\nfib_noTemp = "<<fib_noTemp(40)<<"\n";
 
-	auto end = gettime();
+	auto end = clk::now();
 
 	std::cout << "\nelapsed time fib1: " << dt(t2-t1).count() << "s\n";
 	std::cout << "elapsed time fib2: " << dt(t3-t2).count() << "s\n";

@@ -29,7 +29,7 @@ template <typename T> void test(T*){
 	std::cout<<"local count = "<<count<<std::endl;
 }
 
-int main_numeca()
+int numeca()
 {
 	std::cout<<"In numeca\n";
 	static int count = 0;

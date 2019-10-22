@@ -43,7 +43,7 @@ int cv_qualifier(){
 
 
 	deduce(ip); // calls deduce<int*>
-	deduce(jp); // calls deduce<int const*>, const is dropped with pass by copy
+	deduce(jp); // calls deduce<int*>, const is dropped with pass by copy
 	deduce_ref(ip); // calls deduce_ref<int*>
 	deduce_ref(jp); // calls deduce_ref<int const*> // const is kept with pass by ref
 
