@@ -81,4 +81,6 @@ int sizeof_struct()
     std::cout << "size of X:                        " << sizeof(X)    << "\n";
 	std::cout << "size of Y:                        " << sizeof(Y)    << "\n";
 	std::cout << "size of Z:                        " << sizeof(Z)    << "\n";
+
+	return 0;
 }

@@ -30,9 +30,9 @@ int auto_literals()
 
 	// Type deduction of integer literals
 	auto x_int = 10; x_int = 10.5; // (no suffix) defines int
-	auto x_uint = 10u; x_uint = 10.5; // for unsigned int, unsigned long int or unsigned long long int
-	auto x_lint = 10l; x_lint = 10.5; // for long int or long long int
-	auto x_ulint = 10ul; x_ulint = 10.5; // for unsigned long int or unsigned long long int
+	auto x_uint = 10u; x_uint = 10.5; // suffix u = unsigned int
+	auto x_lint = 10l; x_lint = 10.5; // suffix l = long int
+	auto x_ulint = 10ul; x_ulint = 10.5; // suffix ul = unsigned long int
 	std::cout<<"x_int = "<<-1*x_int<<", size = "<<sizeof(x_int)<<" bytes"<<std::endl;
 	std::cout<<"x_uint = "<<-1*x_uint<<", size = "<<sizeof(x_uint)<<" bytes"<<std::endl;
 	std::cout<<"x_lint = "<<-1*x_lint<<", size = "<<sizeof(x_lint)<<" bytes"<<std::endl;

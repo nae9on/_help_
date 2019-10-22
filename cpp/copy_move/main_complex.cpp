@@ -1,5 +1,5 @@
 /*
- * main.cpp
+ * main_complex.cpp
  *
  *  Created on: May 26, 2019
  *      Author: akadar
@@ -27,11 +27,11 @@ complex_vector square(const complex_vector& v1){
 	std::cout<<"In square\n";
 	complex_vector temp(v1.n);
 	for (size_t i=0; i<v1.n; ++i) temp.data[i] = v1.data[i]*v1.data[i];
-	std::cout<<"Summed up in temporary\n";
+	std::cout<<"Squared in temporary\n";
 	return temp;
 }
 
-int main() {
+int main_complex() {
 
 	complex_vector p1(5);
 

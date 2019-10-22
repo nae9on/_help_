@@ -8,6 +8,8 @@
  * https://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-
  */
 
+#include <iostream>
+
 int lvalue_rvalue(){
 
 	/*
@@ -25,12 +27,24 @@ int lvalue_rvalue(){
 	int& y1 = x1; //OK, non-const lvalue-ref can bind to an lvalue.
 	const int& y2 = x1; //OK, const lvalue-ref can bind to an lvalue.
 	//int& y2 = 10; // Error, non-const lvalue-ref cannot bind to an rvalue.
-	const int& y3 = 10; //OK
+	const int& y3 = 10; //OK, const lvalue-ref can bind to an rvalue.
 
 	// What rvalue-ref can bind to?
 	int&& z1 = 10; //OK, const/non-const rvalue-ref can bind to an rvalue.
 	//int&& z2 = x1; //Error, const/non-const rvalue-ref cannot bind to an lvalue.
-	int&& z3 = x1 + x1; //OK, x1 + x1 is a temporary and thus an rvalue
+	int&& z3 = x1 + x1; //OK, x1 + x1 is a temporary and thus an rvalue.
+
+	/*
+	 * std::move removes the l-valueness and acts like an l-value to r-value cast
+	 */
+	int&& z2 = std::move(x1); // Now OK
+
+	(void) y1; // cast to void
+	(void) y2; // cast to void
+	(void) y3; // cast to void
+	(void) z1; // cast to void
+	(void) z2; // cast to void
+	(void) z3; // cast to void
 
 	return 0;
 }
