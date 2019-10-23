@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <cmath>
 
 double mysqr(double x){
 	return x*x;
@@ -16,6 +17,11 @@ double mysqr(double x){
 // Unlike const, constexpr can also be applied to functions and class constructors.
 constexpr double mysqr2(double x){
 	return x*x;
+}
+
+constexpr double sqroot(double x){
+	using std::sqrt;
+	return sqrt(x);
 }
 
 int basic(){
@@ -30,9 +36,18 @@ int basic(){
 	//constexpr int ysqr = mysqr2(y); // Error, indicates mysqr2(y) is not a constant-expression.
 
 	const int z = 10;
-	constexpr int zsqr = mysqr2(z); // OK, zsqr becomes a constexpr.
+	constexpr int zsqr = mysqr2(z); // OK, mysqr2(z) is a constant-expression.
+
+	const int introot = sqroot(4.4);
+	//const double introot = sqroot(4.4); // introot is not constexpr, why?
+	constexpr double root = introot;
 
 	std::cout<<"End of main\n";
-	std::cout<<xx<<xsqr<<y<<zsqr;
+
+	(void) xx;
+	(void) xsqr;
+	(void) y;
+	(void) zsqr;
+	(void) root;
 	return 0;
 }

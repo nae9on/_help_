@@ -10,8 +10,8 @@
 
 using my_int = unsigned long long int;
 
-#define gettime std::chrono::system_clock::now // is there a better way ?
-#define dt std::chrono::duration<double> // is there a better way ?
+using clk = std::chrono::system_clock;
+using dt = std::chrono::duration<double>;
 
 /*
  * // Fibonacci version 1 using constexpr function.
@@ -60,22 +60,22 @@ int fibonacci(){
 
 	const int arg1 = 40;
 
-	auto t1 = gettime();
+	auto t1 = clk::now();
 	constexpr my_int x1 = fib1(arg1); // fib1onacci evaluated at compile-time
 	std::cout<<"x1 = "<<x1<<"\n";
-	auto t2 = gettime();
+	auto t2 = clk::now();
 
-	auto t3 = gettime();
+	auto t3 = clk::now();
 	int arg2 = arg1;
 	my_int x2 = fib1(arg2); // fib1onacci evaluated at run-time
 	std::cout<<"x2 = "<<x2<<"\n";
-	auto t4 = gettime();
+	auto t4 = clk::now();
 
-	auto t5 = gettime();
+	auto t5 = clk::now();
 	constexpr fib2<40> fib_obj;
 	constexpr my_int x3 = fib_obj.get_value(); // fibonacci evaluated at compile-time
 	std::cout<<"x3 = "<<x3<<"\n";
-	auto t6 = gettime();
+	auto t6 = clk::now();
 
 	std::cout<<"fib2<40> is a literal-type is "<<std::is_literal_type<fib2<40>>::value<<"\n";
 

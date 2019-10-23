@@ -62,12 +62,12 @@ int class_example(){
 
 	constexpr Z f; // OK
 	std::cout<<"Z is a literal-type is "<<std::is_literal_type<Z>::value<<"\n";
-    constexpr Z g = f; // OK f is constexpr
+    constexpr Z g = f; // OK f is a constexpr
 
 	constexpr int n = g.get();
 	g.print();
 
-	std::cout<<"\nn = "<<n<<"\n";
+	(void) n;
 
 	return 0;
 }

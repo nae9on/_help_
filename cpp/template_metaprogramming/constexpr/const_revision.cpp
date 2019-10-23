@@ -68,7 +68,15 @@ int const_revision(){
 
 	int ps = Test::getps();
 
-	std::cout<<a<<y<<z<<p1<<pmut<<p2<<ps;
+	(void) a;
+	(void) y;
+	(void) z;
+	(void) p1;
+	(void) pmut;
+	(void) p2;
+	(void) ps;
+
+	std::cout<<"End of main";
 
 	return 0;
 }
