@@ -9,7 +9,7 @@
  *  are said to follow the handle/body idiom.
  *
  *  For example, the adapter design pattern uses the handle/body idiom when wrapping a
- *  legacy class into an interface class.
+ *  legacy class to impedance match a client interface class.
  *
  *  How to realize handle/body idiom?
  *  1. Split a design class into two implementation classes.

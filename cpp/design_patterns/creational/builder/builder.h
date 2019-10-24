@@ -53,7 +53,10 @@ public:
 		e = e_;
 	}
 	virtual ~builder(){
-		if(e!=nullptr) delete e;
+		if(e!=nullptr) {
+			delete e;
+			e = nullptr;
+		}
 	}
 protected:
 	short seats;
@@ -74,9 +77,7 @@ public:
 	carBuilder returncarBuilder(){
 		return *this;
 	}
-	~carBuilder(){
-
-	}
+	~carBuilder(){}
 private:
 
 };
@@ -100,9 +101,7 @@ public:
 	truckBuilder returntruckBuilder(){
 		return *this;
 	}
-	~truckBuilder(){
-
-	}
+	~truckBuilder(){}
 private:
 	short capacity;
 };

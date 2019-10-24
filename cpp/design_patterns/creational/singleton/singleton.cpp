@@ -59,9 +59,7 @@ public:
 	}
 
 	// Note that the destructor cannot call resetHardware to avoid recursive loop.
-	~embeddedHardware(){
-
-	}
+	~embeddedHardware(){}
 
 private:
 

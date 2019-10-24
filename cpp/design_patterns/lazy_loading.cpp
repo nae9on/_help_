@@ -5,8 +5,8 @@
  *      Author: akadar
  *
  *  The idea of lazy loading is to defer object creation until demand.
- *  Note that lazy loading is also used in Singleton classes. Since, they permit lazy allocation
- *  and initialization Singleton classes consume less resources and thus preferred over global
+ *  Note that lazy loading is also used in Singleton classes. Since they permit lazy allocation
+ *  and initialization, Singleton classes consume less resources and thus preferred over global
  *  variables in many languages.
  *
  */
