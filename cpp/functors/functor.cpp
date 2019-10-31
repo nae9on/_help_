@@ -5,7 +5,7 @@
  *      Author: akadar
  *
  *  Example to demonstrate use of function objects as parameters to algorithms.
- *  A function object (sometimes referred to as policy object) carries data + efficiency
+ *  A function object (sometimes referred to as policy object) carries data + efficiency.
  */
 
 #include <iostream>
