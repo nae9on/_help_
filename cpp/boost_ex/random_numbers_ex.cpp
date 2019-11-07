@@ -87,7 +87,7 @@ private:
 	uniform_int_dist dists;
 };
 
-int main(){
+int random_numbers_ex(){
 
 	boost_real obj1(0,0,1);
 	boost_int obj2(0,-150, -100);
