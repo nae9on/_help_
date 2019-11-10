@@ -20,27 +20,33 @@ using boost::typeindex::type_id_with_cvr;
 
 template<typename T>
 void f(T& a){
-	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name()<<"\n";
+	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name();
+	std::cout<<", ParamType = "<<type_id_with_cvr<decltype(a)>().pretty_name()<<"\n";
 }
 
 template<typename T>
 void g(T&& a){
-	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name()<<"\n";
+	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name();
+	std::cout<<", ParamType = "<<type_id_with_cvr<decltype(a)>().pretty_name()<<"\n";
 }
 
 template<typename T>
 void h(T a){
-	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name()<<"\n";
+	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name();
+	std::cout<<", ParamType = "<<type_id_with_cvr<decltype(a)>().pretty_name()<<"\n";
 }
 
 template<typename T>
 void add(T a, T b) {
-	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name()<<"\n";
+	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name();
+	std::cout<<", ParamType = "<<type_id_with_cvr<decltype(a)>().pretty_name()<<"\n";
 }
 
 template<typename T>
 void add(std::initializer_list<T> l, T init) {
-	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name()<<"\n";
+	std::cout<<__func__<<", T = "<<type_id_with_cvr<T>().pretty_name();
+	std::cout<<", ParamType = "<<type_id_with_cvr<decltype(l)>().pretty_name()<<", "<<
+			type_id_with_cvr<decltype(init)>().pretty_name()<<"\n";
 }
 
 int type_deduction(){
@@ -54,18 +60,21 @@ int type_deduction(){
 	f(x1);
 	f(x2);
 	f(x3);
+	//f(1); // Err cannot bind non-const lvalue reference of type 'int&' to an rvalue of type 'int'
 
 	// Case 2
 	std::cout<<"Case 2\n";
 	g(x1);
 	g(x2);
 	g(x3);
+	g(1);
 
 	// Case 3
 	std::cout<<"Case 3\n";
 	h(x1);
 	h(x2);
 	h(x3);
+	h(1);
 
 	std::cout<<"**************************************************\n";
 

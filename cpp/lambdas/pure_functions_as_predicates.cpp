@@ -7,7 +7,7 @@
  * f(x,y) is a pure function if its return value can change only when x and/or y changes.
  *
  * Reference:
- * Item 39, Effective STL, Scott Meyers
+ * Item 39 "Make predicates pure functions", Effective STL, Scott Meyers
  */
 
 #include <iostream>
@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <numeric>
 
-unsigned t = 1;
+unsigned t = 5;
 
 /*
  * isLessThanTime is not a pure function and thus is a bad choice for being
