@@ -1,5 +1,5 @@
 /*
- * unique_pointer.cpp
+ * my_unique_ptr_ex.cpp
  *
  *  Created on: Aug 6, 2019
  *      Author: akadar
@@ -77,7 +77,7 @@ A1* func1(){
 	return ptr;
 }
 
-int unique_pointer(){
+int my_unique_ptr_ex(){
 	std::cout<<"In main\n";
 
 	// My basic solution.
