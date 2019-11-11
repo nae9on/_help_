@@ -10,19 +10,20 @@
 
 /*
  * problem 1. Memory Leak is solved.
- * problem 2. Unallocated memory access still persists.
- * std::unique_ptr provides a similar solution.
- *
+ * problem 2. Unallocated memory access is solved.
+ * However, it does not allow shared ownership (refer to std::weak_ptr)
  */
 
 #include <iostream>
 #include <memory>
 
-/* The my_unique_ptr class wraps a 'raw' C++ pointer, to manage
+/*
+ * my_unique_ptr class wraps a 'raw' C++ pointer, to manage
  * the lifetime of the object being pointed to.
  *
  */
-template <typename T> class my_unique_ptr{
+template <typename T>
+class my_unique_ptr{
 public:
 
 	my_unique_ptr(){
@@ -34,9 +35,9 @@ public:
 	}
 
 	/*
-	 * Copy constructor and copy assignment are disabled because for unique pointers
+	 * Copy constructor and copy assignment op are disabled because for unique pointers
 	 * ownership cannot be shared. However default move constructors and move assignment
-	 * are fine because wnership can be transferred.
+	 * are fine because ownership can be transferred/moved.
 	 */
 
 	// copy constructor disabled (same as for std::unique_ptr)
@@ -49,16 +50,23 @@ public:
 
 	my_unique_ptr<T>& operator=(my_unique_ptr<T>&& raw_) = default;
 
+	// member selection operator
 	T* operator->(){
 		return raw;
 	}
 
+	// dereference operator
 	T operator*(){
 		return *raw;
 	}
 
 	~my_unique_ptr(){
 		delete raw;
+	}
+
+	void reset(T* raw_){
+		delete raw;
+		raw = raw_;
 	}
 
 	// Other member functions must be overloaded.
@@ -78,15 +86,13 @@ A1* func1(){
 }
 
 int my_unique_ptr_ex(){
-	std::cout<<"In main\n";
 
-	// My basic solution.
 	my_unique_ptr<A1> ptr1(new A1(7));
 	std::cout<<"In A, x = "<<ptr1->x<<"\n";
 
-	my_unique_ptr<A1> ptr2(func1());
-	std::cout<<"In A, x = "<<ptr2->x<<"\n";
-
+	my_unique_ptr<A1> ptr2(nullptr);
+	ptr2.reset(func1());
+	std::cout<<"In A, x = "<<(*ptr2).x<<"\n";
 
 	// my_unique_ptr<A1> ptr3(ptr2); // Error, copy constructor disabled
 	// my_unique_ptr<A1> ptr4; ptr4 = ptr2; // Error, copy assignment disabled
@@ -94,6 +100,5 @@ int my_unique_ptr_ex(){
 	my_unique_ptr<A1> ptr5 = std::move(ptr2); // OK, move constructor called
 	my_unique_ptr<A1> ptr6; ptr6 = std::move(ptr2); // OK, move assignment called
 
-	std::cout<<"End main\n";
 	return 0;
 }

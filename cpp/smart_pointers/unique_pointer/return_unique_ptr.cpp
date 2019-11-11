@@ -30,24 +30,23 @@ private:
 	double data;
 };
 
-template<typename... T>
-auto make_widget(T&&... params){
-
-	auto lmb = [](UI* ptr){
+auto lmb = [](UI* ptr){
 		std::cout<<"In custom deleter using a state-less lambda\n";
 		delete ptr;
 	};
 
+template<typename... T>
+std::unique_ptr<UI,decltype(lmb)> make_widget(T&&... params){
+
 	std::unique_ptr<UI,decltype(lmb)> temp(nullptr, lmb);
 
-	//temp = new Wid(std::forward<T>(params)...); // Error
-
+	// Assign a derived class object
 	temp.reset(new Wid(std::forward<T>(params)...));
 
 	return temp;
 }
 
-int main(){
+int return_unique_ptr(){
 
 	auto widgetptr = make_widget("button",10);
 

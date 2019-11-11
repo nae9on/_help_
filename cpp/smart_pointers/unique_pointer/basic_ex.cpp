@@ -37,7 +37,9 @@ int basic_ex(){
 
 	// using smart pointers
 	{
-		std::unique_ptr<X> sptr(new X(10));
+		std::unique_ptr<X> sptr(nullptr);
+		//sptr = new X(10); // Error implicit conversion from raw to unique_ptr not allowed
+		sptr.reset(new X(10));
 		std::cout<<"Size of unique_ptr = "<<sizeof(decltype(sptr))<<"\n";
 		sptr->outData();
 		(*sptr).outData();
