@@ -1,5 +1,5 @@
 /*
- * basic_ex.cpp
+ * basic_shared_ex.cpp
  *
  *  Created on: Nov 11, 2019
  *      Author: akadar
@@ -12,11 +12,11 @@ class X1{};
 
 class Y{
 public:
-	Y(){std::cout<<"ctor called\n";}
-	~Y(){std::cout<<"dtor called\n";}
+	Y(){std::cout<<"Y::ctor called\n";}
+	~Y(){std::cout<<"Y::dtor called\n";}
 };
 
-int basic_ex2(){
+int basic_shared_ex(){
 
 	std::unique_ptr<X1> uptr(new X1);
 	//std::unique_ptr<X1> uptr_copy(uptr); // Error

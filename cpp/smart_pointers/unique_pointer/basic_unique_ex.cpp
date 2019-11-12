@@ -1,5 +1,5 @@
 /*
- * basic_ex.cpp
+ * basic_unique_ex.cpp
  *
  *  Created on: 11 Nov 2019
  *      Author: ahkad
@@ -25,7 +25,7 @@ private:
 
 int X::count = 0;
 
-int basic_ex(){
+int basic_unique_ex(){
 
 	// using C++98 style new and delete
 	{
