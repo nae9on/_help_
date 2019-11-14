@@ -1,5 +1,5 @@
 /*
- * return_unique_ptr.cpp
+ * factory_function.cpp
  *
  *  Created on: 11 Nov 2019
  *      Author: ahkad
@@ -57,7 +57,7 @@ std::unique_ptr<UI> make_widget_simple(T&&... params){
 	return temp;
 }
 
-int return_unique_ptr(){
+int factory_function(){
 
 	auto widgetptr1 = make_widget("button",10);
 
