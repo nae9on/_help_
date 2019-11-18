@@ -13,7 +13,7 @@ void f(){
 	std::cout<<boost::typeindex::type_id_with_cvr<T>().pretty_name()<<"\n";
 }
 
-int main(){
+int type_deduction(){
 
 	f<int const* const>();
 

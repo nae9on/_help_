@@ -12,8 +12,8 @@
 
 class Button{ // Product interface class
 public:
-	virtual void render() const =0;
-	virtual void onClick()const =0;
+	virtual void render() const=0;
+	virtual void onClick() const=0;
 	virtual ~Button(){}
 private:
 	// No data members!

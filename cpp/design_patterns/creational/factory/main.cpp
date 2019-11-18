@@ -21,7 +21,7 @@ class Dialog{
 public:
 	void render(){
 		// Abstract button
-		Button* okButton = createButton();
+		Button* okButton = this->createButton();
 		okButton->render();
 		okButton->onClick();
 		std::cout<<"\n";

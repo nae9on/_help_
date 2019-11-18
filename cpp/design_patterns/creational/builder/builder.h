@@ -40,6 +40,7 @@ public:
 };
 
 // Abstract builder class
+// Declare all the common construction steps here
 class builder{
 public:
 	builder(){
@@ -55,7 +56,6 @@ public:
 	virtual ~builder(){
 		if(e!=nullptr) {
 			delete e;
-			e = nullptr;
 		}
 	}
 protected:
@@ -63,7 +63,7 @@ protected:
 	engine* e;
 };
 
-// Concrete builder class
+// Concrete builder class for each product representation
 class carBuilder: public builder{
 public:
 	carBuilder(){
@@ -82,7 +82,7 @@ private:
 
 };
 
-// Concrete builder class
+// Concrete builder class for each product representation
 class truckBuilder: public builder{
 public:
 	truckBuilder(){

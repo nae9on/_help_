@@ -66,7 +66,7 @@ public:
 	}
 private:
 	double radius;
-	ellipse e;
+	ellipse e; // This is composition
 };
 
 int object_adapter_pattern(){

@@ -10,8 +10,8 @@
  *
  * This is achieved by breaking a large constructor used to build a complex object
  * of some class into a sequence of steps (functions) which the client code can execute in a
- * specific order to create different objects. This allows segregating the complex object
- * construction code from the main business logic of the class supporting single responsibility
+ * specific order to create different objects. This allows separating the complex object
+ * construction code from the main business logic of the class advocating single responsibility
  * principle.
  *
  * Example illustrating how a builder design pattern can be used for creating cars (both ordinary
@@ -53,18 +53,18 @@ int builder(){
 
 	// Ordinary car
 	std::unique_ptr<carBuilder> c1(new carBuilder());
-	d.get()->makeCar(c1.get());
-	c1.get()->print();
+	d->makeCar(c1.get());
+	c1->print();
 
 	// Turbo car
 	std::unique_ptr<carBuilder> c2(new carBuilder());
-	d.get()->makeSUV(c2.get());
-	c2.get()->print();
+	d->makeSUV(c2.get());
+	c2->print();
 
 	// Truck
 	std::unique_ptr<truckBuilder> t(new truckBuilder());
-	d.get()->makeTruck(t.get());
-	t.get()->print();
+	d->makeTruck(t.get());
+	t->print();
 
 	return 0;
 }

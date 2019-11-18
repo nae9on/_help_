@@ -36,7 +36,7 @@
  * an option.
  *
  * Disadvantages:
- * 1. Unlike inheritance, delegation doesn’t facilitate dynamic polymorphism.
+ * 1. Unlike inheritance, delegation does not facilitate dynamic polymorphism.
  * 2. Receiver class (ie. adobe_pdf_print) cannot be passed to an existing API
  * expecting a delegate class (i.e. printer).
  */
@@ -83,7 +83,7 @@ public:
 	~adobe_pdf_print2(){
 	}
 private:
-	printer* ptr;
+	printer* ptr; // Aggregation
 };
 
 int delegation_vs_inheritance(){
