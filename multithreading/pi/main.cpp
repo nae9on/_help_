@@ -22,7 +22,7 @@ int main(){
 
 	max_threads = 4;
 
-	size_t N{10000000};
+	size_t N{10000};
 
 	auto t1 = clk::now();
 	std::cout<<"Pi = "<<getpi_omp(N,max_threads)<<"\n";

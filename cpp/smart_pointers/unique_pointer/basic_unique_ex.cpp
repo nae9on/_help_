@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <memory>
+#include <boost/type_index.hpp>
 
 class X{
 public:
@@ -29,7 +30,9 @@ int basic_unique_ex(){
 
 	// using C++98 style new and delete
 	{
-		X* ptr{new X(10)};
+		auto void_ptr = new X(10);
+		std::cout<<boost::typeindex::type_id_with_cvr<decltype(void_ptr)>()<<"\n";
+		X* ptr{void_ptr};
 		std::cout<<"Size of raw pointer = "<<sizeof(decltype(ptr))<<"\n";
 		ptr->outData();
 		delete ptr;

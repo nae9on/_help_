@@ -35,7 +35,7 @@ auto lmb = [](UI* ptr){
 		delete ptr;
 	};
 
-template<typename... T>
+template<typename... T> // variadic template for perfect forwarding
 std::unique_ptr<UI,decltype(lmb)> make_widget(T&&... params){
 
 	std::unique_ptr<UI,decltype(lmb)> temp(nullptr, lmb);
