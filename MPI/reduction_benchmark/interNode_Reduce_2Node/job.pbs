@@ -1,0 +1,24 @@
+#!/bin/bash -l
+
+##PBS -m abe
+##PBS -M a.h.kadar@gmail.com
+#PBS -N job1_12_09
+#PBS -j oe
+#PBS -o stdout.txt
+#PBS -e stderr.txt
+#PBS -A lp_fwo_acousticproject
+#PBS -l walltime=1:00:00
+#PBS -l nodes=2:ppn=36
+
+module load foss/2018a
+
+export NUM_PROCS=2
+export OMP_NUM_THREADS=1
+export OMP_STACKSIZE=1G
+
+logFile="log"
+bin="mpirun -x OMP_NUM_THREADS -np $NUM_PROCS --output-filename $logFile --map-by node:pe=1 --bind-to core --report-bindings ./a.out"
+
+cd $PBS_O_WORKDIR
+time $bin &> $logFile
+

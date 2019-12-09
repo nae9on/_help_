@@ -1,0 +1,172 @@
+time: 3600
+nodes: 4
+procs: 144
+account string: lp_fwo_acousticproject
+queue: q1h
+========================================================================
+
+real	17m5.043s
+user	16m32.303s
+sys	0m18.861s
+========================================================================
+Epilogue args:
+Date: Thu Sep 12 19:12:12 CEST 2019
+Allocated nodes:
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n20
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n22
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i13n24
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+r23i27n11
+Job ID: 50108229.tier2-p-moab-2.tier2.hpc.kuleuven.be
+User ID: vsc31530
+Group ID: vsc31530
+Job Name: job2_12_09
+Session ID: 18960
+Resource List: walltime=01:00:00,nodes=4:ppn=36,neednodes=4:ppn=36,pmem=5gb
+Resources Used: cput=01:06:15,vmem=2685200kb,walltime=00:17:08,mem=286576kb,energy_used=0
+Queue Name: q1h
+Account String: lp_fwo_acousticproject
+-------------------------------------------------------------------------
+time: 1028
+nodes: 4
+procs: 144
+account: lp_fwo_acousticproject
