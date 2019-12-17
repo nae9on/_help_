@@ -1,0 +1,130 @@
+time: 3600
+nodes: 1
+procs: 36
+account string: lp_fwo_acousticproject
+queue: q1h
+========================================================================
+------------------------------------------------------
+Job is running on node r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+------------------------------------------------------
+PBS: qsub is running on tier2-p-login-1.genius.hpc.kuleuven.be
+PBS: originating queue is qdef
+PBS: executing queue is q1h
+PBS: working directory is /vsc-hard-mounts/leuven-user/315/vsc31530/testMPI_Comm
+PBS: execution mode is PBS_BATCH
+PBS: job identifier is 50107277.tier2-p-moab-2.tier2.hpc.kuleuven.be
+PBS: job name is testMPI_Comm
+PBS: node file is /var/spool/torque/aux//50107277.tier2-p-moab-2.tier2.hpc.kuleuven.be
+PBS: current home directory is /user/leuven/315/vsc31530
+PBS: PATH = /data/leuven/315/vsc31530/installed_starccm/13.06.012-R8/STAR-CCM+13.06.012-R8/star/bin:/apps/leuven/skylake/2018a/software/HDF5/1.10.1-foss-2018a/bin:/apps/leuven/skylake/2018a/software/FFTW/3.3.7-gompi-2018a/bin:/apps/leuven/skylake/2018a/software/OpenBLAS/0.2.20-GCC-6.4.0-2.28/bin:/apps/leuven/skylake/2018a/software/OpenMPI/2.1.2-GCC-6.4.0-2.28/bin:/apps/leuven/skylake/2018a/software/hwloc/1.11.8-GCCcore-6.4.0/sbin:/apps/leuven/skylake/2018a/software/hwloc/1.11.8-GCCcore-6.4.0/bin:/apps/leuven/skylake/2018a/software/numactl/2.0.11-GCCcore-6.4.0/bin:/apps/leuven/skylake/2018a/software/binutils/2.28-GCCcore-6.4.0/bin:/apps/leuven/skylake/2018a/software/GCCcore/6.4.0/bin:/apps/leuven/bin:/usr/local/bin:/usr/lpp/mmfs/bin:.:/usr/bin:/usr/sbin:/usr/lib64/qt-3.3/bin:/opt/moab/bin:/opt/mam/bin:/usr/local/sbin:/opt/ibutils/bin:/opt/puppetlabs/bin
+------------------------------------------------------
+
+Transferring files from home to scratch space.
+Creating case directory in scratch space: /user/leuven/315/vsc31530/testMPI_Comm
+Files in case directory are as follows:
+total 60
+-rwxr-x--- 1 vsc31530 vsc31530 34368 Sep 10 08:30 a.out
+-rw-r----- 1 vsc31530 vsc31530  2454 Sep 10 08:30 blocking_send_1to1_benchmark.cpp
+-rwxr-x--- 1 vsc31530 vsc31530  2483 Sep 10 08:31 job_mpi_comm.pbs
+-rw------- 1 vsc31530 vsc31530  2214 Sep 10 09:14 stdout.txt
+drwxr-x--- 2 vsc31530 vsc31530  4096 Sep 10 08:29 test1_intraSocket_2threads
+drwxr-x--- 2 vsc31530 vsc31530  4096 Sep 10 08:29 test1_intraSocket_36threads
+
+------------------------------------------------------
+
+
+The executable is mpirun -x OMP_NUM_THREADS -np 2 --output-filename testMPI_Comm.log --map-by ppr:1:socket:pe=1 --report-bindings ./a.out
+
+real	15m0.448s
+user	15m1.944s
+sys	14m54.178s
+Job done
+========================================================================
+Epilogue args:
+Date: Tue Sep 10 09:29:46 CEST 2019
+Allocated nodes:
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+r22i13n09
+Job ID: 50107277.tier2-p-moab-2.tier2.hpc.kuleuven.be
+User ID: vsc31530
+Group ID: vsc31530
+Job Name: testMPI_Comm
+Session ID: 16177
+Resource List: walltime=01:00:00,nodes=1:ppn=36,neednodes=1:ppn=36,pmem=5gb
+Resources Used: cput=00:29:57,vmem=1403548kb,walltime=00:15:04,mem=146280kb,energy_used=0
+Queue Name: q1h
+Account String: lp_fwo_acousticproject
+-------------------------------------------------------------------------
+time: 904
+nodes: 1
+procs: 36
+account: lp_fwo_acousticproject

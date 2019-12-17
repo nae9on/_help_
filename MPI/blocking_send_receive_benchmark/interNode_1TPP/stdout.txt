@@ -1,0 +1,10 @@
+time: 3600
+nodes: 2
+procs: 72
+account string: lp_fwo_acousticproject
+queue: q1h
+========================================================================
+
+real	23m6.663s
+user	16m31.948s
+sys	6m0.371s
