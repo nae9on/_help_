@@ -49,6 +49,8 @@ public:
 	cx(){real = 0; imag = 0;}
 	cx(my_double r, my_double i);
 	void print_abs();
+	double getReal(){return real;}
+	double getImag(){return imag;}
 private:
 	my_double real;
 	my_double imag;

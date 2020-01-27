@@ -2,4 +2,5 @@
 rm *.pre
 rm *.s
 rm *.o
-rm exec
+rm exec*
+rm -rf lib

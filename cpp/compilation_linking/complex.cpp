@@ -8,6 +8,14 @@
 #include <iostream>
 #include "complex.h"
 
+//void funcX(){}; // error
+//class X{}; X cx; // error
+//int x; // error
+
+void funcY();
+class Y;
+extern int y;
+
 #define abs(r,i) (std::sqrt(r*r+i*i))
 
 cx::cx(my_double r, my_double i){
@@ -16,5 +24,6 @@ cx::cx(my_double r, my_double i){
 }
 
 void cx::print_abs(){
+	std::cout<<"\ny="<<y<<"\n";
 	std::cout << "Absolute value is "<<abs(real,imag)<<"\n";
 }
