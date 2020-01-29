@@ -14,7 +14,7 @@ ${src2allcpp}
 # Specify include directories (all paths relative to the CMakeLists.txt file)
 # Place target_include_directories after add_executable
 target_include_directories(
-"${PROJECT_NAME}" PUBLIC "./include"
+"${PROJECT_NAME}" PRIVATE "./include"
 )
 
 # Include path for boost
@@ -24,4 +24,4 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 # Link static or shared libraries
 # Place target_link_libraries after add_executable and find_package lines, so all linked components are known
-target_link_libraries("${PROJECT_NAME}" PUBLIC arithmeticLib ${Boost_LIBRARIES})
+target_link_libraries("${PROJECT_NAME}" PRIVATE arithmeticLib ${Boost_LIBRARIES})
