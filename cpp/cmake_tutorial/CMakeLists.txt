@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14.6)
 
+message(STATUS "In CMakeLists.txt in cmake_tutorial folder ----------------------")
+
 # set the project name
 project(tutorial VERSION 1.0.0)
 
@@ -37,7 +39,9 @@ target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_14)
 
 # List important variables
 include(${CMAKE_SOURCE_DIR}/PrintVariables.cmake)
+message(STATUS "PrintVariables in cmake_tutorial folder -------------------------")
 set(flag TRUE)
 if(${flag})
 	print_variables()
 ENDIF()
+message(STATUS "-----------------------------------------------------------------")

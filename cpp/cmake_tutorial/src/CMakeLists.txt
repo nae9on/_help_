@@ -1,3 +1,5 @@
+message(STATUS "In CMakeLists.txt in src folder----------------------------------")
+
 # Use glob module to find all the pathnames matching a specified pattern.
 # All the .cpp files are found so that they don't need to be added separately.
 FILE(GLOB src1allcpp ./src1/*.cpp)
@@ -31,3 +33,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 # Place target_link_libraries after add_executable and find_package lines, so all
 # linked components are known
 target_link_libraries("${PROJECT_NAME}" PRIVATE arithmeticLib ${Boost_LIBRARIES})
+
+# List important variables
+message(STATUS "PrintVariables in src folder-------------------------------------")
+include(${CMAKE_SOURCE_DIR}/PrintVariables.cmake)
+set(flag TRUE)
+if(${flag})
+	print_variables()
+ENDIF()
+message(STATUS "-----------------------------------------------------------------")

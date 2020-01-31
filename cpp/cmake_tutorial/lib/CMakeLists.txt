@@ -1,3 +1,5 @@
+message(STATUS "In CMakeLists.txt in lib folder ---------------------------------")
+
 # set the project name
 project(arithmeticLib VERSION 2.0.0)
 
@@ -20,8 +22,10 @@ target_include_directories(
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_11)
 
 # List important variables
+message(STATUS "PrintVariables in lib folder ------------------------------------")
 include(${CMAKE_SOURCE_DIR}/PrintVariables.cmake)
-set(flag FALSE)
+set(flag TRUE)
 if(${flag})
 	print_variables()
 ENDIF()
+message(STATUS "-----------------------------------------------------------------")
