@@ -55,3 +55,6 @@ Debug/
 .cache-main
 .scala_dependencies
 .worksheet
+
+# jupyter notebook
+.ipynb_checkpoints
