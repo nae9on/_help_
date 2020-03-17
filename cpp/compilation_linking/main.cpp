@@ -25,9 +25,10 @@
 //class X{}; X cx; // error
 //int x; // error
 
-void funcY();
-class Y;
-int y;
+void funcY(); // OK when the same function is declared in different compilation units
+class Y; // OK when declaring a type
+int y; // OK when extern is used (for global variables) in other compilation units
+double pi{3.14}; // OK const qualified variables have internal linkage
 
 int main(){
 

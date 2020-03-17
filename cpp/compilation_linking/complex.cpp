@@ -15,6 +15,7 @@
 void funcY();
 class Y;
 extern int y;
+const double pi{3.1415};
 
 #define abs(r,i) (std::sqrt(r*r+i*i))
 
