@@ -17,9 +17,9 @@ public:
 	void fun() const{
 		// this->name = "fool"; // error
 
-		// Note that in a const member function this = const person* const this
-		// const_cast makes it person* const
-		(const_cast<person* const>(this))->name = "fool";
+		// Note that in a const member function this = const person* this
+		// const_cast makes it person*
+		(const_cast<person*>(this))->name = "fool";
 	}
 	void print() {
 		std::cout<<"\nI am "<<name;
@@ -46,7 +46,7 @@ int constCast() {
 	std::cout<<"x = "<<x;
 
 	// Example 2
-	// const_cast can be used to pass const data to a function that doesn’t accept const.
+	// const_cast can be used to pass const data to a function that doesnot accept const.
 	int const* z = &x;
 	//print(z); // error
 	print(const_cast<int*>(z));
@@ -59,11 +59,11 @@ int constCast() {
 	p1.print();
 
 	// Example 4
-	// const_cast is considered safer than c-type casting.
+	// const_cast is considered safer than C-Stype casting.
 	int xx = 2019;
 	int const* yy = &xx;
-	//char* pp = const_cast<char*>(yy); //error
-	char* pp = (char*)(yy); // not safe
+	//char* pp = const_cast<char*>(yy); //error: invalid const_cast from 'const int*' to 'char*'
+	char* pp = (char*)(yy); // not safe conversion from 'const int*' to 'char*'
 	*pp = *pp * 10;
 	std::cout<<"\nxx = "<<xx;
 

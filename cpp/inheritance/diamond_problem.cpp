@@ -63,5 +63,8 @@ int diamond_problem(){
 
 	// using the virtual keyword, the ambiguous presence of A in BC is resolved.
 
+	(void) a1;
+	(void) a;
+
 	return 0;
 }

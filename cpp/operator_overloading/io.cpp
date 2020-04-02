@@ -27,7 +27,7 @@ private:
 // Note that the operator<< can also be overloaded outside the class.
 // Advantages/disadvantages?
 
-int main_io(){
+int overload_io(){
 	pixel p1, p2(1,2,3);
 	std::cout<<p1<<p2;
 	return 0;

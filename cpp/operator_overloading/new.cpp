@@ -36,7 +36,7 @@ public:
 	//static void  operator delete[](void*, size_t) = delete;
 
 private:
-	int x{0};
+	double x{0};
 };
 
 class advanced{
@@ -54,7 +54,7 @@ public:
 	static void* operator new(size_t n) {
 		 // n specifies the number of bytes of memory to be allocated
 		std::cout<<"Overloaded new called for class advanced with size "<<n<<"\n";
-	    void *p = std::malloc(n);
+	    void* p = std::malloc(n);
 	    if (p!=nullptr)
 	        return p;
 	    else
@@ -69,7 +69,7 @@ public:
 	static void* operator new[](size_t n) {
 		 // n specifies the number of bytes of memory to be allocated
 		std::cout<<"Overloaded new[] called for class advanced with size "<<n<<"\n";
-	    void *p = std::malloc(n);
+	    void* p = std::malloc(n);
 	    if (p!=nullptr)
 	        return p;
 	    else

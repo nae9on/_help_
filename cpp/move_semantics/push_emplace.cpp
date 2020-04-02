@@ -41,34 +41,38 @@ private:
 	std::string name;
 };
 
-int main(){
+int push_emplace(){
 
 	std::vector<XX> vec;
 	vec.reserve(100);
 
+	// ordinary-const
 	XX x(1,"a");
 
 	std::cout<<"\n";
 
+	// ctor
 	vec.push_back(x);
 
 	std::cout<<"\n";
 
+	// ordinary-const and move
 	vec.push_back(XX(2,"b"));
 
 	std::cout<<"\n";
 
+	// ctor
 	vec.emplace_back(x);
 
 	std::cout<<"\n";
 
+	// ordinary-const and move
 	vec.emplace_back(XX(2,"b"));
 
 	std::cout<<"\n";
 
-	vec.emplace_back(2,"b");
+	// ordinary-const
+	vec.emplace_back(2,"b"); // in place construction avoiding move
 
 	return 0;
 }
-
-

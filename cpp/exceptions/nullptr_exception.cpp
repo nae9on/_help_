@@ -11,7 +11,7 @@
  * exceptions thrown intrinsically by standard operator new, dynamic_cast etc). There
  * are no other exceptions in C++.
  *
- * Dereferencing null pointers, division by zero etc.does not generate exceptions in
+ * Dereferencing null pointers, division by zero etc does not generate exceptions in
  * C++, it produces undefined behavior. If one wants exceptions thrown in cases like
  * that it is the responsibility of the developer to manually detect these conditions
  * and throw exceptions explicitly.
@@ -34,12 +34,11 @@ public:
 		if(this==nullptr)
 			throw null_exception();
 		else
-			std::cout<<"I am A and my rank is = "<<rank;
+			std::cout<<"I am A";
 
 		/*
 		 * Note that it is undefined behavior to access "rank" in print_A when pointer
-		 * object is nullptr. However, the following statement std::cout<<"I am A and my rank is";
-		 * would be OK, since no class data member is being accessed using this(=nullptr) pointer.
+		 * object is nullptr.
 		 */
 	}
 private:

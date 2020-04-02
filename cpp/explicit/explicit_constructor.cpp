@@ -32,7 +32,7 @@ private:
 	double* data;
 };
 
-int main_explicit(){
+int explicit_constructor(){
 	// implicit int to vector conversion is allowed (although it does not make any sense).
 	myVector1 vec1 = 5;
 
@@ -40,7 +40,7 @@ int main_explicit(){
 	// myVector2 vec2 = 5; // error
 
 	// explicit conversion is ok
-	myVector2 vec2 = (myVector2)5;
+	myVector2 vec2 = (myVector2)6; // same as myVector2 vec2(6);
 
 	vec1.print();
 	vec2.print();

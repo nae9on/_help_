@@ -28,7 +28,7 @@ math_pi::operator int(){
 	return 3;
 }
 
-int main(){
+int conversion_operator(){
 
 	math_pi pi;
 

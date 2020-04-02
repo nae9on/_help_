@@ -6,7 +6,7 @@
  *
  * Invariant - a statement that is assumed to be true for a class.
  * It is the job of a constructor to establish the invariant of a class (so that member functions
- * can rely on it) and for the member functions to make sure that the invariant holds when they
+ * can rely on it) and of the member functions to make sure that the invariant holds when they
  * exit - Pg 37, Bjarne Stroustrup in "A Tour of C++".
  */
 

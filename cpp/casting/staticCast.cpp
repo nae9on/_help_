@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-int main_static()
+int staticCast()
 {
 	/*
 	 * static_cast does no run-time type check [1].
@@ -29,6 +29,15 @@ int main_static()
 	double y2 = static_cast<double>(x2);
 	std::cout<<"Float to double "<<y2<<std::endl;
 
+	// Note: static_cast is better than a C-style cast for two reasons:
+	// 1. They are checked by the compiler
+	// 2. They are more readable and easy to spot
+	int* ptr = (int*)&ch; // recipe for a disaster
+	//int* ptr = static_cast<int*>&ch; // Error invalid static_cast from type 'char*' to type 'int*'
+	*ptr = 123456789; // disaster
+	std::cout<<"*ptr = "<<*ptr<<std::endl;
+
+	std::cout<<"End\n";
 	return 0;
 }
 

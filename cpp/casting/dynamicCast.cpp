@@ -18,9 +18,9 @@ class Container{ // Abstract class
 public:
 	Container(){
 		std::cout<<"Base class constructor called"<<std::endl;
-		incremetCount();
+		incrementCount();
 	}
-	void incremetCount(){
+	void incrementCount(){
 		count++;
 	}
 	static void printCount(){

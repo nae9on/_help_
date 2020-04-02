@@ -73,11 +73,8 @@ public:
 		return *this;
 	}
 
-	// Can't make friend's, something wrong down here?
-	//friend complex<t> operator+(const complex<t>&, const complex<t>&);
-	//friend complex<t> operator+(const complex<t>&, v);
-	//friend complex<t> operator+(v, const complex<t>&);
-	//friend std::ostream& operator << (std::ostream&, const complex<t>&);
+	// How to make non-member functions as friends?
+	// Reference: https://web.mst.edu/~nmjxv3/articles/templates.html
 
 	t r{0}, c{0}; // made public for illustration purpose only
 };

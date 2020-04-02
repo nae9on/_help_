@@ -40,7 +40,7 @@ void g(){
 	}
 	catch(...){
 		s.push_back("In 2nd catch of g pre-throw");
-		throw;
+		throw; // re-throws the same original exception
 	}
 }
 
@@ -49,7 +49,7 @@ int basic_exception2(){
 	try{
 		g();
 	}
-	catch(std::logic_error& l){
+	catch(std::logic_error& l){ // B is derived from logic_error
 		s.push_back("In 1st catch of main");
 	}
 	catch(...){

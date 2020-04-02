@@ -19,20 +19,12 @@ double mysqrt(double x){
 	return std::sqrt(x);
 }
 
-// type 1 return with using
-double_ptr1 init_array1(size_t n, double* x, double (*f)(double)){
-	for (size_t i=0; i<n; i++) x[i] = (*f)(x[i]);
-	return &mysqrt;
-}
-
-// type 2 return with typedef
-double_ptr2 init_array2(size_t n, double* x, double (*f)(double)){
-	for (size_t i=0; i<n; i++) x[i] = (*f)(x[i]);
-	return &mysqrt;
+void init_array(size_t n, double* x, double (*f)(double)){
+	for (size_t i=0; i<n; ++i) x[i] = (*f)(x[i]);
 }
 
 void print_array(size_t n, double* x){
-	for (size_t i=0; i<n; i++) std::cout<<x[i]<<" ";
+	for (size_t i=0; i<n; ++i) std::cout<<x[i]<<" ";
 	std::cout<<"\n";
 }
 
@@ -47,30 +39,29 @@ mypi getPIObj(){
 }
 
 int basic(){
-	double (*ptr1)(double); // declaring a function pointer of type double_ptr1
-	double (*ptr2)(double); // declaring another function pointer of type double_ptr1
-	double (*ptr3)(double); // declaring yet another function pointer of type double_ptr1
+
+	// Following 3 statements are identical
+	//double (*ptr)(double); // declaring a function pointer of type double_ptr1
+	//double_ptr1 ptr;
+	double_ptr2 ptr;
 
 	// assigning the function pointer to the address of the executable code
-	ptr1 = &square;
-	ptr2 = &mysqrt;
+	ptr = &square;
+	std::cout<<"Square of 2 is "<<(*ptr)(2)<<"\n";
+
+	ptr = &mysqrt;
+	std::cout<<"Square root of 2 is "<<(*ptr)(2)<<"\n";
 
 	double x[] = {1,2,3};
 
-	std::cout<<"Square of 2 is "<<(*ptr1)(2)<<"\n";
-	std::cout<<"Square root of 2 is "<<(*ptr2)(2)<<"\n";
-
-	ptr3 = init_array1(3,x,ptr1);
+	init_array(3,x,ptr);
 	print_array(3,x);
-	ptr3 = init_array1(3,x,ptr3);
-	print_array(3,x);
-
 
 	// C++'s most vexing parse
 	mypi (*fp)(); // Declaring a pointer to a function accepting void and returning mypi.
 	fp = &getPIObj;
 
-	// Note all the forward declarations are the same.
+	// Note: all the forward declarations are the same.
 	//mypi printPI(mypi (*fp_)()); // Version 1
 	//mypi printPI(mypi(*)()); // Version 2
 	//mypi printPI(mypi fp_()); // Version 3

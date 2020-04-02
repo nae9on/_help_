@@ -56,12 +56,12 @@ private:
 public:
 	complexPlane(double x1, double y1, double x2, double y2, double x3, double y3){
 		origin.set(x1,y1);
-		loweLeft.set(x2,y2);
+		lowerLeft.set(x2,y2);
 		upperRight.set(x3,y3);
 	}
 	bool inOut(double x, double y) const{
 		point p(x,y);
-		if(p<upperRight && p>loweLeft)
+		if(p<upperRight && p>lowerLeft)
 			return true;
 		else
 			return false;
@@ -75,7 +75,7 @@ public:
 	}
 private:
 	point origin;
-	point loweLeft;
+	point lowerLeft;
 	point upperRight;
 };
 
