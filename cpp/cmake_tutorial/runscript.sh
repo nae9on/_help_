@@ -10,7 +10,7 @@ cmake3 ..
 
 make
 
-./tutorial
+./src/tutorial
 
 cd ..
 

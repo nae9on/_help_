@@ -1,0 +1,16 @@
+Steps to build on linux:
+1. Run the provided shell script runscript.sh
+
+Steps to build on windows:
+1. Launch cmake-gui
+2. Set the source path to
+D:/_help_/cpp/cmake_tutorial
+3. Set the build path to
+D:/_help_/cpp/cmake_tutorial/build
+4. Configure (select the current generator: MinGW Makefiles)
+5. Edit any CMAKE Variables if the Configure fails and then Configure again
+7. Generate to generate the makefile
+8. Open a terminal and navigate to the build folder and make (make sure
+that the terminal has environment variable set for the MinGW compiler)
+9. Launch the executable "tutorial" generated in the src folder
+10. If there is missing dll error, copy the required dll in src and launch again
