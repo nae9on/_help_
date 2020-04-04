@@ -7,6 +7,8 @@ project(tutorial VERSION 1.0.0)
 
 # everything passed to CMake is a string
 # quotes are optional but are useful when the string has white spaces as below
+# Note: My_VARIABLE if set here will override an environment variable (if there
+# exists one) of the same name
 set(My_VARIABLE "The project name is")
 message(STATUS "${My_VARIABLE} ${PROJECT_NAME}")
 message(STATUS "The project version is ${PROJECT_VERSION}")
