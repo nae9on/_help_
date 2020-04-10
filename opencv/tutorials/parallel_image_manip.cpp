@@ -111,8 +111,8 @@ void parallel_image_manip(){
     double dt1 = (toc1 - tic1)/cv::getTickFrequency();
     std::cout<<"Time passed in seconds (parallel code): "<<dt1<<endl;
 
-	double tic2 = (double)cv::getTickCount();
-	sequentialLoop(input_seq);
+    double tic2 = (double)cv::getTickCount();
+    sequentialLoop(input_seq);
     double toc2 = (double)cv::getTickCount();
     double dt2 = (toc2 - tic2)/cv::getTickFrequency();
     std::cout<<"Time passed in seconds (sequential code): "<<dt2<<endl;
