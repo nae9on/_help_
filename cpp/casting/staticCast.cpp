@@ -21,7 +21,7 @@ int staticCast()
 
 	// When converting from an int to char, the programmer is responsible for the loss of bits.
 	int x = 7081989;
-	char ch = static_cast<int>(x);
+	char ch = static_cast<char>(x);
 	std::cout<<"Int to char "<<ch<<std::endl;
 
 	// This is OK.
