@@ -21,6 +21,11 @@ int void_ptr(){
 	 */
 
 	// For example refer to /operator_overloading/new.cpp
+	
+	/* void* are quite useful when passing pointer arguments to callback functions
+	An interesting example is provided here
+	https://docs.opencv.org/master/db/df6/tutorial_erosion_dilatation.html
+	https://github.com/nae9on/_help_/blob/master/opencv/core_module/trackbar.cpp*/
 
 	return 0;
 }
