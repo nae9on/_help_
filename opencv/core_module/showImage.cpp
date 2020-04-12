@@ -41,6 +41,10 @@ void showImage(void)
 
     imwrite("./images/gray_belgium.jpg", gray_image); // write image
 
+    putText(orig_image, "Belgium",
+             Point(orig_image.cols/4, 3*orig_image.rows/4),
+             FONT_HERSHEY_COMPLEX, 2, Scalar(0,0,255), 1, 1, false);
+
     // Creates window. It takes two parameters: name of the window
     // and how it should handle the change of the image it contains (from a size point of view)
     namedWindow("Original Image", WINDOW_AUTOSIZE);

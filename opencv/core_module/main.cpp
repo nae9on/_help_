@@ -17,9 +17,10 @@ void roi();
 void brightness_contrast_correct();
 void dft();
 void parallel_image_manip();
+void trackbar();
 
 int main(){
-	showImage();
+	//showImage();
 	//record_time();
 	//mat_manip();
 	//mat_underscore_manip();
@@ -28,6 +29,7 @@ int main(){
 	//brightness_contrast_correct();
 	//dft();
 	//parallel_image_manip();
+	trackbar();
 	return 0;
 }
 
