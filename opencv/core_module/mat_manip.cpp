@@ -16,7 +16,7 @@ using namespace std;
 
 void print_head(const Mat& m){
 	cout<<"Head info: rows = "<<m.rows<<", cols = "<<m.cols<<", channels = "<<m.channels()<<"\n"
-	    <<"depth = "<<m.depth()
+	    <<"depth = "<<m.depth()<<", type = "<<m.type()
 		<<", is continuous = "<<m.isContinuous()
 		<<", size(H x W) = "<<m.size<<"\n";
 
@@ -32,6 +32,9 @@ void print_head(const Mat& m){
 	// isContinuous() = 1, when entire data is stored as one contiguous block in memory.
 	// isContinuous() = 0, when data is non-contiguous in memory (each row is stored
 	// as one contiguous memory block at some location in memory).
+
+	// type() returns a complex mix between depth and number of channels.
+	// best is to use depth together with channels instead of type
 }
 
 // Example illustrating how to loop over a Mat object
@@ -82,7 +85,7 @@ void mat_manip(){
 
     // Manually initialize small matrices using std::initializer_list
     // vector will also work
-    initializer_list<int> ls{0, -1, 0, -1, 5, -1, 0, -1, 0, -1, 5, -1};
+    initializer_list<char> ls{0, -1, 0, -1, 5, -1, 0, -1, 0, -1, 5, -1};
     Mat C = Mat(ls);
     print_head(C);
     cout<<"C = \n"<<C<<"\n\n";
@@ -92,12 +95,12 @@ void mat_manip(){
     Mat C1 = C.reshape(cn,rows); // shallow copy with new head
     //Mat C1 = C.reshape(cn,rows).t(); // deep copy as it involves re-ordering in memory
     print_head(C1);
-    //randu(C, Scalar::all(0), Scalar::all(255)); // test
+    //randu(C, Scalar::all(0), Scalar::all(127)); // test
     cout<<"C1 = \n"<<C1<<"\n\n";
 
     // Fill matrix with random values
     Mat R;
     R.create(C1.size(),C1.type());
-    randu(R, Scalar::all(0), Scalar::all(255));
+    randu(R, Scalar::all(0), Scalar::all(127)); // Note 127 and not 255!
     cout<<"R = \n"<<R<<"\n\n";
 }

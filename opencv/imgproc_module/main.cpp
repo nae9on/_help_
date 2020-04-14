@@ -8,11 +8,13 @@
 void basic_drawing();
 void filtering();
 void morphology_transformations();
+void find_lines();
 
 int main(){
 
     //basic_drawing();
     //filtering();
-    morphology_transformations();
+    //morphology_transformations();
+    find_lines();
     return 0;
 }

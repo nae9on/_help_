@@ -41,7 +41,10 @@ void Erosion(int, void* data)
     }
 
     Mat element = getStructuringElement(erosion_type,
-            Size(2*ptr->erosion_size+1, 2*ptr->erosion_size+1));
+            Size(2*(ptr->erosion_size)+1, 2*(ptr->erosion_size)+1));
+
+    cout<<"Kernel type = "<<erosion_type<<", Kernel size = "<<ptr->erosion_size<<endl;
+    cout<<element<<endl;
 
     erode(ptr->src, ptr->target, element);
     //dilate(ptr->src, ptr->target, element);
