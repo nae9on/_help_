@@ -7,7 +7,7 @@
  * The aim is to write a pre-increment function which increments only short and int
  * types (with there type modifiers signed, unsigned and long).
  *
- * All integral types include bool, char, short, int (with there type modifiers).
+ * All integral types include bool, char, short, int (with their type modifiers).
  *
  * Another nice example is that of std::is_arithmetic when defining complex struct [3].
  *
@@ -67,7 +67,7 @@ template<typename T> void better_pre_increment(T& x){
 // Best version of templated pre_increment function using std::is_integral
 // std::is_integral is a trait class that identifies whether T is an integral type [2].
 template<typename T> constexpr bool is_int_or_short() {
-	// sizeof test excludes bool, char along with there type modifiers.
+	// sizeof test excludes bool, char along with their type modifiers.
 	return (std::is_integral<T>::value && sizeof(T)>=2);
 }
 template<typename T> void smart_pre_increment(T& x){

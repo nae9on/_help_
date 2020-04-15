@@ -9,7 +9,7 @@
  * template non-type parameters (tntp) are called as value template arguments
  * in the book "A tour of C++" by Bjarne Stroustrup.
  *
- * Permissible values of tntp are integral types (i.e. float, double etc are not allowed),
+ * Permissible values of tntp are integral types (float, double etc are not allowed),
  * pointer types, enum types etc. Extensive list is available here
  * https://en.cppreference.com/w/cpp/language/template_parameters
  */

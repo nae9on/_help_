@@ -15,7 +15,10 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <typeinfo>
+#include <boost/type_index.hpp>
+
+using boost::typeindex::type_id_with_cvr;
+#define mytype(T) type_id_with_cvr<T>().pretty_name()
 
 /*
  * Explanation
@@ -29,9 +32,11 @@
 template <typename T, template<typename> class A, template<typename,typename> class C>
 T aggreegate(const C<T,A<T>>& c, T init = 0) {
 
+	using CTAT = C<T,A<T>>;
+
 	std::cout<<"Aggregate with templates as type parameters instantiated.\n";
-	std::cout<<"T = "<<typeid(T).name()<<" A = "<<typeid(A<T>).name()
-			<<" C = "<<typeid(C<T,A<T>>).name()<<"\n";
+	std::cout<<"T = "<<mytype(T)<<"\nA = "<<mytype(A<T>)
+			 <<"\nC = "<<mytype(CTAT)<<"\n";
 
 	T sum = init;
 
@@ -55,9 +60,11 @@ T aggreegate(const C<T,A<T>>& c, T init = 0) {
 template <template<typename> class A, template<typename,typename> class C>
 std::string aggreegate(const C<char,A<char>>& c, char init) {
 
+	using CTAT = C<char,A<char>>;
+
 	std::cout<<"Aggregate as a partial specialization is instantiated.\n";
-	std::cout<<"T = "<<typeid(char).name()<<" A = "<<typeid(A<char>).name()
-			<<" C = "<<typeid(C<char,A<char>>).name()<<"\n";
+	std::cout<<"T = "<<mytype(char)<<"\nA = "<<mytype(A<char>)
+		     <<"\nC = "<<mytype(CTAT)<<"\n";
 
 	std::string sum{init};
 
@@ -78,9 +85,11 @@ std::string aggreegate(const C<char,A<char>>& c, char init) {
 template <>
 std::string aggreegate(const std::vector<char, std::allocator<char>>& c, char init) {
 
+	using CTAT = std::vector<char,std::allocator<char>>;
+
 	std::cout<<"Aggregate as a complete specialization is instantiated.\n";
-	std::cout<<"T = "<<typeid(char).name()<<" A = "<<typeid(std::allocator<char>).name()
-			<<" C = "<<typeid(std::vector<char, std::allocator<char>>).name()<<"\n";
+	std::cout<<"T = "<<mytype(char)<<"\nA = "<<mytype(std::allocator<char>)
+		     <<"\nC = "<<mytype(CTAT)<<"\n";
 
 	std::string sum{init};
 

@@ -15,7 +15,7 @@
 
 using my_int = unsigned long long int;
 
-// Unlike const, constexpr can also be applied to functions and class constructors. [1]
+// Unlike const, constexpr can also be applied to class constructors. [1]
 
 // Note: only a literal type can qualify as constexpr.
 // A class is a literal-type under some conditions [2].
@@ -54,14 +54,14 @@ int class_example(){
 
 	//constexpr X x; // Error X is not a literal-type
 	const X x; // OK, run-time evaluation
-	std::cout<<"X is a literal-type is "<<std::is_literal_type<X>::value<<"\n";
+	std::cout<<"Is X a literal-type? "<<std::is_literal_type<X>::value<<"\n";
 
 	constexpr Y y; // OK
-	std::cout<<"Y is a literal-type is "<<std::is_literal_type<Y>::value<<"\n";
+	std::cout<<"Is Y a literal-type? "<<std::is_literal_type<Y>::value<<"\n";
 	//constexpr Y y1 = y; // Error y is not a constexpr
 
 	constexpr Z f; // OK
-	std::cout<<"Z is a literal-type is "<<std::is_literal_type<Z>::value<<"\n";
+	std::cout<<"Is Z a literal-type? "<<std::is_literal_type<Z>::value<<"\n";
     constexpr Z g = f; // OK f is a constexpr
 
 	constexpr int n = g.get();

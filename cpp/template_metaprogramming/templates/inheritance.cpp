@@ -5,24 +5,26 @@
  *      Author: akadar
  *
  *  Simple example to demonstrate non-template class member functions
- *  and there use in a derived class.
+ *  and their use in a derived class.
  */
 
 #include <iostream>
 #include <string>
 
+using uchar = unsigned char;
+
 // Parameterized type Point2D
-template<typename T = double, short attr_ = 2>
+template<typename T = double>
 class Point2D {
 public:
-	Point2D(): px{0}, py{0}, attr{attr_} {
+	Point2D(): px{0}, py{0} {
 		std::cout << "Default Point2D object constructor called" << "\n";
 	}
-	Point2D(T x, T y) : px{x}, py{y}, attr{attr_} {
+	Point2D(T x, T y) : px{x}, py{y} {
 		std::cout << "Point2D object constructor called" << "\n";
 	}
 	void printPoint() {
-		std::cout << "X " << px << " Y " << py;
+		std::cout << "x " << px << " y " << py;
 	}
 	T getpx() {
 		return px;
@@ -31,56 +33,53 @@ public:
 		return py;
 	}
 	void setpx(T px_);
-
 	void setpy(T py_);
 
 private:
 	T px;
 	T py;
-	short attr;
-
 };
 
 // class member functions are defined like function templates if
 // they are defined outside the class template
 // Note no default arguments are used here (syntax error with default arguments)
-template<typename T, short attr_> void Point2D<T,attr_>::setpx(T px_) {
+template<typename T> void Point2D<T>::setpx(T px_) {
 	px = px_;
 }
 
-template<typename T, short attr_> void Point2D<T,attr_>::setpy(T py_) {
+template<typename T> void Point2D<T>::setpy(T py_) {
 	py = py_;
 }
 
-// Parameterized type Point3D (special case Z coordinate can be of another type)
-template<typename T = double, typename T2 = double, short attr_ = 3>
-class Point3D : public Point2D<T,2> {
+// Parameterized type Point3D (special case z coordinate can be of another type)
+// Useful for example when x and y must be higher precision double while z can be float
+template<typename T1 = double, typename T2 = float>
+class Point3D : public Point2D<T1> {
 public:
-	Point3D(T x, T y, T2 z): Point2D<T,2>(x,y), pz{z}, attr{attr_} {
+	Point3D(T1 x, T1 y, T2 z): Point2D<T1>(x,y), pz{z} {
 		std::cout << "Point3D object constructor called" << "\n";
 	}
 	void printPoint() {
-		Point2D<T,2>::printPoint();
-		std::cout << " Z " << pz << "\n";
+		Point2D<T1>::printPoint();
+		std::cout << " z " << pz << "\n";
 	}
 	T2 getpz();
-	void setpz(T pz_) {
+	void setpz(T2 pz_) {
 		pz = pz_;
 	}
 private:
 	T2 pz;
-	short attr;
 };
 
-template<typename T, typename T2, short attr_>
-T2 Point3D<T,T2,attr_>::getpz() {
+template<typename T1, typename T2>
+T2 Point3D<T1,T2>::getpz() {
 	return pz;
 }
 
-int inheritance() {
+int main_inheritance() {
 
-	Point2D<int> P2D(5,5);
-	Point3D<double, unsigned, 3> P3D(99.9,99.9,10);
+	Point2D<> P2D(0.0,0.0);
+	Point3D<> P3D(0.0,0.0,10);
 
 	std::cout << "Point in 3D is ";
 	P3D.printPoint();

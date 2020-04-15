@@ -42,8 +42,8 @@ private:
  */
 template class Y<double, 6>;
 
-// Error since Y<T, N>::Y() [with T = double; int N = 6 is already instantiated.
-// template Y<double, 6>::Y(void);
+// Error since Y<T, N>::Y() [with T = double; int N = 6] is already instantiated.
+//template Y<double, 6>::Y(void);
 
 /*
  * class Y is explicitly instantiated for types double and value=7.

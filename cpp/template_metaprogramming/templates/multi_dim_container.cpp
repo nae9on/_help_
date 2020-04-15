@@ -10,19 +10,19 @@
 #include <iostream>
 #include <vector>
 #include <deque>
-#include <assert.h>
+#include <cassert>
 #include <ostream>
 
-template<size_t dim_, typename T> class multivec{
+template<size_t dim, typename T> class multivec{
 public:
-	using value_type = multivec<dim_-1,T>;
-	multivec(): dim{dim_}, size{0} {
+	using value_type = multivec<dim-1,T>;
+	multivec(): size{0} {
 	};
 	void resize(std::deque<size_t> size_){
-		assert(!(dim_-size_.size()) && "size dimension mismatch");
+		assert(!(dim-size_.size()) && "size dimension mismatch");
 		size = size_[0];
 		data.resize(size);
-		std::cout<<dim_<<"D vector resized to "<<size<<"\n";
+		std::cout<<dim<<"D vector resized to "<<size<<"\n";
 		size_.pop_front();
 		for(size_t i=0; i<size; i++){
 			data[i].resize(size_);
@@ -38,7 +38,6 @@ public:
 		return size;
 	}
 private:
-	size_t dim;
 	size_t size;
 	std::vector<value_type> data;
 };
@@ -47,7 +46,7 @@ private:
 template<typename T> class multivec<1,T>{
 public:
 	using value_type = T;
-	multivec(): dim{1}, size{0} {
+	multivec(): size{0} {
 	};
 	void resize(std::deque<size_t> size_){
 		assert(!(1-size_.size()) && "size dimension mismatch");
@@ -65,19 +64,18 @@ public:
 		return size;
 	}
 private:
-	size_t dim;
 	size_t size;
 	std::vector<value_type> data;
 };
 
-template<size_t dim_, typename T> std::ostream& operator<<(std::ostream& os, multivec<dim_,T> elem){
-	for(size_t i=0; i<elem.getSize(); i++){
-		if (dim_==1)
+template<size_t dim, typename T>
+std::ostream& operator<<(std::ostream& os, multivec<dim,T> elem){
+	for(size_t i=0; i<elem.getSize(); ++i){
+		if (dim==1)
 			os << elem[i] << " ";
 		else
-			os << elem[i];
+			{os << elem[i]; os << "\n";}
 	}
-	os << "\n";
 	return os;
 }
 
@@ -111,6 +109,10 @@ int multi_dim_container(){
 	// std::vector container which will do a deep-copy internally.
 	multivec<3,double> vec4 = vec3;
 
-	std::cout<<"End of main\n";
+	vec4[0][1][2] = 8;
+
+	std::cout << "\n\n" << vec4;
+
+	std::cout<<"\nEnd of main\n";
 	return 0;
 }

@@ -3,6 +3,9 @@
  *
  *  Created on: Aug 20, 2019
  *      Author: akadar
+ *
+ * When a value is computed at compile time instead of run time, it helps the program run faster and
+ * use less memory.
  */
 
 #include <iostream>
@@ -22,6 +25,12 @@ using dt = std::chrono::duration<double>;
  *
  */
 constexpr my_int fib1(my_int N){
+	// Valid C++14 code
+	//if(N==0) return 0;
+	//else if (N==1) return 1;
+	//else return fib1(N-1)+fib1(N-2);
+
+	// Valid C++11 code
 	return N==0 ? 0 : (N==1 ? 1 : fib1(N-1)+fib1(N-2));
 }
 
@@ -58,26 +67,25 @@ private:
 
 int fibonacci(){
 
-	const int arg1 = 40;
+	constexpr int arg1 = 40;
 
 	auto t1 = clk::now();
-	constexpr my_int x1 = fib1(arg1); // fib1onacci evaluated at compile-time
+	constexpr my_int x1 = fib1(arg1); // fib1 evaluated at compile-time
 	std::cout<<"x1 = "<<x1<<"\n";
 	auto t2 = clk::now();
 
 	auto t3 = clk::now();
 	int arg2 = arg1;
-	my_int x2 = fib1(arg2); // fib1onacci evaluated at run-time
+	my_int x2 = fib1(arg2); // fib1 evaluated at run-time
 	std::cout<<"x2 = "<<x2<<"\n";
 	auto t4 = clk::now();
 
 	auto t5 = clk::now();
-	constexpr fib2<40> fib_obj;
-	constexpr my_int x3 = fib_obj.get_value(); // fibonacci evaluated at compile-time
+	constexpr my_int x3 = fib2<arg1>::get_value(); // fibonacci evaluated at compile-time
 	std::cout<<"x3 = "<<x3<<"\n";
 	auto t6 = clk::now();
 
-	std::cout<<"fib2<40> is a literal-type is "<<std::is_literal_type<fib2<40>>::value<<"\n";
+	std::cout<<"Is fib2<40> a literal-type? "<<std::is_literal_type<fib2<40>>::value<<"\n";
 
 	std::cout << "elapsed time fib1 (compile-time evaluation): " << dt(t2-t1).count() << "s\n";
 	std::cout << "elapsed time fib1 (run-time evaluation): " << dt(t4-t3).count() << "s\n";
