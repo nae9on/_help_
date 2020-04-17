@@ -3,6 +3,9 @@
  *
  *  Created on: Oct 11, 2019
  *      Author: akadar
+ *
+ *  No variable of type void can be specified — it is used primarily to declare functions
+ *  that return no values or to declare generic pointers to untyped or arbitrarily typed data.
  */
 
 #include <iostream>
