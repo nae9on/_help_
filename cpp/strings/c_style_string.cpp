@@ -13,7 +13,6 @@
  */
 #include <cstring>
 
-//int main()
 int c_style_string()
 {
 	/*
@@ -34,8 +33,8 @@ int c_style_string()
 	std::cout << strlen(string_literal) << "\t" << string_literal << std::endl;
 
 	// 3.
-	// A C-style string literal by definition is a const char*
-	const char* also_string_literal = "I am C-style string literal";
+	// A C-style string literal by definition is a char const*
+	auto also_string_literal = "I am C-style string literal"; // type deduced as char const*
 	std::cout << strlen(also_string_literal) << "\t" << also_string_literal << std::endl;
 
 	// 4.
@@ -46,7 +45,7 @@ int c_style_string()
 	std::cout<<"--------------------\n";
 
 	// 5.
-	const char* str3 = "ali";
+	char const* str3 = "ali";
 	std::cout<<str3<<"\n";
 	std::cout<<*(str3+3)<<"\n"; // prints NULL character
 	std::cout<<"--------------------\n";
