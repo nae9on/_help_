@@ -4,8 +4,9 @@
  *  Created on: May 22, 2019
  *      Author: akadar
  *
- * A std::map is a sorted associative container that contains key-value pairs with unique keys.
- * It is an ordered container with keys sorted by using a comparison function.
+ * A std::map is a sorted associative container that contains std::pair<const Key, Value>
+ * with unique keys. It is an ordered container with items sorted by using a comparison
+ * function object type.
  *
  * Maps are usually implemented as red-black trees (self-balancing binary search trees).
  * References
@@ -22,7 +23,7 @@
 
 int simple_map()
 {
-	// Note that the default comparator is std::less (a function object).
+	// Note that the default comparator is std::less<Key> (a function object).
 	// Note that the template argument (std::string) can be auto-deduced from C++14 onwards.
 	std::map<std::string,biography,std::greater<std::string>> myMap;
 
@@ -57,7 +58,7 @@ int simple_map()
 	}
 
 	// Be careful of accidently creating a key value pair as
-	// Never use operator[] to insert a new pair (refer Scott#24)
+	// Never use operator[] to insert a new pair (refer ESTL#24) because of efficiency reasons
 	myMap["Accidental name"].setAge(100);
 
 	// In order to check if a key exists in the map use find member function.
@@ -73,12 +74,12 @@ int simple_map()
 
 	std::cout<<"\n";
 
-	// Note that output is sorted by keys.
+	// Note that map traversal follows the sort order
 	for (const auto& t : myMap)
 	{
 		std::cout<<t.first<<"\n";
 		t.second.printInfo();
-
 	}
+
 	return 0;
 }

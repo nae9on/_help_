@@ -54,10 +54,13 @@ private:
 	int data;
 };
 
-template<typename Map, typename Key, typename Value>
+template<typename Map, typename Key = typename Map::key_type,
+                       typename Value = typename Map::mapped_type>
 typename Map::iterator add_or_update(Map& mymap, const Key& k, const Value& v){
 
-	// Note k<=lb->first and k<ub->first always holds
+    // lower_bound returns iterator pointing to first element equal to or greater than key, or end()
+    // upper_bound returns iterator pointing to the first element greater than key, or end().
+    // i.e. *lower_bound <= key < *upper_bound
 	auto lb = mymap.lower_bound(k);
 
 	if(lb!=mymap.cend() && !(mymap.key_comp()(k,lb->first))) // key found
@@ -79,33 +82,33 @@ int efficientAddorUpdate(){
 	std::map<int,X> mymap;
 
 	X x1(100); // ordinary-const
-	std::cout<<"done 1\n";
+	std::cout<<"done 1\n\n";
 
 	// Creating a pair
 	std::pair<int,X> p1(1,x1); // copy-const
-	std::cout<<"done 2\n";
+	std::cout<<"done 2\n\n";
 
-	// Inserting a new pair via insert
-	// 1. named pair with named X
+	// Inserting a pair via insert
+	// 1. Inserting an existing pair
 	mymap.insert(p1); // copy-const
-	std::cout<<"done 3\n";
-	// 2. temp pair with temp X
+	std::cout<<"done 3\n\n";
+	// 2. Inserting a temporary pair
 	mymap.insert(std::make_pair(2,X(200))); // ordinary-const, move-const, move-const
-	std::cout<<"done 4\n";
+	std::cout<<"done 4\n\n";
 
 	// Updating an existing pair with a temp X
 	mymap[2] = X(300); // ordinary-const, move-assign
-	std::cout<<"done 5\n";
+	std::cout<<"done 5\n\n";
 
 	// Inserting a new pair via operator[]
 	mymap[3] = X(400); // ordinary-const, default-const, move-assign
-	std::cout<<"done\n";
+	std::cout<<"done\n\n";
 
 	add_or_update(mymap,4,500);
-	std::cout<<"done\n";
+	std::cout<<"done\n\n";
 
 	add_or_update(mymap,4,600);
-	std::cout<<"done\n";
+	std::cout<<"done\n\n";
 
 	std::cout<<"Elements are : ";
 	for(const auto& elem:mymap) std::cout<<"("<<elem.first<<","<<elem.second.getData()<<") ";
