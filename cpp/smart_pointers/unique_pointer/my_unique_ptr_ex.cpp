@@ -41,14 +41,23 @@ public:
 	 */
 
 	// copy constructor disabled (same as for std::unique_ptr)
-	explicit my_unique_ptr(const my_unique_ptr<T>& raw_) = delete;
+	explicit my_unique_ptr(const my_unique_ptr<T>& uptr) = delete;
 
 	// copy assignment disabled (same as for std::unique_ptr)
-	my_unique_ptr<T>& operator=(const my_unique_ptr<T>& raw_) = delete;
+	my_unique_ptr<T>& operator=(const my_unique_ptr<T>& uptr) = delete;
 
-	my_unique_ptr(my_unique_ptr<T>&& raw_) = default;
+	my_unique_ptr(my_unique_ptr<T>&& uptr){
+	    raw = uptr.get();
+	    uptr.reset(nullptr);
+	    std::cout<<"Move constructor called"<<std::endl;
+	}
 
-	my_unique_ptr<T>& operator=(my_unique_ptr<T>&& raw_) = default;
+	my_unique_ptr<T>& operator=(my_unique_ptr<T>&& uptr){
+	     raw = uptr.get();
+	     uptr.reset(nullptr);
+	     std::cout<<"Move assignment called"<<std::endl;
+	     return *this;
+	}
 
 	// member selection operator
 	T* operator->(){
@@ -67,6 +76,10 @@ public:
 	void reset(T* raw_){
 		delete raw;
 		raw = raw_;
+	}
+
+	T* get(){
+	    return raw;
 	}
 
 	// Other member functions must be overloaded.
@@ -94,11 +107,13 @@ int my_unique_ptr_ex(){
 	ptr2.reset(func1());
 	std::cout<<"In A, x = "<<(*ptr2).x<<"\n";
 
-	// my_unique_ptr<A1> ptr3(ptr2); // Error, copy constructor disabled
+	// my_unique_ptr<A1> ptr3(ptr1); // Error, copy constructor disabled
 	// my_unique_ptr<A1> ptr4; ptr4 = ptr2; // Error, copy assignment disabled
 
-	my_unique_ptr<A1> ptr5 = std::move(ptr2); // OK, move constructor called
+	my_unique_ptr<A1> ptr5 = std::move(ptr1); // OK, move constructor called
 	my_unique_ptr<A1> ptr6; ptr6 = std::move(ptr2); // OK, move assignment called
+
+	std::cout<<"End of main"<<std::endl;
 
 	return 0;
 }

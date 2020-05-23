@@ -38,10 +38,12 @@ int basic_unique_ex(){
 		delete ptr;
 	}
 
+	std::cout<<"***************************\n";
+
 	// using smart pointers
 	{
 		std::unique_ptr<X> sptr(nullptr);
-		//sptr = new X(10); // Error implicit conversion from raw to unique_ptr not allowed
+		//sptr = new X(10); // Error implicit conversion from raw to unique_ptr is not allowed
 		sptr.reset(new X(10));
 		std::cout<<"Size of unique_ptr = "<<sizeof(decltype(sptr))<<"\n";
 		sptr->outData();
@@ -56,7 +58,7 @@ int basic_unique_ex(){
 	{
 		std::unique_ptr<X[]> sptr_ar(new X[3]);
 		std::cout<<"Size of array form of unique_ptr = "<<sizeof(decltype(sptr_ar))<<"\n";
-		//sptr_ar->outData(); // Error op* and op-> are not supported
+		//sptr_ar->outData(); // Error op* and op-> are not supported, only operator[] is supported
 	}
 
 	std::cout<<"Current count = "<<X::getCount()<<"\n";

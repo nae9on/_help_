@@ -37,7 +37,7 @@ private:
 	double data[100];
 };
 
-int main(){
+int custom_deleter(){
 
 	// custom deleter using a state-less lambda
 	auto lmb_sl = [](X* ptr){ // nothing captured

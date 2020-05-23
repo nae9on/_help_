@@ -134,19 +134,33 @@ int my_shared_pointer_ex(){
 	shared_pointer_version ptr2(func2()); // ptr2 taking first-ownership of A2(10)
 	std::cout<<"In A, x = "<<(*ptr2).x<<"\n";
 
+	std::cout<<"***************************\n";
+
 	shared_pointer_version ptr3; // no ownership yet
 	ptr3 = ptr2; // ptr3 sharing ownership of A2(10)
+
+	std::cout<<"***************************\n";
 
 	shared_pointer_version x0; // no ownership yet
 	shared_pointer_version x1(new A2(1)); // x1 taking first-ownership of A2(1)
 	shared_pointer_version x2(new A2(2)); // x2 taking first-ownership of A2(2)
 
+	std::cout<<"***************************\n";
+
 	shared_pointer_version y0; // no ownership
 	shared_pointer_version y1(new A2(3)); // y1 taking first-ownership of A2(3)
 	shared_pointer_version y2(new A2(4)); // y2 taking first-ownership of A2(4)
 
+	std::cout<<"***************************\n";
+
 	y1 = x1; // y1 taking ownership of A2(1), no one owns A2(3)
+
+	std::cout<<"***************************\n";
+
 	y2 = x1; // y2 taking ownership of A2(1), no one owns A2(4)
+
+	std::cout<<"***************************\n";
+
 	x1 = x0; // x1 taking ownership of nullptr
 
 	std::cout<<"End main\n";

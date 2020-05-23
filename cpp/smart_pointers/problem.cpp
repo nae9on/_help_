@@ -17,7 +17,7 @@
  * 1. Memory Leak: A pointer variable is deleted when it goes out of scope but
  * the memory pointed to by the pointer variable is not explicitly deallocated.
  *
- * 2. Unallocated memory access: The memory pointed to by a pointer variable is
+ * 2. Dangling pointers: The memory pointed to by a pointer variable is
  * deallocated using the delete operator, but there may be additional pointer
  * variables pointing to the same block of memory.
  *
@@ -32,7 +32,6 @@ struct A{
 
 void print_A(A* ptr){
 	std::cout<<"In A, x = "<<ptr->x<<"\n";
-
 }
 
 A* func(){
