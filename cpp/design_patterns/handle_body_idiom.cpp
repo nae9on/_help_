@@ -22,9 +22,11 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <memory>
 
 // Body
-template<typename T> class sets{
+template<typename T>
+class sets{
 public:
 	sets(){}
 	void addElem(T elem_){
@@ -38,20 +40,21 @@ private:
 };
 
 // Handle
-template<typename T> class setInterface{
+template<typename T>
+class setInterface{
 public:
 	setInterface(): s{new sets<T>} {}
 	void addSetElem(T elem_){
+	    // forward member function invocation
 		s->addElem(elem_);
 	}
 	size_t getSetCount(){
+	    // forward member function invocation
 		return s->getPowerSetCount();
 	}
-	~setInterface(){
-		delete s;
-	}
+	~setInterface(){}
 private:
-	sets<T>* s;
+	std::unique_ptr<sets<T>> s;
 };
 
 int handle_body_idiom(){
