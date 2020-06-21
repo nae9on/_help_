@@ -23,24 +23,24 @@ class WindowsButton: public Button{
 public:
 	WindowsButton(){}
 	void render() const override{
-		std::cout<<"Render windows button\n";
+		std::cout<<"Render Windows button\n";
 	}
 	void onClick() const override{
-			std::cout<<"Do something on clicking windows button\n";
+			std::cout<<"Do something on clicking Windows button\n";
 	}
 	~WindowsButton(){}
 };
 
-class HTMLButton: public Button{
+class LinuxButton: public Button{
 public:
-	HTMLButton(){}
+	LinuxButton(){}
 	void render() const override{
-		std::cout<<"Render HTML button\n";
+		std::cout<<"Render Linux button\n";
 	}
 	void onClick() const override{
-			std::cout<<"Do something on clicking HTML button\n";
+			std::cout<<"Do something on clicking Linux button\n";
 	}
-	~HTMLButton(){}
+	~LinuxButton(){}
 };
 
 #endif /* BUTTON_H_ */
