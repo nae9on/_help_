@@ -23,7 +23,10 @@ class B : public A
 {
     // x is public
     // y is protected
+    
     // z is not accessible from B
+    // because B doesn't inherit access to private data members of A.
+    // However, it does inherit a full object of A (containing all its public and private members).
 };
 
 class C : protected A
