@@ -12,6 +12,9 @@
  *  References:
  *  [1] https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl
  *  [2] https://isocpp.org/wiki/faq/templates#separate-template-fn-defn-from-decl
+ *
+ * The two models are well explained here
+ * https://docs.microsoft.com/en-us/cpp/cpp/source-code-organization-cpp-templates?view=vs-2019
  */
 
 #include "headX.h"
