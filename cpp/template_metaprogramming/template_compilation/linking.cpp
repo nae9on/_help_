@@ -7,8 +7,11 @@
  *  Simple example to demonstrate the linking errors that can result when
  *  defining a template class separately from its declaration
  *
+ * The same logic also applies to function templates (see [2] below)
+ *
  *  References:
  *  [1] https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl
+ *  [2] https://isocpp.org/wiki/faq/templates#separate-template-fn-defn-from-decl
  */
 
 #include "headX.h"
