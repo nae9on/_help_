@@ -58,3 +58,6 @@ Debug/
 
 # jupyter notebook
 .ipynb_checkpoints
+
+#Qt pro files
+*.pro.user
