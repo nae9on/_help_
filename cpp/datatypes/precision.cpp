@@ -108,7 +108,7 @@ void overflow()
     std::cout<<"x-y="<<fcast(x)-fcast(y)<<"\n";
 }
 
-int precision()
+int main_precision()
 {
     //mm_meters();
     //compare();

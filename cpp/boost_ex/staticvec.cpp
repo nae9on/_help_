@@ -37,7 +37,7 @@ void PushFrontPopWhenFull(boost::container::static_vector<T,N>& Vector, const T&
     }
 }
 
-int static_vec()
+int main_static_vec()
 {
     std::cout<<"Hello Qt\n\n";
 

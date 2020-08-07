@@ -57,7 +57,7 @@ public:
 };
 
 
-int main()
+int main_detection()
 {
     std::cout<<"Hello Qt\n\n";
 
