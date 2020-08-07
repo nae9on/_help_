@@ -24,23 +24,31 @@
 
 int main(){
 
-    // source cells
+    // create source cells (or concrete observables)
     std::vector<std::unique_ptr<CObservable>> sources(10);
+    for (auto& elem : sources)
+    {
+        elem = std::make_unique<CObservable>();
+    }
 
-    // dependent cells
-    auto dependent1{std::make_unique<CObserver>()};
-    auto dependent2{std::make_unique<CObserver>()};
+    // dependent cells (or observers)
+    std::unique_ptr<CObserver> dependent1 = std::make_unique<CObserver>();
+    std::unique_ptr<CObserver> dependent2 = std::make_unique<CObserver>();
 
     // dependent cells subscribe to source cells
-    for (auto& elem : sources){
-        elem = std::make_unique<CObservable>();
+    // normally the subscription or attachment takes place in the
+    // configure method of the concrete observable
+    for (auto& elem : sources)
+    {
         elem->events->subscribe(dependent1.get());
         elem->events->subscribe(dependent2.get());
     }
 
     int i{1};
-    for (const auto& elem : sources){
-            elem->change(i++);
+    for (const auto& elem : sources)
+    {
+        // event on observables
+        elem->change(i++);
     }
 
     dependent1->print();

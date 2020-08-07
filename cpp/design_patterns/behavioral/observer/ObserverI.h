@@ -8,10 +8,12 @@
 #ifndef BEHAVIORAL_OBSERVER_OBSERVERI_H_
 #define BEHAVIORAL_OBSERVER_OBSERVERI_H_
 
+// template on the type of the information passed
+// to the observers in the case of an event
+template<class T>
 class IObserver{
 public:
-    IObserver() = default;
-    virtual void update(int old_data, int current_data) = 0;
+    virtual void update(const T&) = 0;
     virtual ~IObserver() = default;
 };
 

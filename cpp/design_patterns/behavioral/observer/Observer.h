@@ -9,14 +9,15 @@
 #define BEHAVIORAL_OBSERVER_OBSERVER_H_
 
 #include "ObserverI.h"
+#include "Result.h"
 
 #include<iostream>
 
-class CObserver: public IObserver{
+class CObserver: public IObserver<SResult>{
 public:
     CObserver(){}
-    void update(int old_data, int current_data) override{
-        accum+=current_data-old_data;
+    void update(const SResult& data) override{
+        accum+=data.current_data-data.old_data;
     }
     void print(){
         std::cout<<"accum = "<<accum<<std::endl;
