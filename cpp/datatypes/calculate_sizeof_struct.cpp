@@ -1,5 +1,5 @@
 /*
- * sizeof_struct.cpp
+ * calculate_sizeof_struct.cpp
  *
  *  Created on: Oct 11, 2019
  *      Author: akadar
@@ -44,7 +44,7 @@ struct Empty {};
 struct Base { int a; };
 struct Derived : Base { int b; };
 
-int sizeof_struct()
+int calculate_sizeof_struct()
 {
 	int x{1};
 	int* itr = &x;
@@ -56,7 +56,6 @@ int sizeof_struct()
 
     Derived d;
     Base& b = d;
-
 
     std::cout << "size of empty class:              " << sizeof(Empty)    << "\n"
     		  << "size of empty class object:       " << sizeof e        << "\n"

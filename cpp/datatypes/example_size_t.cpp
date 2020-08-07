@@ -1,5 +1,5 @@
 /*
- * size_t_ex.cpp
+ * example_size_t.cpp
  *
  *  Created on: Oct 19, 2019
  *      Author: akadar
@@ -18,13 +18,16 @@
  * https://en.cppreference.com/w/cpp/types/size_t
  * Check your stack overflow post.
  *
+ * Hex to decimal
+ * https://www.rapidtables.com/convert/number/hex-to-decimal.html
+ *
  */
 
 #include <iostream>
 #include <vector>
 #include <climits>
 
-int size_t_ex(){
+int example_size_t(){
 
 	// Signed types
 	std::cout<<"Char min/max "<<CHAR_MIN<<" "<<CHAR_MAX<<"\n";
@@ -36,13 +39,10 @@ int size_t_ex(){
 	std::cout<<"UInt max "<<UINT_MAX<<"\n";
 	std::cout<<"ULong max "<<ULONG_MAX<<"\n";
 
-	if(sizeof(unsigned long)==sizeof(size_t)){
-		std::cout<<"Size of sizeof type is the same as that of unsigned long = "
-				<<sizeof(std::size_t)<<" bytes\n";
-	}
+	std::cout<<"Size of std::size_t is = "<<sizeof(std::size_t)<<" bytes\n";
 
 	std::vector<char> vec(2*UINT_MAX,0);
-	for(unsigned int i = 0; i<2*UINT_MAX; ++i) vec[i] = i;
+	for(unsigned int i = 0; i<2*UINT_MAX; ++i) vec[i] = 'a'; // Problematic
 
 	unsigned int i = UINT_MAX+1; std::cout<<i<<"\n";
 

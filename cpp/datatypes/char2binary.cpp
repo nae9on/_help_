@@ -1,5 +1,5 @@
 /*
- * integral_precision.cpp
+ * char2binary.cpp
  *
  *  Created on: 17 Apr 2020
  *      Author: ahkad
@@ -8,11 +8,11 @@
 #include <iostream>
 #include <bitset>
 
-int integral_precision(){
+int char2binary(){
 	for(int i = 0; i<=128; ++i){
 		signed char x = static_cast<signed char>(i), y;
-		y = ~x;
-		y = y + static_cast<signed char>(1);
+		y = static_cast<signed char>(~x);
+		y = static_cast<signed char>(y + static_cast<signed char>(1));
 		std::cout<<i
 				 <<"\t"
 				 <<std::bitset<8>(x)

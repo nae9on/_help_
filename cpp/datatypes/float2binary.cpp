@@ -1,5 +1,5 @@
 /*
- * single_precision.cpp
+ * float2binary.cpp
  *
  *  Created on: 17 Apr 2020
  *      Author: ahkad
@@ -8,7 +8,7 @@
 #include <iostream>
 #include "myutils.h"
 
-int single_precision(){
+int float2binary(){
 
 	// Convert a float to its bit sequence in memory
 	/*
@@ -24,7 +24,7 @@ int single_precision(){
 	 * from step 5 and 23 bits after the decimal point from step 4
 	 */
 	outbits<signed>(2048); // step 1
-	frac2bits(0.127); // step 2
+	frac2bits(0.127f); // step 2
 	// 0000 0000 0000 0000 0000 1000 0000 0000.00100000100000110001001 // step 3
 	// 1.000 0000 0000 001000001000 // step 4, N = 11
 	outbits<signed>(138); // step 5
@@ -34,9 +34,9 @@ int single_precision(){
 	std::cout<<"\n";
 
 	// When representing integers, a floating-point type has a lower precision than an integral type
-	out<float>(std::pow(2,24)-1);
-	out<float>(std::pow(2,24)+0);
-	out<float>(std::pow(2,24)+1);
+	out<float>(static_cast<float>(std::pow(2,24)-1));
+	out<float>(static_cast<float>(std::pow(2,24)+0));
+	out<float>(static_cast<float>(std::pow(2,24)+1));
 
 	std::cout<<"\n";
 

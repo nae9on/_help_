@@ -15,9 +15,9 @@
 
 void frac2bits(float f){
 	for(int i=1; i<24; ++i){
-		int x = 2*f;
+		int x = static_cast<int>(2*f);
 		if(f==0) break;
-		f = 2*f - x;
+		f = 2*f - static_cast<float>(x);
 		std::cout<<x;
 	}
 	std::cout<<"\n";
