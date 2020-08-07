@@ -25,10 +25,10 @@
 //class X{}; X cx; // error
 //int x; // error
 
-void funcY(); // OK when the same function is declared in different compilation units
+void funcY(); // OK does not violate ODR when the same function is declared in different TU's
 class Y; // OK when declaring a type
-int y; // OK when extern is used (for global variables) in other compilation units
-double pi{3.14}; // OK const qualified variables have internal linkage
+int global_y{7}; // OK when extern is used in other compilation units
+double global_pi{3.14};  // OK const qualified variables have internal linkage
 
 int main(){
 
@@ -42,7 +42,7 @@ int main(){
 
 	cx c;
 	c.print_abs();
-	std::cout<<"y="<<y<<"\n";
-	std::cout<<"Absolute value ="<<getAbs(c.getReal(),c.getImag())<<"\n";
+	std::cout<<"In main.cpp y = "<<global_y<<"\n";
+	std::cout<<"Absolute value = "<<getAbs(c.getReal(),c.getImag())<<"\n";
 	return 0;
 }

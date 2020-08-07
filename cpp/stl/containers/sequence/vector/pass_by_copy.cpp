@@ -8,7 +8,8 @@
 #include <iostream>
 #include <vector> // mem allocation on heap, pass by value allowed
 #include <valarray> // mem allocation on heap, pass by value allowed
-#include <array> // mem allocation on stack, pass by value not allowed
+#include <array> // mem allocation on stack, pass by value not possible because
+// arrays decay into pointers, when passed to a function
 #include <chrono>
 
 const int MAX = 100000000; // 1'000'000'00 not supported in c++11

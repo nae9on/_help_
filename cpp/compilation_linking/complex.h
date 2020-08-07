@@ -36,7 +36,7 @@ class cx{
 
 	/*
 	 * Caution: it is dangerous to use #define, typedef or using in a header file at the global scope,
-	 * because a header file is typically included by several translation units and therefore it cannot
+	 * because a header file maybe included by several translation units and therefore it should not
 	 * contain definitions that might produce multiple definitions of the same name in those units [5].
 	 * This can create ambiguity resulting in compilation fail or worse wrong code behavior. If they
 	 * are to be included, include them in a restricted scope such as class scope.
