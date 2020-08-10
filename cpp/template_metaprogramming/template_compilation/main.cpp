@@ -1,5 +1,5 @@
 /*
- * linking.cpp
+ * main.cpp
  *
  *  Created on: 06 Nov 2019
  *      Author: akadar
@@ -17,13 +17,21 @@
  * https://docs.microsoft.com/en-us/cpp/cpp/source-code-organization-cpp-templates?view=vs-2019
  */
 
-#include "headX.h"
+#include "header.h"
+#include "utility.h"
 
-int main_linking()
+#include <iostream>
+
+using namespace algebra;
+
+int main()
 {
-	X<int> objx;
+    point<int> p1;
+    point<float> p2(2,4);
+    std::cout<<p1<<"\n";
+    std::cout<<p2<<"\n";
 
-	X<float> obj;
+    std::cout<<slope<>(p2)<<"\n";
 
     return 0;
 }
