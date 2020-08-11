@@ -24,6 +24,9 @@ public:
         T y{};
 };
 
+// alias decleration
+using pointf = point<float>;
+
 // function template
 template <typename T>
 std::ostream& operator<<(std::ostream& os, point<T>);

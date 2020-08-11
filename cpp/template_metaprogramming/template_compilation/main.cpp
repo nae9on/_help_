@@ -27,7 +27,7 @@ using namespace algebra;
 int main()
 {
     point<int> p1;
-    point<float> p2(2,4);
+    pointf p2(2,4);
     std::cout<<p1<<"\n";
     std::cout<<p2<<"\n";
 
