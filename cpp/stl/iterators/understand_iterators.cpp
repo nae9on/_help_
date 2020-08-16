@@ -1,5 +1,5 @@
 /*
- * example_forwardlist_iterator.cpp
+ * understand_iterators.cpp
  *
  *  Created on: Oct 19, 2019
  *      Author: akadar
@@ -159,7 +159,7 @@ void traverse(Iterator begin, Iterator end) {
 	std::cout<<"\n";
 }
 
-int example_forwardlist_iterator() {
+int understand_iterators() {
 
 	std::forward_list<int> flist{100,200,300};
 

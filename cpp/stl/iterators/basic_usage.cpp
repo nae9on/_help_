@@ -25,7 +25,7 @@
 
 using vectype = std::list<int>;
 
-int main(){
+int basic_usage(){
 
     /*
      * InputIterator -
