@@ -1,3 +1,5 @@
+This project includes some OpenCV tutorials (from https://docs.opencv.org) with some modifications and comments for easy understanding.
+I have put bits and pieces together from https://docs.opencv.org and web to allow me to learn the relevant functionalities provided by OpenCV.
 
 # Build
 ```
