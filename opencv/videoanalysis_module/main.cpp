@@ -19,73 +19,109 @@
 using namespace cv;
 using namespace std;
 
-const char* params
-    = "{ help h         |           | Print usage }"
-      "{ input          | ./videoData/cars.mp4 | Path to a video or a sequence of image }"
-      "{ algo           | MOG2      | Background subtraction method (KNN, MOG2) }";
-
-int main(int argc, char* argv[])
+int main(/*int argc, char* argv[]*/)
 {
-    CommandLineParser parser(argc, argv, params);
-    parser.about( "This program shows how to use background subtraction methods provided by "
-                  " OpenCV. You can process both videos and images.\n" );
-    if (parser.has("help"))
+    auto InputFilename = "./videoData/in.avi";
+
+    // Create Background Subtractor objects
+    Ptr<BackgroundSubtractor> PtrBackSub;
+    std::string BS_Algorithm{"MOG2"};
+    if (BS_Algorithm == "MOG2")
     {
-        //print help information
-        parser.printMessage();
+        PtrBackSub = createBackgroundSubtractorMOG2();
     }
-
-    //! [create]
-    //create Background Subtractor objects
-    Ptr<BackgroundSubtractor> pBackSub;
-    if (parser.get<String>("algo") == "MOG2")
-        pBackSub = createBackgroundSubtractorMOG2();
+    else if (BS_Algorithm == "KNN")
+    {
+        PtrBackSub = createBackgroundSubtractorKNN();
+    }
     else
-        pBackSub = createBackgroundSubtractorKNN();
-    //! [create]
-
-    //! [capture]
-    VideoCapture capture( samples::findFile( parser.get<String>("input") ) );
-    if (!capture.isOpened()){
-        //error in opening the video input
-        cerr << "Unable to open: " << parser.get<String>("input") << endl;
-        return 0;
+    {
+        cout<<"Unknown background subtraction algorithm "<<BS_Algorithm<<std::endl;
+        return -1;
     }
-    //! [capture]
 
-    Mat frame, fgMask, bg;
-    while (true) {
-        capture >> frame;
-        if (frame.empty())
+    // Video input
+    VideoCapture InputVideo;
+    InputVideo.open(InputFilename);
+    if (!InputVideo.isOpened())
+    {
+        cout<<"Video capture could not be initialized for file: "<<InputFilename<<endl;
+        return -1;
+    }
+
+    // Get width and height from the meta information attached to the video
+    // Note the get function is a general function and always returns a double
+    Size FrameSize = Size(static_cast<int>(InputVideo.get(CAP_PROP_FRAME_WIDTH)),
+                       static_cast<int>(InputVideo.get(CAP_PROP_FRAME_HEIGHT)));
+
+    cout<<"Video frame: Width="<<FrameSize.width<<"  Height="<<FrameSize.height
+         <<" and #Frames="<<InputVideo.get(CAP_PROP_FRAME_COUNT)<<endl;
+
+    // Get Codec Type
+    int CodecType = static_cast<int>(InputVideo.get(CAP_PROP_FOURCC));
+
+    // Print codec type in human-readable form
+    union {int i; char c[5];} Union_CodecType ;
+    Union_CodecType.i = CodecType; // From Int to char via union
+    Union_CodecType.c[4]='\0';
+    cout<<"Input codec type: "<<Union_CodecType.c<<" "<<CodecType<<endl;
+
+    // Video output
+    std::string outFilename{"/home/akadar/Desktop/out.avi"}; // only avi format is supported
+    VideoWriter OutputVideo;
+    // for grayscale video, last argument should be false
+    OutputVideo.open(outFilename, CodecType, InputVideo.get(CAP_PROP_FPS), FrameSize, true);
+    if (!OutputVideo.isOpened())
+    {
+        cout<<"Video writer could not be initialized for file: "<<outFilename<<endl;
+        return -1;
+    }
+
+    int FrameCounter{-1}; // Frame counter
+
+    Mat InputFrame, ForegroundMask;
+    Mat BackgroundFrame;
+
+    while (true)
+    {
+        InputVideo >> InputFrame;
+
+        ++FrameCounter;
+
+        if (InputFrame.empty())
+        {
             break;
+        }
 
-        //! [apply]
-        //update the background model
-        pBackSub->apply(frame, fgMask);
-        //! [apply]
+        // Update the background model
+        PtrBackSub->apply(InputFrame, ForegroundMask);
+        PtrBackSub->getBackgroundImage(BackgroundFrame);
 
-        //! [display_frame_number]
-        //get the frame number and write it on the current frame
-        rectangle(frame, cv::Point(10, 2), cv::Point(100,20),
+        // Get the frame number and write it on the current frame
+        rectangle(InputFrame, cv::Point(10, 2), cv::Point(100,20),
                   cv::Scalar(255,255,255), -1);
         stringstream ss;
-        ss << capture.get(CAP_PROP_POS_FRAMES);
-        string frameNumberString = ss.str();
-        putText(frame, frameNumberString.c_str(), cv::Point(15, 15),
+        ss << InputVideo.get(CAP_PROP_POS_FRAMES);
+        string FrameCounterberString = ss.str();
+        putText(InputFrame, FrameCounterberString.c_str(), cv::Point(15, 15),
                 FONT_HERSHEY_SIMPLEX, 0.5 , cv::Scalar(0,0,0));
-        //! [display_frame_number]
 
-        //! [show]
-        //show the current frame and the fg masks
-        imshow("Frame", frame);
-        imshow("FG Mask", fgMask);
-        //! [show]
+        imshow("Frame", InputFrame);
+        imshow("FG Mask", ForegroundMask);
+        imshow("Background Image", BackgroundFrame);
 
-        //get the input from the keyboard
+        OutputVideo << BackgroundFrame;
+
+        // Get the input from the keyboard
         int keyboard = waitKey(30);
         if (keyboard == 'q' || keyboard == 27)
+        {
             break;
+        }
     }
+
+    InputVideo.release();
+    OutputVideo.release();
 
     return 0;
 }
