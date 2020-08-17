@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(DisplayImage)
+project(VideoIO)
 
 # this overrides the OpenCV_DIR env variable (if set previously)
 set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")
 
 if (MSVC)
-	add_compile_options(/W4 /analyze)
+        add_compile_options(/W4 /analyze)
 else()
-	add_compile_options(-Wall -Wextra -Wpedantic -O3)
+        add_compile_options(-Wall -Wextra -Wpedantic -O3)
 endif()
 
 find_package(OpenCV REQUIRED)

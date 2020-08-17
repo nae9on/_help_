@@ -61,3 +61,6 @@ Debug/
 
 #Qt pro files
 *.pro.user
+
+#CMakeLists user files
+CMakeLists.txt.user
