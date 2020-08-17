@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(tutorialVideoIO)
+project(tutorialVideoAnalysis)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/videoData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # this overrides the OpenCV_DIR env variable (if set previously)
 # set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")

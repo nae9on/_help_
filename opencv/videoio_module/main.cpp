@@ -23,7 +23,7 @@ using namespace cv;
 
 int main()
 {
-    auto inFilename = "./data/in.avi"; // pass 0 for webcam input
+    auto inFilename = "/home/akadar/Desktop/_help_/opencv/videoio_module/data/in.avi"; // pass 0 for webcam input
 
     // Video input
     VideoCapture inVid; // Main class for video manipulation
@@ -52,7 +52,7 @@ int main()
     cout<<"Input codec type: "<<u_codec_type.c<<" "<<codec_type<<endl;
 
     // Video output
-    std::string outFilename{"./data/out.avi"}; // only avi format is supported
+    std::string outFilename{"/home/akadar/Desktop/_help_/opencv/videoio_module/data/out.avi"}; // only avi format is supported
     VideoWriter outVid;
     // for grayscale video, last argument should be false
     outVid.open(outFilename, codec_type, inVid.get(CAP_PROP_FPS), inSize, false);
