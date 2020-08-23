@@ -19,24 +19,23 @@ private:
     int z;
 };
 
-class B : public A
+class B : public A // used when implementing an interface
 {
     // x is public
     // y is protected
-    
     // z is not accessible from B
     // because B doesn't inherit access to private data members of A.
     // However, it does inherit a full object of A (containing all its public and private members).
 };
 
-class C : protected A
+class C : protected A // used when extending a concrete class + allows extendind further to sub-classes of C
 {
     // x is protected
     // y is protected
     // z is not accessible from C
 };
 
-class D : private A    // 'private' is default for classes
+class D : private A  // used when extending a concrete class but does not allow extendind further to sub-classes of D
 {
     // x is private
     // y is private

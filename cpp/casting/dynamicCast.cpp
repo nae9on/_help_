@@ -73,7 +73,7 @@ int dynamicCast()
     (void) pb1;
 
     /*
-     * Derived* -> Base* does not need a cast
+     * Upcast i.e. Derived* -> Base* does not need a cast
      */
     Date* pdate1 = new dateIO;
     (void) pdate1;
