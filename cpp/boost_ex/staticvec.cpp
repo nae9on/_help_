@@ -1,4 +1,3 @@
-#include <QCoreApplication>
 #include <iostream>
 #include "boost/container/static_vector.hpp"
 
