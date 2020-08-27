@@ -4,6 +4,17 @@
  *  Created on: May 26, 2019
  *      Author: akadar
  *
+ * 1. In brief, static_cast's are checked at compile time and they do not incur run-time cost.
+ * dynamic_cast's are checked at run-time and therefore incur run-time costs. They are safer
+ * than static_cast's when used together with nullptr test.
+ * 2. dynamic_cast's require a run-time polymorphic operand otherwise will throw compile-time error
+ * and for this reason cannot be applied to classes which do not have a virtual function and thus no
+ * vtable. Likewise they cannot be applied to void*.
+ * 3. static_cast's can be applied to void*.
+ * 4. In a class hierarchy, Upcast's need no explicit cast while Downcast's need explicit cast
+ * (static or dynamic).
+ * 5. static_cast's and dynamic_cast's in the context of virtual bases need extra care.
+ *
  * References:
  * [1] https://docs.microsoft.com/en-us/cpp/cpp/static-cast-operator?view=vs-2019
  */
@@ -28,9 +39,14 @@ void* my_allocator(std::size_t n)
 derived* doSomethingWithBasePointer(void* p)
 {
     // dynamic_cast cannot be used here since p is not a run-time polymorphic type
-    base* pb = static_cast<base*>(p);
-    return dynamic_cast<derived*>(pb);
+    base* pb = static_cast<base*>(p); // will never be a compile time error
+    return dynamic_cast<derived*>(pb); // Downcast
 }
+
+class Arbitrary
+{
+ virtual ~Arbitrary(){}
+};
 
 int staticCast()
 {
@@ -65,10 +81,17 @@ int staticCast()
 	 * safety, use dynamic_cast (+ check for not nullptr) instead but at the expense of additional
 	 * run-time cost.
 	 */
-	base* pb = new derived;
-	derived* pd = static_cast<derived*>(pb); // OK safe here
+	//derived* ptrArbit = static_cast<derived*>(new Arbitrary); // compile time error
+	if(derived* ptrArbit = dynamic_cast<derived*>(new Arbitrary)){}
+	else
+	{
+	    (void) ptrArbit;
+	    std::cout<<"Does not make sense\n";
+	}
+	base* pb = new derived; // upcast needs no explicit cast
+	derived* pd = static_cast<derived*>(pb); // OK safe downcast here
     base* pb0 = new base;
-    derived* pd0 = static_cast<derived*>(pb0); // Not safe here and a recepie for disaster
+    derived* pd0 = static_cast<derived*>(pb0); // Downcast not safe here and a recipe for disaster
 	(void) pd; (void) pd0;
 
     /*

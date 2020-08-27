@@ -34,13 +34,13 @@ public:
 
 template<typename T> class YZ: public T{
 public:
-	void print_name(){
+	void templates(){
 		std::cout<<"I am YZ\n";
 		T::print_name();
 	}
 };
 
-int templates(){
+int main(){
 
 	YZ<Y<X>> yz1;
 	yz1.print_name();
