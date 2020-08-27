@@ -21,7 +21,7 @@ using namespace std;
 
 int main(/*int argc, char* argv[]*/)
 {
-    auto InputFilename = "./videoData/in.avi";
+    auto InputFilename = "/home/akadar/Desktop/_help_/opencv/videoanalysis_module/videoData/in.mp4";
 
     // Create Background Subtractor objects
     Ptr<BackgroundSubtractor> PtrBackSub;
@@ -67,7 +67,7 @@ int main(/*int argc, char* argv[]*/)
     cout<<"Input codec type: "<<Union_CodecType.c<<" "<<CodecType<<endl;
 
     // Video output
-    std::string outFilename{"/home/akadar/Desktop/out.avi"}; // only avi format is supported
+    std::string outFilename{"/home/akadar/Desktop/_help_/opencv/videoanalysis_module/videoData/out.mp4"}; // only avi format is supported
     VideoWriter OutputVideo;
     // for grayscale video, last argument should be false
     OutputVideo.open(outFilename, CodecType, InputVideo.get(CAP_PROP_FPS), FrameSize, true);
@@ -81,6 +81,8 @@ int main(/*int argc, char* argv[]*/)
 
     Mat InputFrame, ForegroundMask;
     Mat BackgroundFrame;
+
+    InputVideo.set(CAP_PROP_POS_FRAMES, 1);  // go to the 1st frame in the video
 
     while (true)
     {
