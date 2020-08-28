@@ -19,6 +19,13 @@
 using namespace cv;
 using namespace std;
 
+void print_head(const Mat& m){
+        cout<<"Head info: rows = "<<m.rows<<", cols = "<<m.cols<<", channels = "<<m.channels()<<"\n"
+            <<"depth = "<<m.depth()<<", type = "<<m.type()
+            <<", is continuous = "<<m.isContinuous()
+            <<", size(H x W) = "<<m.size<<std::endl;
+}
+
 int main(/*int argc, char* argv[]*/)
 {
     auto InputFilename = "/home/akadar/Desktop/_help_/opencv/videoanalysis_module/videoData/in.mp4";
@@ -108,9 +115,26 @@ int main(/*int argc, char* argv[]*/)
         putText(InputFrame, FrameCounterberString.c_str(), cv::Point(15, 15),
                 FONT_HERSHEY_SIMPLEX, 0.5 , cv::Scalar(0,0,0));
 
+        cv::Mat YUVImage, Back2BGR, GrayScale;
+        cv::cvtColor(InputFrame, YUVImage, cv::COLOR_BGR2YUV_I420);
+        cv::cvtColor(YUVImage, Back2BGR, cv::COLOR_YUV2BGR_I420);
+        cv::cvtColor(YUVImage, GrayScale, cv::COLOR_YUV2GRAY_I420);
+
+        print_head(InputFrame);
+        print_head(ForegroundMask);
+        print_head(BackgroundFrame);
+        print_head(YUVImage);
+        print_head(Back2BGR);
+        print_head(GrayScale);
+
+        std::cout<<"\n\n";
+
         imshow("Frame", InputFrame);
         imshow("FG Mask", ForegroundMask);
         imshow("Background Image", BackgroundFrame);
+        imshow("YUV Image", YUVImage);
+        imshow("Back2RGB Image", Back2BGR);
+        imshow("YUV2Gray Image", GrayScale);
 
         OutputVideo << BackgroundFrame;
 
