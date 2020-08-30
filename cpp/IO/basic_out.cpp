@@ -34,11 +34,10 @@ int basic_out(){
 	}
 
 	std::vector<double> x{1,2,3,100};
+	write_data(x, std::cout); // passing the default output stream object std:cout
 
-	std::vector<std::string> s{"I","am", "cpp"};
-
-	write_data(x,std::cout); // passing the default output stream object std:cout
-	write_data(s,ofs); // passing the ofs stream object attached to "data.txt"
+	std::vector<std::string> vecofstrings{"I","am", "cpp"};
+	write_data(vecofstrings, ofs); // passing the ofs stream object attached to "data.txt"
 
 	return 0;
 }

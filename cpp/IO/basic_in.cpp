@@ -29,7 +29,9 @@ int basic_in(){
 
 	std::vector<std::string> x;
 
-	read(x,ifs);
+	read(x, ifs);
+
+	std::cout<<"Size of vector = "<<x.size()<<"\n";
 
 	for(const auto& elem : x) std::cout << elem << "\n";
 
