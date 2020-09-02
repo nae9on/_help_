@@ -9,7 +9,8 @@
  *
  * References:
  * Scott#24
- *
+ * Excellent article
+ * https://www.fluentcpp.com/2018/12/11/overview-of-std-map-insertion-emplacement-methods-in-cpp17/
  */
 
 #include <iostream>
