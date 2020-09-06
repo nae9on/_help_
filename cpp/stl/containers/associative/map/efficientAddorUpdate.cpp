@@ -3,14 +3,17 @@
  *
  *  Created on: Oct 17, 2019
  *      Author: akadar
- *
+ * 
  * Use insert to insert a new pair and use operator[] to update an existing pair.
  * Do not use insert to update an exiting pair. Do not use operator[] to insert a new pair.
+ * Note: C++17's insert_or_assign = efficientAddorUpdate
+ *
+ * With move semantics and perfect forewording since C++11, we have better alternatives to insert viz: emplace and try_emplace.
+ * Excellent article: https://www.fluentcpp.com/2018/12/11/overview-of-std-map-insertion-emplacement-methods-in-cpp17/
  *
  * References:
  * Scott#24
- * Excellent article
- * https://www.fluentcpp.com/2018/12/11/overview-of-std-map-insertion-emplacement-methods-in-cpp17/
+ * 
  */
 
 #include <iostream>
