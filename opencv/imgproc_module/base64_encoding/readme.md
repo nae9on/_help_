@@ -11,3 +11,7 @@ In this example program the following is illustrated
 
 Additionally, it is also shown how to first compress the image into jpeg format and then Base64 encode and later
 decode it (for example in note-pad++)  for visualization.
+
+Reference and code used
+https://renenyffenegger.ch/notes/development/Base64/Encoding-and-decoding-base-64-with-cpp/
+https://en.wikipedia.org/wiki/Base64
