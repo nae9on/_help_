@@ -11,7 +11,6 @@ tutorial belgium.jpg
 ```
 
 # Using OpenCV with Eclipse (plugin CDT)
-
 Steps:
 1. Start Eclipse and create a new ``C++ Managed Build`` project
 2. Select ``Empty Project``, ``MinGW GCC`` toolchain and select location as project dir (where main.cpp exists)
@@ -19,8 +18,6 @@ Steps:
 4. In Project->Settings->MinGW C++ Linker->Libraries add Library search path ``C:\Users\ahkad\opencv\gnu_build\install\x64\mingw\bin`` and Library name to link to ``opencv_world420``
 5. Build project
 6. In arguments add belgium.jpg and run
-
-
 
 # Build using CMake
 ```
