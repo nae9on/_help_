@@ -32,7 +32,7 @@ int main()
     const std::string current_dir{"/home/akadar/Desktop/_help_/opencv/imgproc_module/base64_encoding"};
 
     // Read image into a Mat object
-    Mat ImageObject = imread(current_dir+"/parrot.jpg");
+    Mat ImageObject = imread(current_dir+"/dexter.jpg");
 
     // Encode image as a string
     unsigned char* Data = ImageObject.data;

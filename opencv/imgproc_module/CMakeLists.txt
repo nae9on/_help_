@@ -15,8 +15,6 @@ endif()
 
 find_package(OpenCV REQUIRED)
 
-include_directories(${OpenCV_INCLUDE_DIRS})
-
 FILE(GLOB allcpp ./*.cpp)
 
 add_executable(
@@ -29,4 +27,3 @@ target_link_libraries("${PROJECT_NAME}" ${OpenCV_LIBS})
 message(STATUS "OpenCV_DIR ${OpenCV_DIR}")
 message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")
 message(STATUS "OpenCV_LIBS ${OpenCV_LIBS}")
-message(STATUS "OpenCV_LIB_PATH  ${OpenCV_LIB_PATH}")
