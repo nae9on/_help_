@@ -1,0 +1,4 @@
+#functions
+lookup(){
+	python3 main.py "$@"
+}

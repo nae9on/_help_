@@ -1,0 +1,3 @@
+The data from https://www.travel-advisory.info/api is saved to a JSON file called data.json
+A simple CLI is created to lookup country data given country code.
+
