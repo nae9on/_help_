@@ -1,0 +1,13 @@
+<Configuration>
+	<DNN>
+		<DNN ConfidenceThreshold="0.95" ModelName="YOLO" UseTimings="1" IsCaffeModel="1">
+			<Display Channel="7"/>
+			<ROI Height="1080" Width="1080" X="0" Y="0"/>
+			<ROI Height="1080" Width="1080" X="400" Y="0"/>
+			<ROI Height="1080" Width="1080" X="800" Y="0"/>
+			<ROI Height="1080" Width="1080" X="0" Y="240"/>
+			<ROI Height="1080" Width="1080" X="400" Y="240"/>
+			<ROI Height="1080" Width="1080" X="800" Y="240"/>
+		</DNN>
+	</DNN>
+</Configuration>

@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(tutorialDisplayImage)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/belgium.jpg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+project(tutorial_base64encoding)
 
 # this overrides the OpenCV_DIR env variable (if set previously)
 # set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")
@@ -10,16 +8,16 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/belgium.jpg DESTINATION ${CMAKE_CURRENT_BI
 if (MSVC)
         add_compile_options(/W4 /analyze)
 else()
-        add_compile_options(-Wall -Wextra -Wpedantic -O3)
+        add_compile_options(-Wall -Wextra -Wpedantic -O0)
 endif()
 
 find_package(OpenCV REQUIRED)
 
-FILE(GLOB allcpp ./*.cpp)
-
 add_executable(
 "${PROJECT_NAME}"
-${allcpp}
+main.cpp
+base64.h
+base64.cpp
 )
 
 target_link_libraries("${PROJECT_NAME}" ${OpenCV_LIBS})

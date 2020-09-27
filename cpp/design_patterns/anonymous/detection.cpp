@@ -1,4 +1,10 @@
-#include <QCoreApplication>
+/*
+ * When two or more virtual functions have the same name, overriding one of them in the derived
+ * class will shadow every other inherited overload.
+ *
+ * https://stackoverflow.com/questions/63281226/virtual-function-not-accessible-in-derived-class
+ */
+
 #include <iostream>
 
 class IDetectionProcess
@@ -57,7 +63,7 @@ public:
 };
 
 
-int main_detection()
+int main()
 {
     std::cout<<"Hello Qt\n\n";
 
