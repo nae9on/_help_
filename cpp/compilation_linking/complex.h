@@ -26,7 +26,7 @@
 // Example Header
 #include <cmath>
 
-class cx{
+class ComplexNumber{
 
 	// Example Macro
 	#define my_double double // Note no semicolon needed.
@@ -46,8 +46,8 @@ class cx{
 	 */
 
 public:
-	cx(){real = 0; imag = 0;}
-	cx(my_double r, my_double i);
+	ComplexNumber(){real = 0; imag = 0;}
+	ComplexNumber(my_double r, my_double i);
 	void print_abs();
 	double getReal(){return real;}
 	double getImag(){return imag;}

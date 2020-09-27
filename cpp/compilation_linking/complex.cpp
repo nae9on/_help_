@@ -19,12 +19,12 @@ const double global_pi{3.1415}; // OK const qualified variables have internal li
 
 #define abs(r,i) (std::sqrt(r*r+i*i))
 
-cx::cx(my_double r, my_double i){
+ComplexNumber::ComplexNumber(my_double r, my_double i){
 	real = r;
 	imag = i;
 }
 
-void cx::print_abs(){
+void ComplexNumber::print_abs(){
 	std::cout<<"\nIn complex.cpp y = "<<global_y<<"\n";
 	std::cout << "Absolute value = "<<abs(real,imag)<<"\n";
 }
