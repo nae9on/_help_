@@ -2,6 +2,9 @@
 #include <string>
 #include <thread>
 
+// std is a namespace
+// std::thread is a class
+// std::thread::id is a nested class
 // MainThreadId is an object of class std::thread::id
 // get_id is a function in the namespace std::this_thread
 std::thread::id MainThreadId = std::this_thread::get_id();
@@ -21,8 +24,8 @@ void IsMainThread()
   }
 
   /*
-   * When a thread is default constructed its id is id{}.
-   * A thread's id = id{} if:
+   * When a thread is default constructed its id is std::thread::id{}.
+   * A thread's id = std::thread::id{} if:
    * 1) it has been created but has no task assigned to it.
    * 2) it has terminated
    * 3) it has been moved
@@ -41,8 +44,8 @@ void IsMainThread()
 int main()
 {
     // Main thread is running here
-    // Note: There is no such thing as main thread (all threads are first-class citizens :)).
-    // Typically the thread which was launched first is called as main thread.
+    // Note: There is no such thing as "main" thread (all threads are first-class citizens :)).
+    // Typically the thread which was launched first is called as "main" thread.
 
     IsMainThread();
 
@@ -51,7 +54,7 @@ int main()
     T2.join();
 
     // T2 has already been joined with the main thread.
-    if(!T2.joinable())
+    if(!T2.joinable()) // equivalent to checking if(T2.get_id()==std::thread::id{})
     {
         std::cout<<"T2 is not joinable anymore"<<std::endl;
     }
@@ -61,7 +64,7 @@ int main()
     // System thread (T2 here) cannot proceed beyond the lifetime of the main thread.
     // At the end of the scope of the main thread, its destructor is called which checks
     // if there is a system thread that is still running ( = has not yet joined).
-    // The main thread terminates the program if it finds a System thread which has not joined yet.
+    // The main thread terminates the program if it finds a system thread which has not joined yet.
 
     return 0;
 }

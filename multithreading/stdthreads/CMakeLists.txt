@@ -10,7 +10,7 @@ endif()
 
 add_executable(
 "${PROJECT_NAME}"
-vector_of_thread.cpp
+try_lock.cpp
 )
 
 target_link_libraries("${PROJECT_NAME}")
