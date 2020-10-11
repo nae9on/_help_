@@ -51,13 +51,15 @@ public:
 
     void Print()
     {
-        std::unique_lock<std::mutex> Lck1{m_Mutex};
-        while(!m_Work.empty())
         {
-          std::cout << m_Work.front() << " ";
-          m_Work.pop();
-        }
-        Lck1.unlock(); // Early unlock to minimize the critical section for m_Mutex
+            std::unique_lock<std::mutex> Lck1{m_Mutex};
+            while(!m_Work.empty())
+            {
+              std::cout << m_Work.front() << " ";
+              m_Work.pop();
+            }
+
+        } // Ensures early unlock to minimize the critical section for m_Mutex
 
         std::lock_guard<std::mutex> Lck2{CoutMutex};
         std::cout << std::endl;

@@ -10,7 +10,7 @@ endif()
 
 add_executable(
 "${PROJECT_NAME}"
-try_lock.cpp
+producer_consumer.cpp
 )
 
 target_link_libraries("${PROJECT_NAME}")
