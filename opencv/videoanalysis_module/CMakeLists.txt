@@ -14,6 +14,7 @@ else()
 endif()
 
 find_package(OpenCV REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 
 FILE(GLOB allcpp ./*.cpp)
 
@@ -23,6 +24,7 @@ ${allcpp}
 )
 
 target_link_libraries("${PROJECT_NAME}" ${OpenCV_LIBS})
+target_link_libraries("${PROJECT_NAME}" ${Boost_LIBRARIES})
 
 message(STATUS "OpenCV_DIR ${OpenCV_DIR}")
 message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")
