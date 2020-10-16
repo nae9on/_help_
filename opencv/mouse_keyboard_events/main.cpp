@@ -1,16 +1,10 @@
 #include "MouseEvents.h"
 
-#include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
-#include <opencv2/highgui.hpp>
 
 #include <iostream>
 #include <string>
-#include <vector>
-
-using namespace std;
-using namespace cv;
 
 int main()
 {
@@ -18,15 +12,15 @@ int main()
 
     MouseEvents::CMouseEvents MEvents{"Draw"};
 
-    VideoCapture inVid;
+    cv::VideoCapture inVid;
     inVid.open(inFilename);
     if (!inVid.isOpened())
     {
-        cout<<"Video capture could not be initialized for file: "<<inFilename<<endl;
+        std::cout<<"Video capture could not be initialized for file: "<<inFilename<<std::endl;
         return -1;
     }
 
-    Mat_<Vec3b> Frame;
+    cv::Mat_<cv::Vec3b> Frame;
     inVid >> Frame;
 
     while(1)
@@ -35,7 +29,7 @@ int main()
         inVid >> Frame;
         if(Frame.empty())
         {
-            inVid.set(CAP_PROP_POS_MSEC, 1);
+            inVid.set(cv::CAP_PROP_POS_MSEC, 1);
             inVid >> Frame;
         }
     }
