@@ -15,11 +15,11 @@ bool operator==(const cv::Point& P1, const cv::Point& P2);
 
 bool operator!=(const cv::Point& P1, const cv::Point& P2);
 
-void MyFilledCircle(cv::Mat Img, const cv::Point& Center);
+void MyFilledCircle(cv::Mat& Img, const cv::Point& Center);
 
-void MyLine(cv::Mat Img, const cv::Point& Start, const cv::Point& End);
+void MyLine(cv::Mat& Img, const cv::Point& Start, const cv::Point& End);
 
-void DrawText(cv::Mat Img, const cv::Point& P);
+void DrawText(cv::Mat& Img, const cv::Point& P);
 
 class CMouseEvents
 {
@@ -30,7 +30,10 @@ public:
     {
         cv::namedWindow(m_WinName, cv::WINDOW_AUTOSIZE);
         cv::setMouseCallback(m_WinName, OnMouse);
-        cv::namedWindow(m_WinNameZoom, cv::WINDOW_AUTOSIZE);
+        if(m_DrawROI)
+        {
+            cv::namedWindow(m_WinNameZoom, cv::WINDOW_AUTOSIZE);
+        }
     }
 
     // Show the current frame
@@ -40,7 +43,10 @@ public:
         m_CurrentFramePtr = &Frame;
         AddLines();
         Draw();
-        DrawROI();
+        if(m_DrawROI)
+        {
+            DrawROI();
+        }
         cv::imshow(m_WinName, Frame);        
         cv::waitKey(m_Delay);
     }
@@ -67,6 +73,7 @@ private:
 
     const std::string m_WinName{};
     const std::string m_WinNameZoom{};
+    const bool m_DrawROI{true};
     cv::Mat* m_CurrentFramePtr;
     int m_FrameNum{-1}; // Frame counter
     int m_Delay{33}; // Corresponds to 30 FPS

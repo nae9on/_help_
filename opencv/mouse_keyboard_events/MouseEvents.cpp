@@ -32,7 +32,7 @@ bool operator!=(const cv::Point& P1, const cv::Point& P2)
     return !(P1==P2);
 }
 
-void MyFilledCircle(cv::Mat Img, const cv::Point& Center)
+void MyFilledCircle(cv::Mat& Img, const cv::Point& Center)
 {
     int Radius{4};
 
@@ -44,7 +44,7 @@ void MyFilledCircle(cv::Mat Img, const cv::Point& Center)
                cv::LINE_8);
 }
 
-void MyLine(cv::Mat Img, const cv::Point& Start, const cv::Point& End)
+void MyLine(cv::Mat& Img, const cv::Point& Start, const cv::Point& End)
 {
     int Thickness = 2;
     int LineType = cv::LINE_8;
@@ -57,7 +57,7 @@ void MyLine(cv::Mat Img, const cv::Point& Start, const cv::Point& End)
              LineType);
 }
 
-void DrawText(cv::Mat Img, const cv::Point& P)
+void DrawText(cv::Mat& Img, const cv::Point& P)
 {
     std::stringstream ss;
     ss << P;
