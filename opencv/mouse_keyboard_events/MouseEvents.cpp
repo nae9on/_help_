@@ -135,6 +135,20 @@ void CMouseEvents::Draw()
     }
 }
 
+void CMouseEvents::DrawROI()
+{
+    int Radius = 100;
+    int Scale = 4;
+    cv::Mat& Src = *m_CurrentFramePtr;
+    cv::Rect ROI1(m_P1.x-Radius, m_P1.y-Radius, 2*Radius, 2*Radius);
+    cv::Rect ROI2(m_P2.x-Radius, m_P2.y-Radius, 2*Radius, 2*Radius);
+    cv::Rect ROI = ((ROI1 | ROI2) & cv::Rect(0, 0, Src.cols, Src.rows));
+    const cv::Mat& CroppedImage = Src(ROI);
+    cv::Mat ScaledImage;
+    cv::resize(CroppedImage, ScaledImage, cv::Size(CroppedImage.cols*Scale, CroppedImage.rows*Scale));
+    cv::imshow(m_WinNameZoom, ScaledImage);
+}
+
 void CMouseEvents::OnMouse(int Event, int X, int Y, int Flag, void* /*Param*/)
 {
     m_Flag = static_cast<cv::MouseEventFlags>(Flag);

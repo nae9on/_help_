@@ -26,9 +26,11 @@ class CMouseEvents
 public:
     CMouseEvents(const std::string& WinName)
         : m_WinName{WinName}
+        , m_WinNameZoom{m_WinName+"Zoom"}
     {
         cv::namedWindow(m_WinName, cv::WINDOW_AUTOSIZE);
         cv::setMouseCallback(m_WinName, OnMouse);
+        cv::namedWindow(m_WinNameZoom, cv::WINDOW_AUTOSIZE);
     }
 
     // Show the current frame
@@ -38,7 +40,8 @@ public:
         m_CurrentFramePtr = &Frame;
         AddLines();
         Draw();
-        cv::imshow(m_WinName, Frame);
+        DrawROI();
+        cv::imshow(m_WinName, Frame);        
         cv::waitKey(m_Delay);
     }
 
@@ -47,6 +50,9 @@ public:
 
     // Draw lines on the current frame
     void Draw();
+
+    // Zoom the image around the points in another window
+    void DrawROI();
 
 private:
     // Static members used in the Callback function for mouse events
@@ -60,6 +66,7 @@ private:
     bool m_LastRightClicked{false};
 
     const std::string m_WinName{};
+    const std::string m_WinNameZoom{};
     cv::Mat* m_CurrentFramePtr;
     int m_FrameNum{-1}; // Frame counter
     int m_Delay{33}; // Corresponds to 30 FPS
