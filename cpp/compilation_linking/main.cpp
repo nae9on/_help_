@@ -22,7 +22,7 @@
 #define FLAG 0
 
 //void funcX(){}; // error
-//class X{}; X cx; // error
+//class X{}; X obj; // error
 //int x; // error
 
 void funcY(); // OK does not violate ODR when the same function is declared in different TU's
@@ -40,7 +40,7 @@ int main(){
 	std::cout<<"FLAG is defined and is not 1";
 #endif
 
-	cx c;
+	ComplexNumber c;
 	c.print_abs();
 	std::cout<<"In main.cpp y = "<<global_y<<"\n";
 	std::cout<<"Absolute value = "<<getAbs(c.getReal(),c.getImag())<<"\n";

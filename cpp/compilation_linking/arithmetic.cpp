@@ -7,7 +7,7 @@
 
 void funcY();
 class Y;
-extern int y;
+extern int global_y;
 
 double getAbs(double r, double i){
  return std::sqrt(r*r+i*i);
