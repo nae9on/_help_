@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(project_display_image)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/belgium.jpg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+project(project_mouse_keyboard_events)
 
 # this overrides the OpenCV_DIR env variable (if set previously)
 # set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")
@@ -14,15 +12,18 @@ else()
 endif()
 
 find_package(OpenCV REQUIRED)
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 
 FILE(GLOB allcpp ./*.cpp)
 
 add_executable(
 "${PROJECT_NAME}"
+MouseEvents.h
 ${allcpp}
 )
 
 target_link_libraries("${PROJECT_NAME}" ${OpenCV_LIBS})
+target_link_libraries("${PROJECT_NAME}" ${Boost_LIBRARIES})
 
 message(STATUS "OpenCV_DIR ${OpenCV_DIR}")
 message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")

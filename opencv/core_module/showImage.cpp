@@ -15,7 +15,7 @@ using namespace std;
 
 void showImage(void)
 {
-	string imageName("./images/belgium.jpg");
+    string imageName("./images/belgium.jpg");
 
     Mat orig_image, gray_image; // creates the header part only
 
