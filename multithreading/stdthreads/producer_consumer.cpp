@@ -15,10 +15,11 @@
 
 std::mutex CoutMutex;
 
-void Write(const char Character)
+template<typename T>
+void Write(const T& Text)
 {
     std::lock_guard<std::mutex> Lck{CoutMutex};
-    std::cout<<Character<<std::this_thread::get_id()<<" "<<std::flush;
+    std::cout<<Text<<std::this_thread::get_id()<<" "<<std::flush;
 }
 
 struct AssemblyLine
@@ -31,7 +32,8 @@ public:
         std::this_thread::sleep_for(MS{m_TimeToProduce}); // Create work here
         m_Mutex.lock(); // Better to use std::lock_guard taking advantage of RAII
         m_Work.push(itr); // Add work here
-        Write('P');
+        Write(std::string{"P_"}+std::to_string(itr)+"_");
+        std::call_once(Flag, [](){ Init(); });        
         m_Mutex.unlock();
     }
 
@@ -39,8 +41,9 @@ public:
     {
         if(m_Mutex.try_lock()) // Returns immediately irrespective of whether the mutex is locked by another thread or not
         {
+            auto item = m_Work.front();
             m_Work.pop();
-            Write('C');
+            Write(std::string{"C_"}+std::to_string(item)+"_");
             m_Mutex.unlock();
             std::this_thread::sleep_for(MS{m_TimeToConsume}); // Process work here
         }
@@ -75,12 +78,20 @@ public:
 
     int64_t TimeToProduce() { return m_TimeToProduce; }
 
+    static void Init() { IsFirstItemProduced = true; }
+
+    static bool IsFirstItemProduced;
+
 private:
     const int64_t m_TimeToProduce{50}; // Important producer takes less time to produce!
     const int64_t m_TimeToConsume{100};
     std::queue<std::size_t> m_Work;
-    std::mutex m_Mutex{};
+    std::mutex m_Mutex{};    
+    static std::once_flag Flag;
 };
+
+bool AssemblyLine::IsFirstItemProduced = false;
+std::once_flag AssemblyLine::Flag{};
 
 void Produce(AssemblyLine& Line, std::size_t N)
 {
@@ -92,7 +103,7 @@ void Produce(AssemblyLine& Line, std::size_t N)
 
 void Consume(AssemblyLine& Line)
 {
-    while(Line.HasWork()) // Important producer takes less time to produce!
+    while(Line.HasWork()) // Important producer takes less time to produce otherwise there is no work!
     {
         Line.Consume();
     }
@@ -109,10 +120,10 @@ int main()
     // Make the main thread wait before assigning tasks to consumer threads
     // This is to make sure that there is already some work added by the producer thread
     // before consumers start to consume.
-    std::this_thread::sleep_for(AssemblyLine::MS{1*Line.TimeToProduce()});
+    std::this_thread::sleep_for(AssemblyLine::MS{10*Line.TimeToProduce()});
 
     // Main thread assigns task of consuming work to consumer threads
-    constexpr std::size_t NumConsumers{2};
+    constexpr std::size_t NumConsumers{4};
     std::vector<std::thread> Consumers(NumConsumers);
     for(std::size_t itr=0; itr<Consumers.size(); ++itr)
     {
