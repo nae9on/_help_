@@ -1,3 +1,9 @@
+/*
+ * Introduces the plain mutex std::mutex
+ * Example Moving a std::thread (not CopyConstructible or CopyAssignable) using std::move
+ *
+*/
+
 #include <vector>
 #include <thread>
 #include <iostream>
@@ -49,14 +55,14 @@ int main()
 
     std::vector<Sum> VecSum(NumThreads);
     std::vector<std::thread> VT(NumThreads); // default constructed threads are primarily useful as the target for moves.
-    for(std::size_t i=0; i<VT.size(); ++i)
+    for(std::size_t itr=0; itr<VT.size(); ++itr)
     {
-        VecSum[i] = Sum((N/NumThreads)*i+1, (N/NumThreads)*(i+1));
-        std::thread Thread{std::ref(VecSum[i])}; // create a thread and assign work
-        VT[i] = move(Thread); // threads can be moved but not copied
+        VecSum[itr] = Sum((N/NumThreads)*itr+1, (N/NumThreads)*(itr+1));
+        std::thread Thread{std::ref(VecSum[itr])}; // create a thread and assign work
+        VT[itr] = std::move(Thread); // threads can be moved but not copied
         if(!Thread.joinable()) // Once the thread has been moved it is not joinable anymore
         {
-            Write("Temporary thread " + std::to_string(i) + " not joinable anymore"s);
+            Write("Temporary thread " + std::to_string(itr) + " not joinable anymore"s);
         }
     }
 

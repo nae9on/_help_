@@ -1,3 +1,8 @@
+/*
+ * Example usage of class std::thread and namespace std::this_thread
+ *
+*/
+
 #include <iostream>
 #include <string>
 #include <thread>

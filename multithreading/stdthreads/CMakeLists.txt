@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(tutorial_stdthreads)
+project(project_stdthreads)
 
 if (MSVC)
         add_compile_options(/W4 /analyze)

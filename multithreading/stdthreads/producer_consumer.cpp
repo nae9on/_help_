@@ -1,7 +1,9 @@
 /*
- * Producer consumer example
+ * Producer-consumer example
  * Producer takes some time to create work. Producer pushes work into a queue.
- * Consumer pops work from a queue. Consumer takes some time to consume work.
+ * Consumer pops out work from a queue. Consumer takes some time to consume work.
+ *
+ * Introduces the simple std::lock_guard (not CopyAssignable)
  */
 
 #include <thread>
@@ -13,10 +15,10 @@
 
 std::mutex CoutMutex;
 
-void Write(char C)
+void Write(const char Character)
 {
     std::lock_guard<std::mutex> Lck{CoutMutex};
-    std::cout<<C<<std::this_thread::get_id()<<" "<<std::flush;
+    std::cout<<Character<<std::this_thread::get_id()<<" "<<std::flush;
 }
 
 struct AssemblyLine
@@ -24,18 +26,18 @@ struct AssemblyLine
 public:
     using MS = std::chrono::milliseconds;
 
-    void Produce(int i)
+    void Produce(std::size_t itr)
     {
         std::this_thread::sleep_for(MS{m_TimeToProduce}); // Create work here
         m_Mutex.lock(); // Better to use std::lock_guard taking advantage of RAII
-        m_Work.push(i); // Add work here
+        m_Work.push(itr); // Add work here
         Write('P');
         m_Mutex.unlock();
     }
 
     void Consume()
     {
-        if(m_Mutex.try_lock()) // Returns immediately if the mutex is locked by another thread
+        if(m_Mutex.try_lock()) // Returns immediately irrespective of whether the mutex is locked by another thread or not
         {
             m_Work.pop();
             Write('C');
@@ -51,17 +53,21 @@ public:
 
     void Print()
     {
-        {
-            std::unique_lock<std::mutex> Lck1{m_Mutex};
-            while(!m_Work.empty())
-            {
-              std::cout << m_Work.front() << " ";
-              m_Work.pop();
-            }
+        std::queue<std::size_t> Copy;
 
+        {
+            std::lock_guard<std::mutex> Lck1{m_Mutex};
+            Copy = m_Work;
         } // Ensures early unlock to minimize the critical section for m_Mutex
 
         std::lock_guard<std::mutex> Lck2{CoutMutex};
+        std::cout << std::endl;
+        std::cout << "Work remaining: ";
+        while(!Copy.empty())
+        {
+            std::cout << Copy.front() << " ";
+            Copy.pop();
+        }
         std::cout << std::endl;
     }
 
@@ -70,25 +76,23 @@ public:
     int64_t TimeToProduce() { return m_TimeToProduce; }
 
 private:
-    const int64_t m_TimeToProduce{50};
+    const int64_t m_TimeToProduce{50}; // Important producer takes less time to produce!
     const int64_t m_TimeToConsume{100};
-    std::queue<int> m_Work;
-    std::mutex m_Mutex;
+    std::queue<std::size_t> m_Work;
+    std::mutex m_Mutex{};
 };
 
-AssemblyLine Line;
-
-void Produce()
+void Produce(AssemblyLine& Line, std::size_t N)
 {
-    for(int i=0; i<10; ++i)
+    for(std::size_t itr=1; itr<=N; ++itr)
     {
-        Line.Produce(i);
+        Line.Produce(itr);
     }
 }
 
-void Consume()
+void Consume(AssemblyLine& Line)
 {
-    while(Line.HasWork())
+    while(Line.HasWork()) // Important producer takes less time to produce!
     {
         Line.Consume();
     }
@@ -96,23 +100,32 @@ void Consume()
 
 int main()
 {
+
+    AssemblyLine Line;
+
     // Main thread assigns task of producing work to a producer thread
-    std::thread ProducerThread{Produce};
+    std::thread ProducerThread{Produce, std::ref(Line), 10};
 
     // Make the main thread wait before assigning tasks to consumer threads
     // This is to make sure that there is already some work added by the producer thread
     // before consumers start to consume.
-    std::this_thread::sleep_for(AssemblyLine::MS{10*Line.TimeToProduce()});
+    std::this_thread::sleep_for(AssemblyLine::MS{1*Line.TimeToProduce()});
 
     // Main thread assigns task of consuming work to consumer threads
-    std::thread ConsumerThread1{Consume};
-    std::thread ConsumerThread2{Consume};
+    constexpr std::size_t NumConsumers{2};
+    std::vector<std::thread> Consumers(NumConsumers);
+    for(std::size_t itr=0; itr<Consumers.size(); ++itr)
+    {
+        std::thread ConsumerThread{Consume, std::ref(Line)};
+        Consumers[itr] = std::move(ConsumerThread);
+    }
 
     ProducerThread.join();
-    ConsumerThread1.join();
-    ConsumerThread2.join();
+    for(std::size_t itr=0; itr<Consumers.size(); ++itr)
+    {
+        Consumers[itr].join();
+    }
 
-    // Print queue
     Line.Print();
 
     assert(!Line.HasWork() && "Still work is remaining!");
