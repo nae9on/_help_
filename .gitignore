@@ -64,3 +64,6 @@ Debug/
 
 #CMakeLists user files
 CMakeLists.txt.user
+
+#Qt related files
+qtcreator*/*
