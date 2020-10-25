@@ -10,7 +10,7 @@ endif()
 
 add_executable(
 "${PROJECT_NAME}"
-producer_consumer.cpp
+improved_producer_consumer.cpp
 )
 
 target_link_libraries("${PROJECT_NAME}")
