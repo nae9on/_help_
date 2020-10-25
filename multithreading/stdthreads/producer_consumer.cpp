@@ -30,26 +30,28 @@ public:
     void Produce(std::size_t itr)
     {
         std::this_thread::sleep_for(MS{m_TimeToProduce}); // Create work here
-        m_Mutex.lock(); // Better to use std::lock_guard taking advantage of RAII
-        m_Work.push(itr); // Add work here
-        Write(std::string{"P_"}+std::to_string(itr)+"_");
-        std::call_once(Flag, [](){ Init(); });        
+        m_Mutex.lock();
+        m_Work.push(itr); // Add work here - critical section
         m_Mutex.unlock();
+        Write(std::string{"P_"}+std::to_string(itr)+"_");
+        std::call_once(Flag, [](){ Init(); });
     }
 
     void Consume()
     {
-        if(m_Mutex.try_lock()) // Returns immediately irrespective of whether the mutex is locked by another thread or not
+        // try_lock returns immediately irrespective of whether the mutex is locked by another thread or not
+        if(IsFirstItemProduced && m_Mutex.try_lock())
         {
             auto item = m_Work.front();
-            m_Work.pop();
-            Write(std::string{"C_"}+std::to_string(item)+"_");
-            m_Mutex.unlock();
+            m_Work.pop(); // Remove work here - critical section
+            m_Mutex.unlock();            
             std::this_thread::sleep_for(MS{m_TimeToConsume}); // Process work here
+            Write(std::string{"C_"}+std::to_string(item)+"_");
         }
         else
         {
             // Do something else in the meantime while Producer is adding work
+            std::this_thread::sleep_for(MS{m_Time4ExtraWorkByConsumer});
             Write('X');
         }
     }
@@ -60,31 +62,38 @@ public:
 
         {
             std::lock_guard<std::mutex> Lck1{m_Mutex};
-            Copy = m_Work;
+            Copy = m_Work; // critical section
         } // Ensures early unlock to minimize the critical section for m_Mutex
 
-        std::lock_guard<std::mutex> Lck2{CoutMutex};
-        std::cout << std::endl;
-        std::cout << "Work remaining: ";
-        while(!Copy.empty())
         {
-            std::cout << Copy.front() << " ";
-            Copy.pop();
+            std::lock_guard<std::mutex> Lck2{CoutMutex};
+            std::cout << std::endl;
+            std::cout << "Work remaining: ";
+            while(!Copy.empty())
+            {
+                std::cout << Copy.front() << " ";
+                Copy.pop();
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
     }
 
     bool HasWork() const { return m_Work.size()>0; }
 
     int64_t TimeToProduce() { return m_TimeToProduce; }
 
-    static void Init() { IsFirstItemProduced = true; }
+    static void Init()
+    {
+        IsFirstItemProduced = true;
+        Write("First_item_has_been_produced_");
+    }
 
     static bool IsFirstItemProduced;
 
 private:
-    const int64_t m_TimeToProduce{50}; // Important producer takes less time to produce!
+    const int64_t m_TimeToProduce{80}; // Important producer takes less time to produce!
     const int64_t m_TimeToConsume{100};
+    const int64_t m_Time4ExtraWorkByConsumer{10};
     std::queue<std::size_t> m_Work;
     std::mutex m_Mutex{};    
     static std::once_flag Flag;
@@ -103,16 +112,18 @@ void Produce(AssemblyLine& Line, std::size_t N)
 
 void Consume(AssemblyLine& Line)
 {
-    while(Line.HasWork()) // Important producer takes less time to produce otherwise there is no work!
+    // Important producer takes less time to produce otherwise there is no work!
+    while(Line.HasWork() || !AssemblyLine::IsFirstItemProduced)
     {
         Line.Consume();
     }
+
+    Write("No_work_thus_Died_");
 }
 
 int main()
 {
-
-    AssemblyLine Line;
+    AssemblyLine Line{};
 
     // Main thread assigns task of producing work to a producer thread
     std::thread ProducerThread{Produce, std::ref(Line), 10};
@@ -120,10 +131,11 @@ int main()
     // Make the main thread wait before assigning tasks to consumer threads
     // This is to make sure that there is already some work added by the producer thread
     // before consumers start to consume.
-    std::this_thread::sleep_for(AssemblyLine::MS{10*Line.TimeToProduce()});
+    //std::this_thread::sleep_for(AssemblyLine::MS{10*Line.TimeToProduce()});
+    // Note: the above was solved by using std::once_flag!
 
     // Main thread assigns task of consuming work to consumer threads
-    constexpr std::size_t NumConsumers{4};
+    constexpr std::size_t NumConsumers{3};
     std::vector<std::thread> Consumers(NumConsumers);
     for(std::size_t itr=0; itr<Consumers.size(); ++itr)
     {

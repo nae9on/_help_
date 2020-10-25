@@ -2,7 +2,7 @@
  * Introduces class std::thread (not CopyConstructible or CopyAssignable), nested class std::thread::id,
  * and namespace std::this_thread
  *
-*/
+ */
 
 #include <iostream>
 #include <string>

@@ -2,7 +2,7 @@
  * Introduces the plain mutex std::mutex
  * Example Moving a std::thread (not CopyConstructible or CopyAssignable) using std::move
  *
-*/
+ */
 
 #include <vector>
 #include <thread>
