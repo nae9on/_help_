@@ -1,9 +1,13 @@
 /*
- * Producer-consumer example
+ * producer_consumer.cpp illustrates a producer-consumer example where
  * Producer takes some time to create work. Producer pushes work into a queue.
  * Consumer pops out work from a queue. Consumer takes some time to consume work.
  *
- * Introduces the simple std::lock_guard (not CopyAssignable)
+ * A fatal flaw with the basic producer-consumer example is that when m_TimeToProduce>m_TimeToConsume
+ * the consumers finish when there is no work. The solution is to make the consumers wait until a certain
+*  maximum waiting time has elapsed before they finish.
+ *
+ * Introduces thread_local
  */
 
 #include <thread>
@@ -12,8 +16,12 @@
 #include <queue>
 #include <iostream>
 #include <cassert>
+#include <chrono>
 
 std::mutex CoutMutex;
+
+// local variable owned by a thread and shared among all functions of a thread
+thread_local std::chrono::milliseconds TimeSinceLastWorkDone;
 
 template<typename T>
 void Write(const T& Text)
@@ -41,19 +49,21 @@ public:
     {
         // try_lock returns immediately irrespective of whether the mutex is locked by another thread or not
         // Note: very important to check IsFirstItemProduced first due to short-circuit evaluation!
-        if(IsFirstItemProduced && m_Mutex.try_lock())
+        if(IsFirstItemProduced && !IsEmpty() && m_Mutex.try_lock())
         {
             auto item = m_Work.front();
             m_Work.pop(); // Remove work here - critical section
             m_Mutex.unlock();
             std::this_thread::sleep_for(MS{m_TimeToConsume}); // Process work here
             Write(std::string{"C_"}+std::to_string(item)+"_");
+            TimeSinceLastWorkDone = MS{0}; // Set it back to zero
         }
         else
         {
             // Do something else in the meantime while Producer is adding work
             std::this_thread::sleep_for(MS{m_Time4ExtraWorkByConsumer});
             Write('X');
+            TimeSinceLastWorkDone += MS{m_Time4ExtraWorkByConsumer};
         }
     }
 
@@ -81,7 +91,7 @@ public:
 
     bool HasWork() const
     {
-        return !IsEmpty() || !IsFirstItemProduced;
+        return !IsEmpty() || !IsFirstItemProduced || TimeSinceLastWorkDone<MS{m_MaxElapsedTime};
     }
 
     bool IsEmpty() const
@@ -100,11 +110,12 @@ public:
     static bool IsFirstItemProduced;
 
 private:
-    const int64_t m_TimeToProduce{80}; // Important producer takes less time to produce!
+    const int64_t m_TimeToProduce{200}; // No such restriction as producer takes less time to produce!
     const int64_t m_TimeToConsume{100};
     const int64_t m_Time4ExtraWorkByConsumer{10};
+    const int64_t m_MaxElapsedTime{m_TimeToProduce};
     std::queue<std::size_t> m_Work;
-    std::mutex m_Mutex{};    
+    std::mutex m_Mutex{};
     static std::once_flag Flag;
 };
 
@@ -121,7 +132,10 @@ void Produce(AssemblyLine& Line, std::size_t N)
 
 void Consume(AssemblyLine& Line)
 {
-    // Important producer takes less time to produce otherwise there is no work!
+    // Initialize thread local variable for each consumer thread
+    TimeSinceLastWorkDone = AssemblyLine::MS{0};
+
+    // No such restriction as producer takes less time to produce!
     while(Line.HasWork())
     {
         Line.Consume();
