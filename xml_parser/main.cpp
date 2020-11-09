@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 
+#include <stdio.h> // for FILE*
+
 int main()
 {    
     TiXmlDocument Doc{};
@@ -10,6 +12,11 @@ int main()
     std::cout<<"TiXmlDocument filename = "<<Doc.Value()<<std::endl;
     std::cout<<"TiXmlDocument file content = "<<std::endl;
     Doc.Print();
+    
+    // Also Pretty-print to another file
+    FILE* Fp = fopen("/home/akadar/Desktop/_help_/xml_parser/configOutput.xml", "w+");
+    Doc.Print(Fp);
+    fclose(Fp);
 
     float ConfidenceThreshold{};
     std::string ModelName{};
