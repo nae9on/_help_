@@ -8,15 +8,12 @@ else()
         add_compile_options(-Wall -Wextra -Wpedantic -O0)
 endif()
 
+FILE(GLOB TinyXmlcpp ./TinyXml/*.cpp)
+
 add_executable(
 "${PROJECT_NAME}"
 main.cpp
-tinystr.h
-tinyxml.h
-tinyxml.cpp
-tinystr.cpp
-tinyxmlerror.cpp
-tinyxmlparser.cpp
+${TinyXmlcpp}
 )
 
 target_link_libraries("${PROJECT_NAME}")

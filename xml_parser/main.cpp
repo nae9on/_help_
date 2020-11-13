@@ -1,4 +1,4 @@
-#include "tinyxml.h"
+#include "TinyXml/tinyxml.h"
 
 #include <iostream>
 #include <vector>
@@ -8,13 +8,13 @@
 int main()
 {    
     TiXmlDocument Doc{};
-    Doc.LoadFile("/home/akadar/Desktop/_help_/xml_parser/config.xml", TiXmlEncoding::TIXML_ENCODING_UTF8);
+    Doc.LoadFile("C:/Users/ahkad/Desktop/Config.xml", TiXmlEncoding::TIXML_ENCODING_UTF8);
     std::cout<<"TiXmlDocument filename = "<<Doc.Value()<<std::endl;
     std::cout<<"TiXmlDocument file content = "<<std::endl;
     Doc.Print();
     
     // Also Pretty-print to another file
-    FILE* Fp = fopen("/home/akadar/Desktop/_help_/xml_parser/configOutput.xml", "w+");
+    FILE* Fp = fopen("C:/Users/ahkad/Desktop/ConfigOutput.xml", "w+");
     Doc.Print(Fp);
     fclose(Fp);
 
