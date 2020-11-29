@@ -67,3 +67,6 @@ CMakeLists.txt.user
 
 #Qt related files
 qtcreator*/*
+build-*-Debug
+build-*-Release
+
