@@ -49,7 +49,7 @@ X returnX7(){
 	return X(7);
 }
 
-int copy_elision(){
+int main_copy_elision(){
 
 	// Abbreviations
 	// copy-elid-yes - when copy-elision is enabled
@@ -79,6 +79,8 @@ int copy_elision(){
 	 * ord-const, copy-const called when copy-elid-no and move-no (only allowed with c++98)
 	 */
 	X x3(X(7));
+
+    (void) x3;
 
 	std::cout<<"\n";
 
@@ -112,7 +114,7 @@ int copy_elision(){
 	 * ord-const, copy-const, copy-const called when copy-elid-no and move-no
 	 *
 	 */
-	X x4 = returnX7();
+    X x4 (returnX7());
 
 	(void) x4; // cast to void
 

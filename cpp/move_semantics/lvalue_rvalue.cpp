@@ -5,46 +5,68 @@
  *      Author: akadar
  *
  * References:
+ * Effective Modern C++ Item 1, 2, 23-30
  * https://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-
  */
 
 #include <iostream>
 
-int lvalue_rvalue(){
+int main_lvalue_rvalue(){
 
 	/*
-	 * Note:
-	 * 1. expressions and not objects are lvalues or rvalues.
+     * Notes:
+     * 1. Expressions and not objects are lvalues or rvalues.
 	 * 2. An expression which has a named memory location is an lvalue.
 	 * 3. An expression which is a temporary (i.e does not have a named memory location) is an rvalue.
 	 * 4. An expression is either an lvalue or an rvalue.
 	 * 5.
 	 */
 
-	int x1 = 10; // 10 is an rvalue here. x1 is an lvalue.
+    // Recall prototypes of special member functions
+    // 1. copy ctor                Widget(const Widget&)
+    // 2. copy assignment  Widget& Widget(const Widget&)
+    // 3. move ctor                Widget(Widget&&)
+    // 4. move assignment  Widget& Widget(Widget&&)
 
-	// What lvalue-ref can bind to?
-	int& y1 = x1; //OK, non-const lvalue-ref can bind to an lvalue.
-	const int& y2 = x1; //OK, const lvalue-ref can bind to an lvalue.
-	//int& y2 = 10; // Error, non-const lvalue-ref cannot bind to an rvalue.
-	const int& y3 = 10; //OK, const lvalue-ref can bind to an rvalue.
+    int x{10};
+    const int y{10};
+    int&& z = 10;
+    const int&& t = 10;
 
-	// What rvalue-ref can bind to?
-	int&& z1 = 10; //OK, const/non-const rvalue-ref can bind to an rvalue.
-	//int&& z2 = x1; //Error, const/non-const rvalue-ref cannot bind to an lvalue.
-	int&& z3 = x1 + x1; //OK, x1 + x1 is a temporary and thus an rvalue.
+    // Binding
+    // non-const lvalue-ref can bind to non-const lvalue.
+    int& xref = x;
 
-	/*
-	 * std::move removes the l-valueness and acts like an l-value to r-value cast
-	 */
-	int&& z2 = std::move(x1); // Now OK
+    // const lvalue-ref can bind to non-const/const lvalue, non-const/const rvalue.
+    // Since const lvalue-ref can also bind to non-const/const rvalue, copy ctor/copy assignment
+    // are called in the absence of move semantics.
+    const int& cxref = x;
+    const int& cyref = y;
+    const int& czref = z;
+    const int& ctref = t;
 
-	(void) y1; // cast to void
-	(void) y2; // cast to void
-	(void) y3; // cast to void
-	(void) z1; // cast to void
-	(void) z2; // cast to void
-	(void) z3; // cast to void
+    // non-const rvalue-ref can only bind to non-const rvalue.
+    // Therefore, move ctor/move assignment (if they exist) are invoked for non const-rvalue arguments
+    int&& z1 = 10;
+
+    // const rvalue-ref can bind to non-const/const rvalue.
+    const int&& z2 = 10;
+    const int&& z3 = std::move(t);
+
+    (void) x;
+    (void) y;
+    (void) z;
+    (void) t;
+    (void) xref;
+    (void) cxref;
+    (void) cyref;
+    (void) czref;
+    (void) ctref;
+    (void) z1;
+    (void) z2;
+    (void) z3;
+
+    std::cout << "End of main" << std::endl;
 
 	return 0;
 }

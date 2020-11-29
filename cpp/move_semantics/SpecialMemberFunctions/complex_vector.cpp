@@ -8,7 +8,7 @@
 #include <iostream>
 #include "complex_vector.h"
 
-namespace ali {
+namespace cvector {
 
 // constructor with 0 argument
 complex_vector::complex_vector():n{0}, data{nullptr} {

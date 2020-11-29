@@ -1,5 +1,5 @@
 /*
- * main_complex.cpp
+ * main.cpp
  *
  *  Created on: May 26, 2019
  *      Author: akadar
@@ -13,7 +13,7 @@
 #include <iostream>
 #include "complex_vector.h"
 
-using namespace ali;
+using namespace cvector;
 
 complex_vector operator+(const complex_vector& v1, const complex_vector& v2){
 	std::cout<<"In + operator\n";
@@ -31,7 +31,7 @@ complex_vector square(const complex_vector& v1){
 	return temp;
 }
 
-int main_complex() {
+int main() {
 
 	complex_vector p1(5);
 
