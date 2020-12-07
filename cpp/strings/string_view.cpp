@@ -2,7 +2,7 @@
 #include <string>
 #include <string_view>
 
-std::string_view GetExtension(const std::string &Path)
+std::string_view GetExtension(std::string_view Path)
 {
     auto last_period_idx = Path.find_last_of(".");
     if(last_period_idx == std::string::npos) { last_period_idx = 0; }
