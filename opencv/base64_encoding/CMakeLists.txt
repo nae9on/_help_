@@ -2,22 +2,31 @@ cmake_minimum_required(VERSION 3.16)
 
 project(project_base64_encoding)
 
-# this overrides the OpenCV_DIR env variable (if set previously)
-# set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    message(STATUS "Using GCC")
+    add_compile_options(-Wall -Wextra -Wpedantic -O0)
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    message(STATUS "Using Visual Studio C++")
+    add_compile_options(/W4 /analyze)
+endif()
 
-if (MSVC)
-        add_compile_options(/W4 /analyze)
-else()
-        add_compile_options(-Wall -Wextra -Wpedantic -O0)
+if (WIN32)
+    set(OpenCV_DIR "C:/Users/ahkad/opencv/gnu_build/install")
+elseif (UNIX)
+    set(OpenCV_DIR "/usr/local/lib/cmake/opencv4")
 endif()
 
 find_package(OpenCV REQUIRED)
 
+FILE(GLOB allh ./*.h)
+FILE(GLOB allcpp ./*.cpp)
+FILE(GLOB TinyXmlcpp ./TinyXml/*.cpp)
+
 add_executable(
 "${PROJECT_NAME}"
-main.cpp
-base64.h
-base64.cpp
+${allh}
+${allcpp}
+${TinyXmlcpp}
 )
 
 target_link_libraries("${PROJECT_NAME}" ${OpenCV_LIBS})
