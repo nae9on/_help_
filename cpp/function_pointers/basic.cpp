@@ -8,8 +8,10 @@
  * Firstly, they are not type-safe. We can never be certain that the processing function will call the callback
  * with the correct arguments. Secondly, the callback is strongly coupled to the processing function since the processing
  * function must know which callback to call. Because of these inherent drawbacks, function pointers are not popular
- * anymore for implementing callbacks. Better (type-safe and more flexible) mechanisms example Signals and Slots (Qt framework)
- * are more commonly used for implementing callbacks.
+ * anymore for implementing callbacks. Better (type-safe and more flexible) mechanisms example signals and slots (Qt framework)
+ * are more commonly used for implementing callbacks. Note: In general, signals and slots mechanism, is approximately ten
+ * times slower than calling the receivers directly via function pointers, with non-virtual function calls. However,
+ * the simplicity and flexibility of the signals and slots mechanism is well worth the overhead.
  *
  *  Created on: Aug 8, 2019
  *      Author: akadar
