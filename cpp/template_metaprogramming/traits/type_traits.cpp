@@ -4,8 +4,8 @@
  *  Created on: Jul 29, 2019
  *      Author: akadar
  *
- * The aim is to write a pre-increment function which increments only short and int
- * types (with there type modifiers signed, unsigned and long).
+ * The aim is to write a pre-increment function which increments only integers
+ * which are >= 2 bytes with there type modifiers signed, unsigned and long included.
  *
  * All integral types include bool, char, short, int (with their type modifiers).
  *
@@ -34,20 +34,17 @@
 #include <string>
 #include <cassert>
 
-// Simple example of a templated pre-increment function which is supposed to
-// pre-increment only int's and short's
+// First attempt to write the templated pre-increment function
 template<typename T> void pre_increment(T& x){
 	++x;
 }
-
-// assert is evaluated at run-time
-template<> void pre_increment(char& x){
-	assert(false && "Illegal to pre-increment char");
+template<> void pre_increment(char&){
+    assert(false && "Illegal to pre-increment char"); // assert is evaluated at run-time
 }
-template<> void pre_increment(double& x){
+template<> void pre_increment(double&){
 	assert(false && "Illegal to pre-increment double");
 }
-// what if T is bool, float, double etc? The solution is not practical.
+// what if T is bool, float etc? The solution is not practical.
 
 // Better version of templated pre_increment function
 template<typename T>
@@ -59,7 +56,7 @@ struct is_pre_incrementable<int> {
   static constexpr bool value = true;
 };
 template<typename T> void better_pre_increment(T& x){
-	static_assert(is_pre_incrementable<T>::value, "Illegal to pre_increment ");
+    static_assert(is_pre_incrementable<T>::value, "Illegal to pre_increment");
 	++x;
 }
 // only int is allowed, what if T is long int or short? The solution is not practical.
@@ -72,7 +69,7 @@ template<typename T> constexpr bool is_int_or_short() {
 }
 template<typename T> void smart_pre_increment(T& x){
 	// Note that having is_int_or_short makes the code hide implementation details.
-	static_assert(is_int_or_short<T>(),"Illegal to pre_increment types that are not int or short");
+    static_assert(is_int_or_short<T>(), "Illegal to pre_increment");
 	++x;
 }
 
