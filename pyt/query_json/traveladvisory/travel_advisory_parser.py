@@ -5,12 +5,16 @@ class TravelAdvisory:
             
 class TravelAdvisoryParser:
     
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, api_data):
+        self.data = api_data['data']
+        self.name_id_map = {self.data[key]['name']:key for key in self.data.keys()}
     
-    def get_country_data(self, country_code):
-        all_data = self.data['data']
-        country_data = all_data[country_code]
+    def get_country_data(self, country_code_or_name):
+        if len(country_code_or_name) == 2:
+            country_code = country_code_or_name
+        else:
+            country_code = self.name_id_map[country_code_or_name]
+        country_data = self.data[country_code]
         return country_data
     
     def get_country_name(self, country_code):

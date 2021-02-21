@@ -35,12 +35,12 @@ class Menu:
                 print("Invalid choice")
                 
     def show_travel_score(self):
-        code = input("Enter country code ")
+        code = input("Enter country code or country name ")
         print(traveobj.get_travel_score(code))
         return True
         
     def show_travel_message(self):
-        code = input("Enter country code ")
+        code = input("Enter country code or country name ")
         print(traveobj.get_travel_message(code))
         return True
         
