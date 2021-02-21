@@ -6,4 +6,4 @@ Usage (first add content of bashrc_custom to ~/.bashrc and source the ~/.bashrc 
 lookup "AD" "AE" "AF"
 
 Part 2
-A more user intercative menu based solution is available in menu.py
+A more user interactive menu based solution is available in menu.py
