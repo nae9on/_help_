@@ -60,6 +60,14 @@ void MyLine( Mat img, Point start, Point end, RNG& rng)
     lineType);
 }
 
+template<typename T>
+void DrawText(cv::Mat& Img, const T& Data, const cv::Point& Location, cv::Scalar Color)
+{
+    std::stringstream ss;
+    ss << Data;
+    cv::putText(Img, ss.str().c_str(), Location, cv::FONT_HERSHEY_SIMPLEX, 0.5, Color);
+}
+
 void basic_drawing(){
 
   String name("Basic drawing");

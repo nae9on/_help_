@@ -40,7 +40,7 @@ struct is_sortable<std::random_access_iterator_tag>{
 
 // Sorting a container which supports forward iterator is non-trivial
 template<typename T1, typename T2>
-void mysort(T1 beg, T1 end, const std::forward_iterator_tag& obj){
+void mysort(T1 beg, T1 end, const std::forward_iterator_tag&){
 	using vt = typename T1::value_type;
 	std::vector<vt> vec{beg,end};
 	std::sort(vec.begin(),vec.end());
@@ -49,7 +49,7 @@ void mysort(T1 beg, T1 end, const std::forward_iterator_tag& obj){
 
 // Sorting a container which supports bidirectional iterator is non-trivial
 template<typename T>
-void mysort(T beg, T end, const std::bidirectional_iterator_tag& obj){
+void mysort(T beg, T end, const std::bidirectional_iterator_tag&){
 	using vt = typename T::value_type;
 	std::vector<vt> vec{beg,end};
 	std::sort(vec.begin(),vec.end());
@@ -68,12 +68,12 @@ void mysort(T beg, T end)
 {
 	using my_iterator_category = typename std::iterator_traits<T>::iterator_category;
 
-	static_assert(is_sortable<my_iterator_category>::value,"not sortable");
+    static_assert(is_sortable<my_iterator_category>::value, "not sortable");
 
 	mysort(beg,end,my_iterator_category()); // Note my_iterator_category is a struct
 }
 
-int iterator_traits(){
+int main(){ // iterator_traits
 
 	std::vector<int> vec{9,1,4,2,0};
 	std::list<int> lst{9,1,4,2,0};
@@ -94,8 +94,10 @@ int iterator_traits(){
 	std::istream_iterator<int> beg2(std::cin);
 	std::istream_iterator<int> end2{};
 
-	//mysort(beg1,end1);
-	//mysort(beg2,end2);
+    (void) end2;
+
+    //mysort(beg1,end1); // error: static assertion failed: not sortable
+    //mysort(beg2,end2); // error: static assertion failed: not sortable
 
 	return 0;
 }
