@@ -16,6 +16,7 @@ void funcY();
 class Y;
 extern int global_y;
 const double global_pi{3.1415}; // OK const qualified variables have internal linkage
+static int xx = 1;
 
 #define abs(r,i) (std::sqrt(r*r+i*i))
 

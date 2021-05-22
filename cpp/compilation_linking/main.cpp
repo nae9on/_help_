@@ -5,6 +5,7 @@
  *      Author: akadar
  *
  * References:
+ * [0] The C++ Programming Language - Bjarne Stroustrup Chapter 15
  * [1] http://faculty.cs.niu.edu/~mcmahon/CS241/Notes/compile.html
  * [2] https://www.calleerlandsson.com/the-four-stages-of-compiling-a-c-program/
  * [3] https://en.cppreference.com/w/cpp/preprocessor/conditional
@@ -29,6 +30,7 @@ void funcY(); // OK does not violate ODR when the same function is declared in d
 class Y; // OK when declaring a type
 int global_y{7}; // OK when extern is used in other compilation units
 double global_pi{3.14};  // OK const qualified variables have internal linkage
+static int xx = 1; // OK static variables have internal linkage
 
 int main(){
 
