@@ -10,6 +10,8 @@
 // The following Macro disables it
 # define BOOST_ALLOW_DEPRECATED_HEADERS
 
+#include "config.h"
+
 #include "complex.h"
 #include <boost/version.hpp> 
 #include <boost/random.hpp>
@@ -19,6 +21,8 @@
 using namespace boost::random;
 
 int main(){
+
+    std::cout << SOURCE_DIR << std::endl;
 
     cx c;
     c.print_abs();

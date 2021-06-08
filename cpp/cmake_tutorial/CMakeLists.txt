@@ -13,6 +13,10 @@ set(My_VARIABLE "The project name is")
 message(STATUS "${My_VARIABLE} ${PROJECT_NAME}")
 message(STATUS "The project version is ${PROJECT_VERSION}")
 
+# Copy config.h to the build dir to be later used for pre-processor macro substitution
+configure_file(config.h ${CMAKE_BINARY_DIR}/config.h)
+include_directories(${CMAKE_BINARY_DIR})
+
 # add compilation flags
 if (MSVC)
 	add_compile_options(/W4 /analyze)

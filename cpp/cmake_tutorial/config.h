@@ -1,0 +1,3 @@
+#pragma once
+
+#define SOURCE_DIR "${CMAKE_SOURCE_DIR}"
