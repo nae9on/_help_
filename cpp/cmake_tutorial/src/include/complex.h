@@ -28,32 +28,32 @@
 
 class cx{
 
-	// Example Macro
-	#define my_double double // Note no semicolon needed.
-	// Note: Unlike macros typedef and using are compiler tokens which the pre-processor will ignore.
-	//typedef double my_double;
-	//using my_double=double;
+    // Example Macro
+#define my_double double // Note no semicolon needed.
+    // Note: Unlike macros typedef and using are compiler tokens which the pre-processor will ignore.
+    //typedef double my_double;
+    //using my_double=double;
 
-	/*
-	 * Caution: it is dangerous to use #define, typedef or using in a header file at the global scope,
-	 * because a header file is typically included by several translation units and therefore it cannot
-	 * contain definitions that might produce multiple definitions of the same name in those units [5].
-	 * This can create ambiguity resulting in compilation fail or worse wrong code behavior. If they
-	 * are to be included, include them in a restricted scope such as class scope.
-	 *
-	 * For guidelines on what to put in a header file? Refer [5].
-	 *
-	 */
+    /*
+     * Caution: it is dangerous to use #define, typedef or using in a header file at the global scope,
+     * because a header file is typically included by several translation units and therefore it cannot
+     * contain definitions that might produce multiple definitions of the same name in those units [5].
+     * This can create ambiguity resulting in compilation fail or worse wrong code behavior. If they
+     * are to be included, include them in a restricted scope such as class scope.
+     *
+     * For guidelines on what to put in a header file? Refer [5].
+     *
+     */
 
 public:
-	cx(){real = 0; imag = 0;}
-	cx(my_double r, my_double i);
-	void print_abs();
-	double getReal(){return real;}
-	double getImag(){return imag;}
+    cx(){real = 0; imag = 0;}
+    cx(my_double r, my_double i);
+    void print_abs();
+    double getReal(){return real;}
+    double getImag(){return imag;}
 private:
-	my_double real;
-	my_double imag;
+    my_double real;
+    my_double imag;
 };
 
 #endif /* COMPLEX_H_ */

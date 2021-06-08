@@ -26,7 +26,9 @@ target_include_directories(
 # for FindBoost.cmake). Among these are BOOST_INCLUDE_DIRS, Boost_LIBRARIES and 
 # Boost_XXX_LIBRARY variabels, with XXX replaced with specific Boost libraries. 
 # You can use these to specify include_directories and target_link_libraries.
-FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options)
+# FIND_PACKAGE(Boost REQUIRED COMPONENTS program_options)
+FIND_PACKAGE(Boost COMPONENTS system filesystem REQUIRED)
+
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Link static or shared libraries

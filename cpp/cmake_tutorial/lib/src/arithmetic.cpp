@@ -10,5 +10,5 @@ class Y;
 extern int y;
 
 double getAbs(double r, double i){
- return std::sqrt(r*r+i*i);
+    return std::sqrt(r*r+i*i);
 }

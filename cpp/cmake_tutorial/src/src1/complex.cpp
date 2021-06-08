@@ -11,10 +11,10 @@
 #include "io.h"
 
 cx::cx(my_double r, my_double i){
-	real = r;
-	imag = i;
+    real = r;
+    imag = i;
 }
 
 void cx::print_abs(){
-	fancyIO(std::cout)<<getAbs(real,imag)<<"\n";
+    fancyIO(std::cout)<<getAbs(real,imag)<<"\n";
 }
