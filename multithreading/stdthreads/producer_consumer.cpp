@@ -4,6 +4,8 @@
  * Consumer pops out work from a queue. Consumer takes some time to consume work.
  *
  * Introduces the simple std::lock_guard (not CopyAssignable)
+ * Note: The scoped_lock is a strictly superior version of lock_guard and thus makes it obsolete.
+ * Reference https://stackoverflow.com/questions/43019598/stdlock-guard-or-stdscoped-lock
  */
 
 #include <thread>
