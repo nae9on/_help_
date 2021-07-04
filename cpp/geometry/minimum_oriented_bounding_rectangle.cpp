@@ -87,7 +87,7 @@ SMinimumOrientedBoundingBox<T> ComputeMinimumOrientedBoundingBox(const std::vect
     // Calculate area
     double OptimumArea = bg::area(MBRConvexHull);
     double OptimumAngle{0.0};
-    BoxType OptimumMBR;
+    BoxType OptimumMBR{};
 
     // Loop over all the vertices of the convex hull
     for(auto it = boost::begin(bg::exterior_ring(ConvexHull)); it != boost::end(bg::exterior_ring(ConvexHull))-1; ++it)

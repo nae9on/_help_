@@ -15,7 +15,7 @@ using point3d = bg::model::point<double, 3, bg::cs::cartesian>;
 using seg = bg::model::segment<point2d>;
 using line = bg::model::linestring<point2d>;
 
-int basic_op(){
+int main_basic_op(){
 
 	point2d p1(1, 1), p2(2, 2);
 	std::cout << "Distance p1-p2 is: " << bg::distance(p1, p2) << std::endl;
@@ -35,7 +35,7 @@ int basic_op(){
 	std::cout << "Distance l1-p1 is: " << bg::distance(l1, p1) << std::endl;
 
 	auto c1 = bg::cross_product(p3,p4);
-	std::cout << "Cross-product p3-p4 = "<<bg::dsv(c1)<<"\n";
+    std::cout << "Cross-product p3-p4 = "<<bg::dsv(c1)<<"\n";
 
 	return 0;
 }

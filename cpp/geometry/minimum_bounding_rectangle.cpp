@@ -50,5 +50,6 @@ int MBR()
 {
     std::vector<C2DPoint> Triangle{C2DPoint(-0.5, 0.0), C2DPoint(0.5, 0.0), C2DPoint(0.0, 1.0)};
     auto MBR = CalculateMBR<C2DPoint>(Triangle);
+    (void) MBR;
     return 0;
 }

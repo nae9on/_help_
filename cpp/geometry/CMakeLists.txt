@@ -8,7 +8,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     message(STATUS "Using Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(STATUS "Using GCC")
-    add_compile_options(-Wall -Wextra -Wpedantic -O3)
+    add_compile_options(-Wall -Wextra -O3)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
     message(STATUS "Using Intel C++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -25,6 +25,8 @@ endif()
 find_package(OpenCV REQUIRED)
 find_package(Boost COMPONENTS system filesystem REQUIRED)
 
+include_directories(${Boost_INCLUDE_DIRS})
+
 add_executable(
 "${PROJECT_NAME}"
 rtree_search.cpp
@@ -39,3 +41,6 @@ target_link_libraries("${PROJECT_NAME}" ${Boost_LIBRARIES})
 message(STATUS "OpenCV_DIR ${OpenCV_DIR}")
 message(STATUS "OpenCV_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS}")
 message(STATUS "OpenCV_LIBS ${OpenCV_LIBS}")
+
+message(STATUS "Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIRS}")
+message(STATUS "Boost_LIBRARIES ${Boost_LIBRARIES}")
