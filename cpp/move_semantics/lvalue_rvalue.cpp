@@ -7,20 +7,12 @@
  * References:
  * Effective Modern C++ Item 1, 2, 23-30
  * https://channel9.msdn.com/Series/C9-Lectures-Stephan-T-Lavavej-Standard-Template-Library-STL-
+ * https://github.com/nae9on/_help_/wiki/Move-semantics
  */
 
 #include <iostream>
 
 int main_lvalue_rvalue(){
-
-	/*
-     * Notes:
-     * 1. Expressions and not objects are lvalues or rvalues.
-	 * 2. An expression which has a named memory location is an lvalue.
-	 * 3. An expression which is a temporary (i.e does not have a named memory location) is an rvalue.
-	 * 4. An expression is either an lvalue or an rvalue.
-	 * 5.
-	 */
 
     // Recall prototypes of special member functions
     // 1. copy ctor                Widget(const Widget&)
