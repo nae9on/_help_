@@ -15,7 +15,7 @@ public:
     CEditConfigXML& ReplaceText(const std::string& ParameterName, const T& Value)
     {
         std::stringstream From, To;
-        From << ParameterName << "=" << "\".*\""; // ".*" wild card will match 0 or more characters
+        From << ParameterName << "=" << "\"(.*?)\""; // "(.*?)" wild card will match 0 or more characters. ? is for lazy match
         To << ParameterName << "=" << "\"" << Value << "\"";
         std::regex Pattern{From.str()};
         m_Config = std::regex_replace(m_Config, Pattern, To.str());
