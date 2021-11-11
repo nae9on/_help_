@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -30,3 +31,18 @@ public:
 private:
     std::string m_Config;
 };
+
+int main()
+{
+    std::string Config = R"(
+                         <Image Width="1920" Height="1080" Format="JPEG" Type="Fast" IsColored="1">
+                            <Data Data="Dummy image" />
+                         </Image>
+                         )";
+
+    std::string EditedConfig = CEditConfigXML(Config).ReplaceText("Format", "PNG").ReplaceText("IsColored", "0").GetConfig();
+
+    std::cout << EditedConfig << std::endl;
+
+    return 0;
+}
