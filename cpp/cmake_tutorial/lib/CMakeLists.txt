@@ -2,26 +2,17 @@ if(${PRINT_MESSAGES})
     message(STATUS "In CMakeLists.txt in lib folder ---------------------------------")
 endif()
 
-# set the project name
 project(arithmeticLib VERSION 2.0.0)
 
-# add library
 add_library(
 "${PROJECT_NAME}" SHARED # STATIC or SHARED
 ./src/arithmetic.cpp
 )
 
-# PUBLIC = anyone who is consuming this library also receives it.
-# PRIVATE = only this library receives it.
-# INTERFACE = anyone who is consuming this library receives it but not the library
-# itself.
-
-# add include directories (all paths relative to the CMakeLists.txt file)
 target_include_directories(
-"${PROJECT_NAME}" PUBLIC "./include" # PRIVATE here will prompt error
+# PRIVATE here will prompt error because the header is included in src
+"${PROJECT_NAME}" PUBLIC "include"
 )
-
-target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_11)
 
 # List important variables
 if(${PRINT_MESSAGES})
