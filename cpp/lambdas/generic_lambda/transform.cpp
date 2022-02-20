@@ -12,7 +12,7 @@ namespace algebra
 
 namespace
 {
-auto identity = [](int a) { return a; };
+auto identity = [](point a) { return a; };
 }
 
 transform::transform()
@@ -27,12 +27,12 @@ transform::transform(op_type Distort_, op_type UnDistort_)
 
 point transform::GetDistortedPoint(const point& p)
 {
-    return point(Distort(p.x), Distort(p.y));
+    return point(Distort(p));
 }
 
 point transform::GetUnDistortedPoint(const point& p)
 {
-    return point(UnDistort(p.x), UnDistort(p.y));
+    return point(UnDistort(p));
 }
 
 // function template definition

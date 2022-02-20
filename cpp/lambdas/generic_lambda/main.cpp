@@ -15,8 +15,8 @@ using namespace algebra;
 
 int main()
 {
-    auto multiplyby2 = [](int a) { return 2*a; };
-    auto divideby2 = [](int a) { return a/2; };
+    auto multiplyby2 = [](point a) { return point(2*a.x, 2*a.y); };
+    auto divideby2 = [](point a) { return point(a.x/2, a.y/2); };
 
     point p(2, 4);
     transform t(multiplyby2, divideby2);

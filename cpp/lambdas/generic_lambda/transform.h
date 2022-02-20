@@ -26,7 +26,7 @@ struct point
 
 class transform{
 public:
-    using op_type = std::function<int(int)>;
+    using op_type = std::function<point(point)>;
     transform();
     transform(op_type, op_type);
     point GetDistortedPoint(const point& p);
