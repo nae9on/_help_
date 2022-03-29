@@ -89,6 +89,9 @@ int dynamicCast()
     /*
      * dynamic_cast raises std::bad_cast exception when the run-time check performed
      * on reference to polymorphic class type fails.
+     * Expreienced on product - A ref to a node of map (storing interface ptr's) could be casted to a complete object.
+     * However after the node is deleted, casting the same reference again to complete object throws raises seg fault with
+     * bad_cast exception because the object is invalidated/in-complete.
      */
     try
     {
