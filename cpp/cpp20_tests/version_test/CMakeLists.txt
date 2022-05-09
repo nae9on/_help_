@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 
 project(target_version_test)
 
 set(CMAKE_CXX_STANDARD 20) # Default value for CXX_STANDARD target property if set when a target is created
 set(CMAKE_CXX_STANDARD_REQUIRED ON) # Default value for CXX_STANDARD_REQUIRED target property if set when a target is created
-# set(CMAKE_CXX_FLAGS "-std=c++20") # Not a good idea
+# set(CMAKE_CXX_FLAGS "-std=c++20") # Not a good idea (use -std=c++2a for GCC 9 and earlier)
 
 add_executable(
 "${PROJECT_NAME}"
@@ -20,6 +20,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     message(STATUS "Using Clang")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(STATUS "Using GCC " ${CMAKE_CXX_COMPILER_VERSION})
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0.0)
+        message(FATAL_ERROR "Required GCC version is at-least 9.0.0")
+    endif()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -O3)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
     message(STATUS "Using Intel C++")
