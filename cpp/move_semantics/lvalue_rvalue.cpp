@@ -60,5 +60,5 @@ int main_lvalue_rvalue(){
 
     std::cout << "End of main" << std::endl;
 
-	return 0;
+    return 0;
 }
