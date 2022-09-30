@@ -41,8 +41,11 @@ private:
 	randGen(const randGen&) = default;
 	randGen& operator=(const randGen&) = default;
 	
-	// It has static storage duration. It is created at program start-up even before main is executed.
-	// It is destroyed at end of program.
+	// 1. `static` inside a class declares members that are not bound to class instances
+	// 2. It has static storage duration. It is created at program start-up even before main is executed.
+	// 3. It is destroyed at end of program.
+	// 4. They exist even if no objects of the class have been defined.
+	// 5. There is only one instance of the static data member in the entire program with static storage duration
 	static std::unique_ptr<mypair> dist_rng_pair;
 };
 
