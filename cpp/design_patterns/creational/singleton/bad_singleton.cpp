@@ -8,6 +8,8 @@
  *  https://stackoverflow.com/questions/1463707/c-singleton-vs-global-static-object
  *  https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton
  *
+ *  Use this instead https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
+ *
  *  A singleton design pattern is a type of creational design pattern.
  *  It is used in the following two scenarios:
  *  1. When an application needs one and only one instance of a class.
