@@ -1,5 +1,10 @@
 /*
- * seeder_example.cpp
+ *  seeder_example.cpp
+ *   
+ *  Warning: This pattern is not thread safe!
+ *  Use instead this pattern
+ *  https://stackoverflow.com/questions/1463707/c-singleton-vs-global-static-object
+ *  https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
  *
  *  Created on: 16 Nov 2019
  *      Author: ahkad
@@ -18,7 +23,10 @@ class randGen{
 public:
 	using mypair = std::pair<dist,rng>;
 
-	static mypair* getDistRngPairPtr(){
+	static mypair* getDistRngPairPtr()
+	{
+		
+		// This is not thread-safe!
 		if(dist_rng_pair==nullptr)
 		{
 			std::cout<<"Initializing random generator\n";
@@ -32,6 +40,9 @@ private:
 	randGen() = default;
 	randGen(const randGen&) = default;
 	randGen& operator=(const randGen&) = default;
+	
+	// It has static storage duration. It is created at program start-up even before main is executed.
+	// It is destroyed at end of program.
 	static std::unique_ptr<mypair> dist_rng_pair;
 };
 
