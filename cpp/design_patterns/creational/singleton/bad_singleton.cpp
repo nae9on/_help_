@@ -4,6 +4,11 @@
  *  Created on: Aug 12, 2019
  *      Author: akadar
  *
+ *  Warning! the below pattern is strictly inferior to the pattern described on SO and C++ Core Guidelines. Rule of thumb: Avoid Singleton's!
+ *  https://stackoverflow.com/questions/1463707/c-singleton-vs-global-static-object
+ *  https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
+ *  https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton
+ *
  *  A singleton design pattern is a type of creational design pattern.
  *  It is used in the following two scenarios:
  *  1. When an application needs one and only one instance of a class.
@@ -11,8 +16,6 @@
  *
  *  Since the singleton pattern solves two problems at the same time, it is
  *  also considered to violate Single Responsibility Principle.
- *
- *  Warning: There is some problem with compiling this code on Eclipse.
  *
  *  References:
  *  https://sourcemaking.com/design_patterns/singleton
@@ -38,6 +41,7 @@ public:
 	 * It also provides only one point of entry to access/manipulate the Singleton resource.
 	 */
 	static embeddedHardware* getHardwareAccess(){
+		// Warning this is not thread safe!
 		if(hardware==nullptr){
 			std::cout<<"Mounting hardware.\n";
 			hardware = new embeddedHardware;
@@ -47,6 +51,7 @@ public:
 	}
 
 	static void resetHardware(){
+		// Warning this is not thread safe!
 		if(hardware!=nullptr){
 			std::cout<<"Freeing resources.\n";
 			delete hardware;
@@ -70,6 +75,11 @@ private:
 	embeddedHardware(const embeddedHardware&) = default;
 	embeddedHardware& operator=(const embeddedHardware&) = default;
 
+	// 1. `static` inside a class declares members that are not bound to class instances
+	// 2. It has static storage duration. It is created at program start-up even before main is executed.
+	// 3. It is destroyed at end of program.
+	// 4. They exist even if no objects of the class have been defined.
+	// 5. There is only one instance of the static data member in the entire program with static storage duration
 	static embeddedHardware* hardware;
 	std::string hardware_name;
 };
@@ -84,7 +94,7 @@ int singleton(){
 
 	Resource->hardware_info();
 
-	embeddedHardware::resetHardware(); // This is required to free hardware.
+	embeddedHardware::resetHardware(); // This is required to free hardware. What if this is forgotton? Bad design use unique_ptr instead!
 
 	return 0;
 }
