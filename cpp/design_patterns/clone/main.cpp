@@ -11,6 +11,8 @@ using dt = std::chrono::duration<double>;
 constexpr int N{1};
 constexpr int S{10000000};
 
+// private base = implementation detail + no further derivation required
+// + no conversion from CExtWTObject* to CWTObject*
 class CWTObject : public IWTObject, private CExtWTObject
 {
 public:    
@@ -88,4 +90,8 @@ int main()
     }
     auto t4 = clk::now();
     std::cout << "elapsed time clone external: " << dt(t4-t3).count() << "s\n";
+
+    // Optional
+    CWTObject Temp;
+    // CExtWTObject Temp1(Temp); // error due to private base
 }
