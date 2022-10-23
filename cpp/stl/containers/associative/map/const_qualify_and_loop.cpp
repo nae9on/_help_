@@ -20,7 +20,6 @@ private:
     int Value;
 };
 
-
 using MyMap1 = std::map<std::size_t, std::shared_ptr<IBase>>;
 void Print1(MyMap1& Map)
 {
@@ -59,15 +58,52 @@ void Print2(const MyMap2& Map)
     }
 }
 
+class Buffer
+{
+public:
+    using MyMap = std::map<std::size_t, std::shared_ptr<const IBase>>;
+    Buffer()
+    {
+        Value.emplace(1u, std::make_shared<Derived>(10));
+        Value.emplace(3u, std::make_shared<Derived>(30));
+        Value.emplace(2u, std::make_shared<Derived>(20));
+    }
+    MyMap& Get() const { return Value; }
+private:
+    mutable MyMap Value;
+};
+
+void InspectBuffer(const Buffer::MyMap& Map)
+{
+    std::cout << std::endl;
+    for(const auto& [Key, Value] : Map)
+    {
+        std::cout << Key << " " << Value->Get() << " " << Value.use_count() << std::endl;
+    }
+}
+
+void ChangeBuffer(Buffer::MyMap& Map)
+{
+    std::cout << std::endl;
+    Map.emplace(4u, std::make_shared<Derived>(40));
+    for(auto& [Key, Value] : Map)
+    {
+        std::cout << Key << " " << Value->Get() << " " << Value.use_count() << std::endl;
+    }
+}
+
 int main()
 {
     MyMap1 Map;
-
     Map.emplace(1u, std::make_shared<Derived>(10));
     Map.emplace(3u, std::make_shared<Derived>(30));
     Map.emplace(2u, std::make_shared<Derived>(20));
-
     Print1(Map);
+
+    Buffer Buf;
+    InspectBuffer(Buf.Get());
+    ChangeBuffer(Buf.Get());
+    InspectBuffer(Buf.Get());
 
     return 0;
 }

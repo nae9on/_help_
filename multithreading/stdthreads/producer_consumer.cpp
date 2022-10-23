@@ -15,6 +15,7 @@
 #include <iostream>
 #include <cassert>
 
+// Note this global will have static storage duration
 std::mutex CoutMutex;
 
 template<typename T>

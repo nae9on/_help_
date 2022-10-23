@@ -54,12 +54,20 @@ int main()
     constexpr double ReferenceSum = N*(N+1)/2;
 
     std::vector<Sum> VecSum(NumThreads);
-    std::vector<std::thread> VT(NumThreads); // default constructed threads are primarily useful as the target for moves.
+
+    // Default constructed threads are primarily useful as the target for moves.
+    // A default-constructed (non-initialized) thread object is not joinable, and its thread id is common for all non-joinable threads.
+    std::vector<std::thread> VT(NumThreads);
     for(std::size_t itr=0; itr<VT.size(); ++itr)
     {
         VecSum[itr] = Sum((N/NumThreads)*itr+1, (N/NumThreads)*(itr+1));
+
+        // An initialized thread object represents an active thread of execution; Such a thread object is joinable, and has a unique thread id.
         std::thread Thread{std::ref(VecSum[itr])}; // create a thread and assign work
+
         VT[itr] = std::move(Thread); // threads can be moved but not copied
+
+        //  A joinable thread becomes not joinable if moved from, or if either join or detach are called on them.
         if(!Thread.joinable()) // Once the thread has been moved it is not joinable anymore
         {
             Write("Temporary thread " + std::to_string(itr) + " not joinable anymore"s);
