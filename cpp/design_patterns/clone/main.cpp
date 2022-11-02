@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <valarray>
+#include <vector>
 
 using clk = std::chrono::system_clock;
 using dt = std::chrono::duration<double>;
