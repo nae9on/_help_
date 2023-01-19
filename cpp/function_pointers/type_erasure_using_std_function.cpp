@@ -104,20 +104,6 @@ int main()
     CalcMultFractionAgain.Apply(10);
     CalcMultStringAgain.Apply(10);
 
-
-//    std::function<int(int)> Func = LambdaMult;
-//    std::function<int(int)> Func2 = Mult5;
-
-
-//    GeneralCalculator FFour(LambdaMult);
-//    GeneralCalculator FFour2(Func);
-//    GeneralCalculator FFive(Mult5);
-//    FTwo.Apply(10);
-//    FThree.Apply(10);
-//    FFour.Apply(10);
-//    FFour2.Apply(10);
-//    FFive.Apply(10);
-
     return 0;
 }
 
